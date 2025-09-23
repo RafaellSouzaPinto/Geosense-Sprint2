@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Login</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background: #f5f6fa;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+      }
+      .card {
+        background: #fff;
+        padding: 24px;
+        border-radius: 8px;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+        width: 360px;
+      }
+      h1 {
+        margin: 0 0 16px;
+        font-size: 20px;
+      }
+      .field {
+        margin-bottom: 12px;
+      }
+      label {
+        display: block;
+        margin-bottom: 6px;
+        font-size: 14px;
+      }
+      input {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #dcdde1;
+        border-radius: 6px;
+      }
+      button {
+        width: 100%;
+        padding: 10px;
+        background: #273c75;
+        color: #fff;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+      }
+      .msg {
+        margin-top: 10px;
+        color: #c23616;
+        font-size: 13px;
+      }
+    </style>
+    <link rel="stylesheet" th:href="@{/css/main.css}" />
+    <script th:src="@{/js/main.js}"></script>
+    <meta th:if="${param.logout}" http-equiv="refresh" content="2;url=/login" />
+    <meta th:if="${param.error}" http-equiv="refresh" content="5;url=/login" />
+    <meta
+      th:if="${param.expired}"
+      http-equiv="refresh"
+      content="5;url=/login"
+    />
+    <meta
+      th:if="${param.invalid}"
+      http-equiv="refresh"
+      content="5;url=/login"
+    />
+    <meta
+      th:if="${param.session}"
+      http-equiv="refresh"
+      content="5;url=/login"
+    />
+    <meta
+      th:if="${param.timeout}"
+      http-equiv="refresh"
+      content="5;url=/login"
+    />
+    <meta
+      th:if="${param.unauthorized}"
+      http-equiv="refresh"
+      content="5;url=/login"
+    />
+    <meta
+      th:if="${param.forbidden}"
+      http-equiv="refresh"
+      content="5;url=/login"
+    />
+    <meta th:if="${param.success}" http-equiv="refresh" content="2;url=/" />
+    <meta th:if="${param.redirect}" http-equiv="refresh" content="2;url=/" />
+  </head>
+  <body>
+    <div class="card">
+      <h1>Entrar</h1>
+      <form th:action="@{/login}" method="post">
+        <div class="field">
+          <label for="username">Email</label>
+          <input id="username" name="username" type="email" required />
+        </div>
+        <div class="field">
+          <label for="password">Senha</label>
+          <input id="password" name="password" type="password" required />
+        </div>
+        <button type="submit">Entrar</button>
+        <div class="msg" th:if="${param.error}">Credenciais inv</div>
+      </form>
+    </div>
+  </body>
+</html>
