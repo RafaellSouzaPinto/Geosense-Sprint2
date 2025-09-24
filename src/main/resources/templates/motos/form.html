@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Moto - Formulário</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        padding: 24px;
+      }
+      .card {
+        max-width: 680px;
+        margin: 0 auto;
+        background: #fff;
+        padding: 16px;
+        border: 1px solid #eee;
+        border-radius: 8px;
+      }
+      .field {
+        margin-bottom: 12px;
+      }
+      label {
+        display: block;
+        margin-bottom: 6px;
+        font-size: 14px;
+      }
+      input,
+      select {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #dcdde1;
+        border-radius: 6px;
+      }
+      button {
+        padding: 10px 16px;
+        background: #2f3640;
+        color: #fff;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+      }
+      .msg {
+        color: #c23616;
+        font-size: 13px;
+      }
+    </style>
+  </head>
+  <body>
+    <div th:replace="~{fragments::navbar('GeoSense - Moto')}"></div>
+    <div class="card">
+      <h2 th:text="${id} != null ? 'Editar moto' : 'Nova moto'"></h2>
+      <!-- Formulário de criação -->
+      <form
+        th:if="${id} == null"
+        th:action="@{/motos}"
+        th:object="${moto}"
+        method="post"
+      >
+        <div class="field">
+          <label for="modelo">Modelo</label>
+          <input id="modelo" th:field="*{modelo}" type="text" required />
+          <div
+            class="msg"
+            th:if="${#fields.hasErrors('modelo')}"
+            th:errors="*{modelo}"
+          ></div>
+        </div>
+        <div class="field">
+          <label for="placa">Placa</label>
+          <input id="placa" th:field="*{placa}" type="text" />
+          <div
+            class="msg"
+            th:if="${#fields.hasErrors('placa')}"
+            th:errors="*{placa}"
+          ></div>
+        </div>
+        <div class="field">
+          <label for="chassi">Chassi</label>
+          <input id="chassi" th:field="*{chassi}" type="text" />
+          <div
+            class="msg"
+            th:if="${#fields.hasErrors('chassi')}"
+            th:errors="*{chassi}"
+          ></div>
+        </div>
+        <div class="field">
+          <label for="problemaIdentificado">Problema identificado</label>
+          <input
+            id="problemaIdentificado"
+            th:field="*{problemaIdentificado}"
+            type="text"
+            required
+          />
+          <div
+            class="msg"
+            th:if="${#fields.hasErrors('problemaIdentificado')}"
+            th:errors="*{problemaIdentificado}"
+          ></div>
+        </div>
+        <div class="field">
+          <label for="vagaId">Vaga</label>
+          <select id="vagaId" th:field="*{vagaId}">
+            <option th:value="${null}" th:text="'-- Sem vaga --'"></option>
+            <option
+              th:each="v : ${vagas}"
+              th:value="${v.id}"
+              th:text="${v.id}"
+            ></option>
+          </select>
+        </div>
+        <button type="submit">Salvar</button>
+        <a th:href="@{/motos}" style="margin-left: 8px">Cancelar</a>
+      </form>
+
+      <!-- Formulário de edição -->
+      <form
+        th:if="${id} != null"
+        th:action="@{/motos/{id}(id=${id})}"
+        th:object="${moto}"
+        method="post"
+      >
+        <div class="field">
+          <label for="modelo">Modelo</label>
+          <input id="modelo" th:field="*{modelo}" type="text" required />
+          <div
+            class="msg"
+            th:if="${#fields.hasErrors('modelo')}"
+            th:errors="*{modelo}"
+          ></div>
+        </div>
+        <div class="field">
+          <label for="placa">Placa</label>
+          <input id="placa" th:field="*{placa}" type="text" />
+          <div
+            class="msg"
+            th:if="${#fields.hasErrors('placa')}"
+            th:errors="*{placa}"
+          ></div>
+        </div>
+        <div class="field">
+          <label for="chassi">Chassi</label>
+          <input id="chassi" th:field="*{chassi}" type="text" />
+          <div
+            class="msg"
+            th:if="${#fields.hasErrors('chassi')}"
+            th:errors="*{chassi}"
+          ></div>
+        </div>
+        <div class="field">
+          <label for="problemaIdentificado">Problema identificado</label>
+          <input
+            id="problemaIdentificado"
+            th:field="*{problemaIdentificado}"
+            type="text"
+            required
+          />
+          <div
+            class="msg"
+            th:if="${#fields.hasErrors('problemaIdentificado')}"
+            th:errors="*{problemaIdentificado}"
+          ></div>
+        </div>
+        <div class="field">
+          <label for="vagaId">Vaga</label>
+          <select id="vagaId" th:field="*{vagaId}">
+            <option th:value="${null}" th:text="'-- Sem vaga --'"></option>
+            <option
+              th:each="v : ${vagas}"
+              th:value="${v.id}"
+              th:text="${v.id}"
+            ></option>
+          </select>
+        </div>
+        <button type="submit">Salvar</button>
+        <a th:href="@{/motos}" style="margin-left: 8px">Cancelar</a>
+      </form>
+    </div>
+  </body>
+</html>

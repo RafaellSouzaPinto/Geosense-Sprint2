@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Alocação - Formulário</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        padding: 24px;
+      }
+      .card {
+        max-width: 680px;
+        margin: 0 auto;
+        background: #fff;
+        padding: 16px;
+        border: 1px solid #eee;
+        border-radius: 8px;
+      }
+      .field {
+        margin-bottom: 12px;
+      }
+      label {
+        display: block;
+        margin-bottom: 6px;
+        font-size: 14px;
+      }
+      select,
+      input {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #dcdde1;
+        border-radius: 6px;
+      }
+      button {
+        padding: 10px 16px;
+        background: #2f3640;
+        color: #fff;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+      }
+      .msg {
+        color: #c23616;
+        font-size: 13px;
+      }
+    </style>
+  </head>
+  <body>
+    <div th:replace="~{fragments::navbar('GeoSense - Alocação')}"></div>
+    <div class="card">
+      <h2 th:text="${id} != null ? 'Editar alocação' : 'Nova alocação'"></h2>
+
+      <!-- Formulário de criação -->
+      <form
+        th:if="${id} == null"
+        th:action="@{/alocacoes}"
+        th:object="${alocacao}"
+        method="post"
+      >
+        <div class="field">
+          <label for="motoId">Moto</label>
+          <select id="motoId" th:field="*{motoId}" required>
+            <option
+              th:each="m : ${motos}"
+              th:value="${m.id}"
+              th:text="|${m.id} - ${m.modelo}|"
+            ></option>
+          </select>
+          <div
+            class="msg"
+            th:if="${#fields.hasErrors('motoId')}"
+            th:errors="*{motoId}"
+          ></div>
+        </div>
+        <div class="field">
+          <label for="vagaId">Vaga</label>
+          <select id="vagaId" th:field="*{vagaId}" required>
+            <option
+              th:each="v : ${vagas}"
+              th:value="${v.id}"
+              th:text="${v.id}"
+            ></option>
+          </select>
+          <div
+            class="msg"
+            th:if="${#fields.hasErrors('vagaId')}"
+            th:errors="*{vagaId}"
+          ></div>
+        </div>
+        <div class="field">
+          <label for="mecanicoResponsavelId">Mecânico</label>
+          <select
+            id="mecanicoResponsavelId"
+            th:field="*{mecanicoResponsavelId}"
+          >
+            <option th:value="${null}" th:text="'-- Nenhum --'"></option>
+            <option
+              th:each="u : ${mecanicos}"
+              th:value="${u.id}"
+              th:text="${u.nome}"
+            ></option>
+          </select>
+        </div>
+        <button type="submit">Salvar</button>
+        <a th:href="@{/alocacoes}" style="margin-left: 8px">Cancelar</a>
+      </form>
+
+      <!-- Formulário de edição -->
+      <form
+        th:if="${id} != null"
+        th:action="@{/alocacoes/{id}(id=${id})}"
+        th:object="${alocacao}"
+        method="post"
+      >
+        <div class="field">
+          <label for="motoId">Moto</label>
+          <select id="motoId" th:field="*{motoId}" required>
+            <option
+              th:each="m : ${motos}"
+              th:value="${m.id}"
+              th:text="|${m.id} - ${m.modelo}|"
+            ></option>
+          </select>
+          <div
+            class="msg"
+            th:if="${#fields.hasErrors('motoId')}"
+            th:errors="*{motoId}"
+          ></div>
+        </div>
+        <div class="field">
+          <label for="vagaId">Vaga</label>
+          <select id="vagaId" th:field="*{vagaId}" required>
+            <option
+              th:each="v : ${vagas}"
+              th:value="${v.id}"
+              th:text="${v.id}"
+            ></option>
+          </select>
+          <div
+            class="msg"
+            th:if="${#fields.hasErrors('vagaId')}"
+            th:errors="*{vagaId}"
+          ></div>
+        </div>
+        <div class="field">
+          <label for="mecanicoResponsavelId">Mecânico</label>
+          <select
+            id="mecanicoResponsavelId"
+            th:field="*{mecanicoResponsavelId}"
+          >
+            <option th:value="${null}" th:text="'-- Nenhum --'"></option>
+            <option
+              th:each="u : ${mecanicos}"
+              th:value="${u.id}"
+              th:text="${u.nome}"
+            ></option>
+          </select>
+        </div>
+        <button type="submit">Salvar</button>
+        <a th:href="@{/alocacoes}" style="margin-left: 8px">Cancelar</a>
+      </form>
+    </div>
+  </body>
+</html>

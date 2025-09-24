@@ -27,6 +27,7 @@ public class PatioService {
                 : List.of();
 
         Patio patio = new Patio();
+        // Ajuste: no DTO atual não há localizacao; manter nulo por enquanto
         patio.setVagas(vagas);
 
         for (Vaga vaga : vagas) {

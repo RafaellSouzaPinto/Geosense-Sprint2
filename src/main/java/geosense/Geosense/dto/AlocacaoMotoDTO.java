@@ -9,9 +9,7 @@ public record AlocacaoMotoDTO(
         Long motoId,
         @NotNull(message = "vagaId e obrigatorio")
         Long vagaId,
-        @NotNull(message = "mecanicoResponsavelId e obrigatorio")
         Long mecanicoResponsavelId,
-        @NotNull(message = "dataHoraAlocacao e obrigatoria")
         LocalDateTime dataHoraAlocacao
 ) {
     // Getters de compatibilidade

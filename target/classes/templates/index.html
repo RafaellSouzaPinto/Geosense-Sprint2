@@ -23,12 +23,13 @@
         text-decoration: none;
       }
     </style>
+    <link rel="stylesheet" th:href="@{/css/main.css}" />
   </head>
   <body>
+    <div th:replace="~{fragments :: navbar('GeoSense - Home')}"></div>
     <div class="top">
       <h1>Bem-vindo</h1>
-      <a class="btn" th:href="@{/logout}">Sair</a>
     </div>
-    <p>Voc</p>
+    <p>Você está logado.</p>
   </body>
 </html>

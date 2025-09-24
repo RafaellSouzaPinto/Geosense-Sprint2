@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+>
+  <body>
+    <div th:fragment="navbar(title)">
+      <style>
+        .navbar {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 12px 16px;
+          background: #2f3640;
+          color: #fff;
+        }
+        .navbar a {
+          color: #fff;
+          text-decoration: none;
+          margin-left: 10px;
+        }
+        .navbar .right {
+          display: flex;
+          gap: 10px;
+          align-items: center;
+        }
+      </style>
+      <div class="navbar">
+        <div th:text="${title}">GeoSense</div>
+        <div class="right">
+          <a th:href="@{/}">Home</a>
+          <a th:href="@{/admin}" sec:authorize="hasRole('ADMIN')">Admin</a>
+          <a th:href="@{/usuarios}" sec:authorize="hasRole('ADMIN')"
+            >Usuários</a
+          >
+          <a th:href="@{/patios}" sec:authorize="hasAnyRole('ADMIN','MECANICO')"
+            >Pátios</a
+          >
+          <a th:href="@{/motos}" sec:authorize="hasAnyRole('ADMIN','MECANICO')"
+            >Motos</a
+          >
+          <a
+            th:href="@{/alocacoes}"
+            sec:authorize="hasAnyRole('ADMIN','MECANICO')"
+            >Alocações</a
+          >
+          <a th:href="@{/logout}">Sair</a>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

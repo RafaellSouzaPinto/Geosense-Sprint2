@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Cadastro</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background: #f5f6fa;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+      }
+      .card {
+        background: #fff;
+        padding: 24px;
+        border-radius: 8px;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+        width: 400px;
+      }
+      h1 {
+        margin: 0 0 16px;
+        font-size: 20px;
+      }
+      .field {
+        margin-bottom: 12px;
+      }
+      label {
+        display: block;
+        margin-bottom: 6px;
+        font-size: 14px;
+      }
+      input {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #dcdde1;
+        border-radius: 6px;
+      }
+      button {
+        width: 100%;
+        padding: 10px;
+        background: #44bd32;
+        color: #fff;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+      }
+      .msg {
+        margin-top: 10px;
+        color: #c23616;
+        font-size: 13px;
+      }
+      .success {
+        color: #2ecc71;
+      }
+      .link {
+        display: block;
+        margin-top: 10px;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <h1>Criar conta</h1>
+      <form th:action="@{/register}" th:object="${usuario}" method="post">
+        <div class="field">
+          <label for="nome">Nome</label>
+          <input id="nome" th:field="*{nome}" type="text" required />
+          <div
+            class="msg"
+            th:if="${#fields.hasErrors('nome')}"
+            th:errors="*{nome}"
+          ></div>
+        </div>
+        <div class="field">
+          <label for="email">Email</label>
+          <input id="email" th:field="*{email}" type="email" required />
+          <div
+            class="msg"
+            th:if="${#fields.hasErrors('email')}"
+            th:errors="*{email}"
+          ></div>
+        </div>
+        <div class="field">
+          <label for="senha">Senha</label>
+          <input
+            id="senha"
+            th:field="*{senha}"
+            type="password"
+            minlength="6"
+            required
+          />
+          <div
+            class="msg"
+            th:if="${#fields.hasErrors('senha')}"
+            th:errors="*{senha}"
+          ></div>
+        </div>
+        <button type="submit">Cadastrar</button>
+        <div class="msg" th:if="${error}" th:text="${error}"></div>
+        <div class="msg success" th:if="${success}" th:text="${success}"></div>
+      </form>
+      <a class="link" th:href="@{/login}">Já tem conta? Entrar</a>
+    </div>
+  </body>
+</html>

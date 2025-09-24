@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Usuários</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        padding: 24px;
+      }
+      .top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 16px;
+      }
+      a.btn {
+        background: #2f3640;
+        color: #fff;
+        padding: 8px 12px;
+        border-radius: 6px;
+        text-decoration: none;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      th,
+      td {
+        border: 1px solid #eee;
+        padding: 8px;
+        text-align: left;
+      }
+      th {
+        background: #f5f6fa;
+      }
+      form {
+        display: inline;
+      }
+      .success {
+        color: #2ecc71;
+        margin-bottom: 12px;
+      }
+    </style>
+  </head>
+  <body>
+    <div th:replace="~{fragments :: navbar('GeoSense - Usuários')}"></div>
+    <div class="top">
+      <h1>Usuários</h1>
+      <a class="btn" th:href="@{/usuarios/novo}">Novo</a>
+    </div>
+    <div class="success" th:if="${success}" th:text="${success}"></div>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nome</th>
+          <th>Email</th>
+          <th>Tipo</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr th:each="u : ${usuarios}">
+          <td th:text="${u.id}"></td>
+          <td th:text="${u.nome}"></td>
+          <td th:text="${u.email}"></td>
+          <td th:text="${u.tipo}"></td>
+          <td>
+            <a th:href="@{'/usuarios/' + ${u.id} + '/editar'}">Editar</a>
+            <form
+              th:action="@{'/usuarios/' + ${u.id} + '/excluir'}"
+              method="post"
+              style="display: inline"
+            >
+              <button
+                type="submit"
+                onclick="return confirm('Confirma excluir?')"
+              >
+                Excluir
+              </button>
+            </form>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </body>
+</html>

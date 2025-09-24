@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Usuário - Formulário</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        padding: 24px;
+      }
+      .card {
+        max-width: 520px;
+        margin: 0 auto;
+        background: #fff;
+        padding: 16px;
+        border: 1px solid #eee;
+        border-radius: 8px;
+      }
+      .field {
+        margin-bottom: 12px;
+      }
+      label {
+        display: block;
+        margin-bottom: 6px;
+        font-size: 14px;
+      }
+      input,
+      select {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #dcdde1;
+        border-radius: 6px;
+      }
+      button {
+        padding: 10px 16px;
+        background: #2f3640;
+        color: #fff;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+      }
+      .msg {
+        color: #c23616;
+        font-size: 13px;
+      }
+    </style>
+  </head>
+  <body>
+    <div th:replace="~{fragments :: navbar('GeoSense - Usuário')}"></div>
+    <div class="card">
+      <h2 th:text="${id} != null ? 'Editar usuário' : 'Novo usuário'"></h2>
+      <form
+        th:action="${id} != null ? @{'/usuarios/' + ${id}} : @{/usuarios}"
+        th:object="${usuario}"
+        method="post"
+      >
+        <div class="field">
+          <label for="nome">Nome</label>
+          <input id="nome" th:field="*{nome}" type="text" required />
+          <div
+            class="msg"
+            th:if="${#fields.hasErrors('nome')}"
+            th:errors="*{nome}"
+          ></div>
+        </div>
+        <div class="field">
+          <label for="email">Email</label>
+          <input id="email" th:field="*{email}" type="email" required />
+          <div
+            class="msg"
+            th:if="${#fields.hasErrors('email')}"
+            th:errors="*{email}"
+          ></div>
+        </div>
+        <div class="field">
+          <label for="senha">Senha</label>
+          <input
+            id="senha"
+            th:field="*{senha}"
+            type="text"
+            minlength="6"
+            required
+          />
+          <div
+            class="msg"
+            th:if="${#fields.hasErrors('senha')}"
+            th:errors="*{senha}"
+          ></div>
+        </div>
+        <div class="field">
+          <label for="tipo">Tipo</label>
+          <select id="tipo" name="tipo" th:value="${tipoAtual}">
+            <option
+              th:each="t : ${tipos}"
+              th:value="${t}"
+              th:text="${t}"
+              th:selected="${t} == ${tipoAtual}"
+            ></option>
+          </select>
+        </div>
+        <button type="submit">Salvar</button>
+        <a th:href="@{/usuarios}" style="margin-left: 8px">Cancelar</a>
+      </form>
+    </div>
+  </body>
+</html>

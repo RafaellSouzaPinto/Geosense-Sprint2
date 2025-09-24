@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Pátio - Formulário</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        padding: 24px;
+      }
+      .card {
+        max-width: 520px;
+        margin: 0 auto;
+        background: #fff;
+        padding: 16px;
+        border: 1px solid #eee;
+        border-radius: 8px;
+      }
+      .field {
+        margin-bottom: 12px;
+      }
+      label {
+        display: block;
+        margin-bottom: 6px;
+        font-size: 14px;
+      }
+      input {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #dcdde1;
+        border-radius: 6px;
+      }
+      button {
+        padding: 10px 16px;
+        background: #2f3640;
+        color: #fff;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+      }
+      .msg {
+        color: #c23616;
+        font-size: 13px;
+      }
+    </style>
+  </head>
+  <body>
+    <div th:replace="~{fragments :: navbar('GeoSense - Pátio')}"></div>
+    <div class="card">
+      <h2 th:text="${id} != null ? 'Editar pátio' : 'Novo pátio'"></h2>
+      <form
+        th:action="${id} != null ? @{'/patios/' + ${id}} : @{/patios}"
+        th:object="${patio}"
+        method="post"
+      >
+        <div class="field">
+          <label for="localizacao">Localização</label>
+          <input
+            id="localizacao"
+            th:field="*{localizacao}"
+            type="text"
+            required
+          />
+          <div
+            class="msg"
+            th:if="${#fields.hasErrors('localizacao')}"
+            th:errors="*{localizacao}"
+          ></div>
+        </div>
+        <button type="submit">Salvar</button>
+        <a th:href="@{/patios}" style="margin-left: 8px">Cancelar</a>
+      </form>
+    </div>
+  </body>
+</html>

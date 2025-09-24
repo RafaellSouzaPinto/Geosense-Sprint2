@@ -25,10 +25,31 @@
     </style>
   </head>
   <body>
+    <div th:replace="~{fragments :: navbar('GeoSense - Admin')}"></div>
     <div class="top">
       <h1>Admin</h1>
-      <a class="btn" th:href="@{/}">Home</a>
     </div>
-    <p>Somente usu</p>
+    <p>Somente usuários com perfil ADMIN podem acessar esta página.</p>
+    <div style="margin: 16px 0">
+      <strong>Total de usuários cadastrados:</strong>
+      <span th:text="${userCount}">0</span>
+    </div>
+    <div style="display: flex; gap: 16px; margin: 16px 0; flex-wrap: wrap">
+      <div>
+        <strong>Pátios:</strong>
+        <span th:text="${patioCount}">0</span>
+      </div>
+      <div>
+        <strong>Motos:</strong>
+        <span th:text="${motoCount}">0</span>
+      </div>
+      <div>
+        <strong>Alocações:</strong>
+        <span th:text="${alocacaoCount}">0</span>
+      </div>
+    </div>
+    <div>
+      <a class="btn" th:href="@{/usuarios}">Gerenciar usuários</a>
+    </div>
   </body>
 </html>

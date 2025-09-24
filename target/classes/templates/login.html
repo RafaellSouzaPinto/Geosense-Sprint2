@@ -103,8 +103,11 @@
           <input id="password" name="password" type="password" required />
         </div>
         <button type="submit">Entrar</button>
-        <div class="msg" th:if="${param.error}">Credenciais inv</div>
+        <div class="msg" th:if="${param.error}">Credenciais inválidas</div>
       </form>
+      <div style="margin-top: 10px; text-align: center">
+        <a th:href="@{/register}">Não tem conta? Cadastre-se</a>
+      </div>
     </div>
   </body>
 </html>

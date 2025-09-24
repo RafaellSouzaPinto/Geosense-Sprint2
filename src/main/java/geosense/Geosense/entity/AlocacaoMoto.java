@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "ALOCACAO_MOTO")
 public class AlocacaoMoto {
 
     @Id
@@ -13,16 +14,20 @@ public class AlocacaoMoto {
     private Long id;
 
     @ManyToOne
+    @JoinColumn(name = "MOTO_ID")
     @NotNull
     private Moto moto;
 
     @ManyToOne
+    @JoinColumn(name = "VAGA_ID")
     @NotNull
     private Vaga vaga   ;
 
     @ManyToOne
+    @JoinColumn(name = "MECANICO_RESPONSAVEL_ID")
     private Usuario mecanicoResponsavel;
 
+    @Column(name = "DATA_HORA_ALOCACAO")
     private LocalDateTime dataHoraAlocacao;
 
     public AlocacaoMoto() {

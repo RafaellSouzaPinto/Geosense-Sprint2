@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Alocações</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        padding: 24px;
+      }
+      .top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 16px;
+      }
+      a.btn {
+        background: #2f3640;
+        color: #fff;
+        padding: 8px 12px;
+        border-radius: 6px;
+        text-decoration: none;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      th,
+      td {
+        border: 1px solid #eee;
+        padding: 8px;
+        text-align: left;
+      }
+      th {
+        background: #f5f6fa;
+      }
+      form {
+        display: inline;
+      }
+      .success {
+        color: #2ecc71;
+        margin-bottom: 12px;
+      }
+    </style>
+  </head>
+  <body>
+    <div th:replace="~{fragments :: navbar('GeoSense - Alocações')}"></div>
+    <div class="top">
+      <h1>Alocações</h1>
+      <a class="btn" th:href="@{/alocacoes/novo}">Nova</a>
+    </div>
+    <div class="success" th:if="${success}" th:text="${success}"></div>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Moto</th>
+          <th>Vaga</th>
+          <th>Mecânico</th>
+          <th>Data/Hora</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr th:each="a : ${alocacoes}">
+          <td th:text="${a.id}"></td>
+          <td th:text="${a.moto.id}"></td>
+          <td th:text="${a.vaga.id}"></td>
+          <td
+            th:text="${a.mecanicoResponsavel != null ? a.mecanicoResponsavel.nome : '-'}"
+          ></td>
+          <td
+            th:text="${#temporals.format(a.dataHoraAlocacao, 'dd/MM/yyyy HH:mm')}"
+          ></td>
+          <td>
+            <a th:href="@{'/alocacoes/' + ${a.id} + '/editar'}">Editar</a>
+            <form
+              th:action="@{'/alocacoes/' + ${a.id} + '/excluir'}"
+              method="post"
+              style="display: inline"
+            >
+              <button
+                type="submit"
+                onclick="return confirm('Confirma excluir?')"
+              >
+                Excluir
+              </button>
+            </form>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </body>
+</html>
