@@ -19,7 +19,7 @@ public class CustomAuthSuccessHandler implements AuthenticationSuccessHandler {
                                         Authentication authentication) throws IOException, ServletException {
         boolean isAdmin = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
-                .anyMatch(auth -> auth.equals("ROLE_ADMIN"));
+                .anyMatch(auth -> auth.equals("ROLE_ADMINISTRADOR"));
 
         if (isAdmin) {
             response.sendRedirect("/admin");

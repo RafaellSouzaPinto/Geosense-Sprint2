@@ -14,7 +14,7 @@ public class AuthDataInitializer {
     @Bean
     public CommandLineRunner initAdminUser(UsuarioRepository repo, PasswordEncoder encoder) {
         return args -> {
-            repo.findByTipo(TipoUsuario.ADMINISTRADOR).ifPresentOrElse(
+            repo.findFirstByTipo(TipoUsuario.ADMINISTRADOR).ifPresentOrElse(
                     u -> {
                         if (!u.getSenha().startsWith("$2a") && !u.getSenha().startsWith("$2b") && !u.getSenha().startsWith("$2y")) {
                             u.setSenha(encoder.encode(u.getSenha()));

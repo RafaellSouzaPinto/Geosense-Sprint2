@@ -1,35 +1,311 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+>
   <head>
     <meta charset="UTF-8" />
-    <title>Geosense - Home</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GeoSense - Sistema de Gestão</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      rel="stylesheet"
+    />
     <style>
-      body {
-        font-family: Arial, sans-serif;
-        padding: 24px;
+      :root {
+        --primary: #667eea;
+        --secondary: #764ba2;
       }
-      .top {
+
+      .hero-section {
+        background: linear-gradient(
+          135deg,
+          var(--primary) 0%,
+          var(--secondary) 100%
+        );
+        color: white;
+        padding: 4rem 0;
+        text-align: center;
+      }
+
+      .feature-card {
+        border: none;
+        border-radius: 15px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+        height: 100%;
+      }
+
+      .feature-card:hover {
+        transform: translateY(-5px);
+      }
+
+      .feature-icon {
+        width: 60px;
+        height: 60px;
+        border-radius: 12px;
         display: flex;
-        justify-content: space-between;
         align-items: center;
-        margin-bottom: 16px;
+        justify-content: center;
+        font-size: 24px;
+        color: white;
+        margin: 0 auto 1rem;
       }
-      a.btn {
-        background: #2f3640;
-        color: #fff;
-        padding: 8px 12px;
-        border-radius: 6px;
-        text-decoration: none;
+
+      .stats-section {
+        background: #f8f9fa;
+        padding: 3rem 0;
+      }
+
+      .btn-primary-custom {
+        background: linear-gradient(
+          135deg,
+          var(--primary) 0%,
+          var(--secondary) 100%
+        );
+        border: none;
+        padding: 12px 30px;
+        border-radius: 25px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+      }
+
+      .btn-primary-custom:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+      }
+
+      .welcome-back {
+        background: var(--primary);
+        color: white;
+        padding: 1rem;
+        border-radius: 10px;
+        margin-bottom: 2rem;
       }
     </style>
-    <link rel="stylesheet" th:href="@{/css/main.css}" />
   </head>
   <body>
     <div th:replace="~{fragments :: navbar('GeoSense - Home')}"></div>
-    <div class="top">
-      <h1>Bem-vindo</h1>
+
+    <!-- Seção Hero -->
+    <div class="hero-section">
+      <div class="container">
+        <h1 class="display-4 fw-bold mb-4">
+          <i class="fas fa-motorcycle me-3"></i>
+          GeoSense
+        </h1>
+        <p class="lead mb-4">Sistema completo de gestão de motos e pátios</p>
+
+        <!-- Mostrar mensagem de boas-vindas se logado -->
+        <div sec:authorize="isAuthenticated()">
+          <div class="welcome-back">
+            <i class="fas fa-user-check me-2"></i>
+            Bem-vindo de volta, <span sec:authentication="name"></span>!
+          </div>
+        </div>
+
+        <!-- Botão para login se não estiver logado -->
+        <div sec:authorize="!isAuthenticated()">
+          <a th:href="@{/login}" class="btn btn-primary-custom btn-lg">
+            <i class="fas fa-sign-in-alt me-2"></i>
+            Fazer Login
+          </a>
+        </div>
+      </div>
     </div>
-    <p>Você está logado.</p>
+
+    <!-- Seção de Funcionalidades -->
+    <div class="container my-5">
+      <div class="row text-center mb-5">
+        <div class="col-12">
+          <h2 class="fw-bold">O que você pode fazer</h2>
+          <p class="text-muted">
+            Gerencie todo seu sistema de forma simples e eficiente
+          </p>
+        </div>
+      </div>
+
+      <div class="row">
+        <!-- Card Pátios -->
+        <div class="col-lg-3 col-md-6 mb-4">
+          <div class="card feature-card">
+            <div class="card-body text-center p-4">
+              <div class="feature-icon bg-success">
+                <i class="fas fa-building"></i>
+              </div>
+              <h5 class="card-title">Gerenciar Pátios</h5>
+              <p class="card-text">
+                Cadastre e controle todos os pátios do sistema
+              </p>
+              <a
+                th:href="@{/patios}"
+                class="btn btn-outline-success"
+                sec:authorize="hasAnyRole('ADMINISTRADOR','MECANICO')"
+              >
+                Acessar Pátios
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card Motos -->
+        <div class="col-lg-3 col-md-6 mb-4">
+          <div class="card feature-card">
+            <div class="card-body text-center p-4">
+              <div class="feature-icon bg-warning">
+                <i class="fas fa-motorcycle"></i>
+              </div>
+              <h5 class="card-title">Gerenciar Motos</h5>
+              <p class="card-text">Cadastre e monitore todas as motos</p>
+              <a
+                th:href="@{/motos}"
+                class="btn btn-outline-warning"
+                sec:authorize="hasAnyRole('ADMINISTRADOR','MECANICO')"
+              >
+                Acessar Motos
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card Alocações -->
+        <div class="col-lg-3 col-md-6 mb-4">
+          <div class="card feature-card">
+            <div class="card-body text-center p-4">
+              <div class="feature-icon bg-info">
+                <i class="fas fa-map-marker-alt"></i>
+              </div>
+              <h5 class="card-title">Alocações</h5>
+              <p class="card-text">Aloque motos em vagas dos pátios</p>
+              <a
+                th:href="@{/alocacoes}"
+                class="btn btn-outline-info"
+                sec:authorize="hasAnyRole('ADMINISTRADOR','MECANICO')"
+              >
+                Ver Alocações
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card Admin -->
+        <div class="col-lg-3 col-md-6 mb-4">
+          <div class="card feature-card">
+            <div class="card-body text-center p-4">
+              <div class="feature-icon bg-primary">
+                <i class="fas fa-cogs"></i>
+              </div>
+              <h5 class="card-title">Administração</h5>
+              <p class="card-text">Painel completo de administração</p>
+              <a
+                th:href="@{/admin}"
+                class="btn btn-outline-primary"
+                sec:authorize="hasRole('ADMINISTRADOR')"
+              >
+                Painel Admin
+              </a>
+              <!-- Mensagem para não-admins -->
+              <div sec:authorize="!hasRole('ADMINISTRADOR')">
+                <small class="text-muted">Apenas administradores</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Seção de Estatísticas (apenas para usuários logados) -->
+    <div class="stats-section" sec:authorize="isAuthenticated()">
+      <div class="container">
+        <div class="row text-center">
+          <div class="col-12 mb-4">
+            <h3 class="fw-bold">Estatísticas do Sistema</h3>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-3 col-md-6 mb-3">
+            <div class="card border-0">
+              <div class="card-body text-center">
+                <i class="fas fa-users fa-2x text-primary mb-2"></i>
+                <h4 class="fw-bold" id="userCount">--</h4>
+                <p class="text-muted mb-0">Usuários</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-6 mb-3">
+            <div class="card border-0">
+              <div class="card-body text-center">
+                <i class="fas fa-building fa-2x text-success mb-2"></i>
+                <h4 class="fw-bold" id="patioCount">--</h4>
+                <p class="text-muted mb-0">Pátios</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-6 mb-3">
+            <div class="card border-0">
+              <div class="card-body text-center">
+                <i class="fas fa-motorcycle fa-2x text-warning mb-2"></i>
+                <h4 class="fw-bold" id="motoCount">--</h4>
+                <p class="text-muted mb-0">Motos</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-6 mb-3">
+            <div class="card border-0">
+              <div class="card-body text-center">
+                <i class="fas fa-map-marker-alt fa-2x text-info mb-2"></i>
+                <h4 class="fw-bold" id="alocacaoCount">--</h4>
+                <p class="text-muted mb-0">Alocações Ativas</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-4 mt-5">
+      <div class="container text-center">
+        <p class="mb-0">
+          <i class="fas fa-motorcycle me-2"></i>
+          GeoSense &copy; 2025 - Sistema de Gestão de Motos e Pátios
+        </p>
+      </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      // Carregar estatísticas apenas se estiver logado
+      document.addEventListener("DOMContentLoaded", function () {
+        // Verificar se o usuário está logado (procurar por elementos que só aparecem quando logado)
+        const statsSection = document.querySelector(".stats-section");
+        if (statsSection) {
+          loadStats();
+        }
+      });
+
+      async function loadStats() {
+        try {
+          const response = await fetch("/api/admin/dashboard-data");
+          const data = await response.json();
+
+          document.getElementById("userCount").textContent =
+            data.totalUsuarios || 0;
+          document.getElementById("patioCount").textContent =
+            data.totalPatios || 0;
+          document.getElementById("motoCount").textContent =
+            (data.motosDisponiveis || 0) + (data.vagasOcupadas || 0);
+          document.getElementById("alocacaoCount").textContent =
+            data.vagasOcupadas || 0;
+        } catch (error) {
+          // Em caso de erro, manter os valores padrão (--) ou usar dados mockados
+          console.log("Erro ao carregar estatísticas:", error);
+        }
+      }
+    </script>
   </body>
 </html>

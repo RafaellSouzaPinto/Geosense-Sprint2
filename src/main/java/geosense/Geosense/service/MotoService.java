@@ -55,11 +55,8 @@ public class MotoService {
     private void validarRegrasNegocio(MotoDTO dto) {
         String problema = dto.getProblemaIdentificado();
 
-        if (problema == null || problema.isBlank()) {
-            throw new RuntimeException("O campo problemaIdentificado é obrigatório.");
-        }
-
-        if (!PROBLEMAS_VALIDOS.contains(problema.toLowerCase())) {
+        // Problema identificado agora é opcional
+        if (problema != null && !problema.isBlank() && !PROBLEMAS_VALIDOS.contains(problema.toLowerCase())) {
             throw new RuntimeException("Problema identificado inválido. Use: " + PROBLEMAS_VALIDOS);
         }
 

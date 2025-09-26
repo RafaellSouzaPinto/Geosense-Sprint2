@@ -42,27 +42,83 @@
         color: #2ecc71;
         margin-bottom: 12px;
       }
+      .error {
+        color: #c23616;
+        margin-bottom: 12px;
+      }
+      .status-disponivel {
+        color: #27ae60;
+        font-weight: bold;
+      }
+      .status-ocupadas {
+        color: #e74c3c;
+        font-weight: bold;
+      }
+      .status-info {
+        font-size: 12px;
+        color: #7f8c8d;
+      }
     </style>
   </head>
   <body>
     <div th:replace="~{fragments :: navbar('GeoSense - Pátios')}"></div>
     <div class="top">
       <h1>Pátios</h1>
-      <a class="btn" th:href="@{/patios/novo}">Novo</a>
+      <a class="btn" th:href="@{/patios/novo}">Novo Pátio</a>
     </div>
+
     <div class="success" th:if="${success}" th:text="${success}"></div>
+    <div class="error" th:if="${error}" th:text="${error}"></div>
+
     <table>
       <thead>
         <tr>
           <th>ID</th>
+          <th>Unidade</th>
           <th>Localização</th>
+          <th>Endereço Detalhado</th>
+          <th>Capacidade</th>
+          <th>Vagas</th>
+          <th>Status</th>
           <th>Ações</th>
         </tr>
       </thead>
       <tbody>
         <tr th:each="p : ${patios}">
           <td th:text="${p.id}"></td>
+          <td th:text="${p.nomeUnidade}"></td>
           <td th:text="${p.localizacao}"></td>
+          <td th:text="${p.enderecoDetalhado ?: '-'}"></td>
+          <td th:text="${p.capacidade}"></td>
+          <td>
+            <div th:if="${p.vagasDisponiveis != null}">
+              <span
+                class="status-disponivel"
+                th:text="${p.vagasDisponiveis}"
+              ></span>
+              <span class="status-info">disponíveis</span><br />
+              <span class="status-ocupadas" th:text="${p.vagasOcupadas}"></span>
+              <span class="status-info">ocupadas</span>
+            </div>
+            <div th:unless="${p.vagasDisponiveis != null}">
+              <span class="status-info">-</span>
+            </div>
+          </td>
+          <td>
+            <div
+              th:if="${p.vagasDisponiveis != null and p.vagasDisponiveis > 0}"
+            >
+              <span class="status-disponivel">✓ Disponível</span>
+            </div>
+            <div
+              th:if="${p.vagasDisponiveis != null and p.vagasDisponiveis == 0}"
+            >
+              <span class="status-ocupadas">✗ Lotado</span>
+            </div>
+            <div th:unless="${p.vagasDisponiveis != null}">
+              <span class="status-info">-</span>
+            </div>
+          </td>
           <td>
             <a th:href="@{'/patios/' + ${p.id} + '/editar'}">Editar</a>
             <form
@@ -72,11 +128,16 @@
             >
               <button
                 type="submit"
-                onclick="return confirm('Confirma excluir?')"
+                onclick="return confirm('Confirma excluir este pátio? Todas as vagas serão removidas.')"
               >
                 Excluir
               </button>
             </form>
+          </td>
+        </tr>
+        <tr th:if="${#lists.isEmpty(patios)}">
+          <td colspan="8" style="text-align: center; color: #7f8c8d">
+            Nenhum pátio cadastrado
           </td>
         </tr>
       </tbody>

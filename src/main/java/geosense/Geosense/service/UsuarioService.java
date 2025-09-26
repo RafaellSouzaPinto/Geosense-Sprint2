@@ -29,14 +29,14 @@ public class UsuarioService {
 
     public ResponseEntity<String> login(CredentialsDTO cred) {
         if (ADMIN_EMAIL.equals(cred.getEmail()) && ADMIN_PASSWORD.equals(cred.getSenha())) {
-            Optional<Usuario> adminOpt = repo.findByTipo(TipoUsuario.ADMINISTRADOR);
+            Optional<Usuario> adminOpt = repo.findFirstByTipo(TipoUsuario.ADMINISTRADOR);
             if (adminOpt.isPresent()) {
                 return ResponseEntity.ok("Bem vindo ao modo administrador");
             } else {
                 Usuario admin = new Usuario();
                 admin.setNome("Administrador");
                 admin.setEmail(ADMIN_EMAIL);
-                admin.setSenha(ADMIN_PASSWORD);
+                admin.setSenha(passwordEncoder.encode(ADMIN_PASSWORD)); // Criptografar a senha
                 admin.setTipo(TipoUsuario.ADMINISTRADOR);
                 repo.save(admin);
                 return ResponseEntity.status(HttpStatus.CREATED)
@@ -56,7 +56,7 @@ public class UsuarioService {
 
     public Usuario register(UsuarioDTO dto) {
         if (ADMIN_EMAIL.equals(dto.getEmail()) && ADMIN_PASSWORD.equals(dto.getSenha())) {
-            Optional<Usuario> adminExistente = repo.findByTipo(TipoUsuario.ADMINISTRADOR);
+            Optional<Usuario> adminExistente = repo.findFirstByTipo(TipoUsuario.ADMINISTRADOR);
             return adminExistente.orElseThrow(() ->
                     new IllegalArgumentException("Administrador já existe. Use o login."));
         }

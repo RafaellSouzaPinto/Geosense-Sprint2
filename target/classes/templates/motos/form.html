@@ -44,12 +44,29 @@
         color: #c23616;
         font-size: 13px;
       }
+      .success {
+        color: #2ecc71;
+        margin-bottom: 12px;
+      }
+      .error {
+        color: #c23616;
+        margin-bottom: 12px;
+      }
+      .info {
+        font-size: 12px;
+        color: #7f8c8d;
+        margin-top: 4px;
+      }
     </style>
   </head>
   <body>
     <div th:replace="~{fragments::navbar('GeoSense - Moto')}"></div>
     <div class="card">
       <h2 th:text="${id} != null ? 'Editar moto' : 'Nova moto'"></h2>
+
+      <div class="success" th:if="${success}" th:text="${success}"></div>
+      <div class="error" th:if="${error}" th:text="${error}"></div>
+
       <!-- Formulário de criação -->
       <form
         th:if="${id} == null"
@@ -58,57 +75,98 @@
         method="post"
       >
         <div class="field">
-          <label for="modelo">Modelo</label>
-          <input id="modelo" th:field="*{modelo}" type="text" required />
+          <label for="modelo">Modelo *</label>
+          <input
+            id="modelo"
+            th:field="*{modelo}"
+            type="text"
+            required
+            placeholder="Ex: Honda CG 160"
+          />
           <div
             class="msg"
             th:if="${#fields.hasErrors('modelo')}"
             th:errors="*{modelo}"
           ></div>
         </div>
+
         <div class="field">
           <label for="placa">Placa</label>
-          <input id="placa" th:field="*{placa}" type="text" />
+          <input
+            id="placa"
+            th:field="*{placa}"
+            type="text"
+            placeholder="Ex: ABC-1234"
+          />
+          <div class="info">Informe a placa ou chassi obrigatoriamente</div>
           <div
             class="msg"
             th:if="${#fields.hasErrors('placa')}"
             th:errors="*{placa}"
           ></div>
         </div>
+
         <div class="field">
           <label for="chassi">Chassi</label>
-          <input id="chassi" th:field="*{chassi}" type="text" />
+          <input
+            id="chassi"
+            th:field="*{chassi}"
+            type="text"
+            placeholder="Ex: 1HGBH41JXMN109186"
+          />
+          <div class="info">Informe a placa ou chassi obrigatoriamente</div>
           <div
             class="msg"
             th:if="${#fields.hasErrors('chassi')}"
             th:errors="*{chassi}"
           ></div>
         </div>
+
         <div class="field">
           <label for="problemaIdentificado">Problema identificado</label>
           <input
             id="problemaIdentificado"
             th:field="*{problemaIdentificado}"
             type="text"
-            required
+            placeholder="Ex: reparos simples, motor defeituoso, danos estruturais"
           />
+          <div class="info">
+            Campo opcional. Se informado, use: reparos simples, motor defeituoso
+            ou danos estruturais
+          </div>
           <div
             class="msg"
             th:if="${#fields.hasErrors('problemaIdentificado')}"
             th:errors="*{problemaIdentificado}"
           ></div>
         </div>
+
         <div class="field">
-          <label for="vagaId">Vaga</label>
-          <select id="vagaId" th:field="*{vagaId}">
-            <option th:value="${null}" th:text="'-- Sem vaga --'"></option>
+          <label for="patioId">Pátio</label>
+          <select
+            id="patioId"
+            name="patioId"
+            onchange="carregarVagasDisponiveis()"
+          >
+            <option value="">-- Selecione um pátio --</option>
             <option
-              th:each="v : ${vagas}"
-              th:value="${v.id}"
-              th:text="${v.id}"
+              th:each="p : ${patios}"
+              th:value="${p.id}"
+              th:text="|${p.nomeUnidade} - ${p.localizacao}|"
             ></option>
           </select>
         </div>
+
+        <div class="field">
+          <label for="vagaId">Vaga</label>
+          <select id="vagaId" th:field="*{vagaId}">
+            <option value="">-- Selecione primeiro um pátio --</option>
+          </select>
+          <div class="info">
+            Opcional. Selecione um pátio primeiro para ver vagas disponíveis
+          </div>
+        </div>
+
         <button type="submit">Salvar</button>
         <a th:href="@{/motos}" style="margin-left: 8px">Cancelar</a>
       </form>
@@ -121,7 +179,7 @@
         method="post"
       >
         <div class="field">
-          <label for="modelo">Modelo</label>
+          <label for="modelo">Modelo *</label>
           <input id="modelo" th:field="*{modelo}" type="text" required />
           <div
             class="msg"
@@ -129,52 +187,168 @@
             th:errors="*{modelo}"
           ></div>
         </div>
+
         <div class="field">
           <label for="placa">Placa</label>
           <input id="placa" th:field="*{placa}" type="text" />
+          <div class="info">Informe a placa ou chassi obrigatoriamente</div>
           <div
             class="msg"
             th:if="${#fields.hasErrors('placa')}"
             th:errors="*{placa}"
           ></div>
         </div>
+
         <div class="field">
           <label for="chassi">Chassi</label>
           <input id="chassi" th:field="*{chassi}" type="text" />
+          <div class="info">Informe a placa ou chassi obrigatoriamente</div>
           <div
             class="msg"
             th:if="${#fields.hasErrors('chassi')}"
             th:errors="*{chassi}"
           ></div>
         </div>
+
         <div class="field">
           <label for="problemaIdentificado">Problema identificado</label>
           <input
             id="problemaIdentificado"
             th:field="*{problemaIdentificado}"
             type="text"
-            required
+            placeholder="Ex: reparos simples, motor defeituoso, danos estruturais"
           />
+          <div class="info">
+            Campo opcional. Se informado, use: reparos simples, motor defeituoso
+            ou danos estruturais
+          </div>
           <div
             class="msg"
             th:if="${#fields.hasErrors('problemaIdentificado')}"
             th:errors="*{problemaIdentificado}"
           ></div>
         </div>
+
         <div class="field">
-          <label for="vagaId">Vaga</label>
-          <select id="vagaId" th:field="*{vagaId}">
-            <option th:value="${null}" th:text="'-- Sem vaga --'"></option>
+          <label for="patioIdEdit">Pátio</label>
+          <select
+            id="patioIdEdit"
+            name="patioId"
+            th:value="${patioSelecionado}"
+            onchange="carregarVagasDisponiveisEdit()"
+          >
+            <option value="">-- Selecione um pátio --</option>
             <option
-              th:each="v : ${vagas}"
-              th:value="${v.id}"
-              th:text="${v.id}"
+              th:each="p : ${patios}"
+              th:value="${p.id}"
+              th:text="|${p.nomeUnidade} - ${p.localizacao}|"
+              th:selected="${patioSelecionado != null and patioSelecionado == p.id}"
             ></option>
           </select>
         </div>
+
+        <div class="field">
+          <label for="vagaId">Vaga</label>
+          <select id="vagaId" th:field="*{vagaId}">
+            <option value="">-- Sem vaga --</option>
+            <option
+              th:each="v : ${vagas}"
+              th:value="${v.id}"
+              th:text="|Vaga ${v.numero}|"
+            ></option>
+          </select>
+          <div class="info">
+            Opcional. Selecione um pátio primeiro para ver vagas disponíveis
+          </div>
+        </div>
+
         <button type="submit">Salvar</button>
         <a th:href="@{/motos}" style="margin-left: 8px">Cancelar</a>
       </form>
     </div>
+
+    <script>
+      function carregarVagasDisponiveis() {
+        const patioSelect = document.getElementById("patioId");
+        const vagaSelect = document.getElementById("vagaId");
+        const patioId = patioSelect.value;
+
+        console.log("Carregando vagas para pátio:", patioId);
+
+        // Limpar vagas
+        vagaSelect.innerHTML = '<option value="">-- Carregando... --</option>';
+
+        if (!patioId) {
+          vagaSelect.innerHTML =
+            '<option value="">-- Selecione primeiro um pátio --</option>';
+          return;
+        }
+
+        // Buscar vagas disponíveis
+        fetch(`/patios/${patioId}/vagas-disponiveis`)
+          .then((response) => {
+            console.log("Response status:", response.status);
+            return response.json();
+          })
+          .then((vagas) => {
+            console.log("Vagas recebidas:", vagas);
+            vagaSelect.innerHTML = '<option value="">-- Sem vaga --</option>';
+
+            if (vagas.length === 0) {
+              vagaSelect.innerHTML +=
+                '<option value="" disabled>❌ Não há vagas disponíveis neste pátio</option>';
+            } else {
+              vagas.forEach((vaga) => {
+                vagaSelect.innerHTML += `<option value="${vaga.id}">🟢 Vaga ${vaga.numero}</option>`;
+              });
+              console.log(`✅ ${vagas.length} vagas carregadas com sucesso`);
+            }
+          })
+          .catch((error) => {
+            console.error("❌ Erro ao carregar vagas:", error);
+            vagaSelect.innerHTML =
+              '<option value="">-- Erro ao carregar --</option>';
+          });
+      }
+
+      function carregarVagasDisponiveisEdit() {
+        const patioSelect = document.getElementById("patioIdEdit");
+        const vagaSelect = document.getElementById("vagaId");
+        const patioId = patioSelect.value;
+
+        if (!patioId) {
+          vagaSelect.innerHTML = '<option value="">-- Sem vaga --</option>';
+          return;
+        }
+
+        // Manter vaga atual se existir
+        const vagaAtual = vagaSelect.value;
+
+        // Buscar vagas disponíveis
+        fetch(`/patios/${patioId}/vagas-disponiveis`)
+          .then((response) => response.json())
+          .then((vagas) => {
+            vagaSelect.innerHTML = '<option value="">-- Sem vaga --</option>';
+
+            vagas.forEach((vaga) => {
+              const selected = vaga.id == vagaAtual ? "selected" : "";
+              vagaSelect.innerHTML += `<option value="${vaga.id}" ${selected}>Vaga ${vaga.numero}</option>`;
+            });
+          })
+          .catch((error) => {
+            console.error("Erro ao carregar vagas:", error);
+          });
+      }
+
+      // Carregar vagas na edição se pátio já estiver selecionado
+      window.onload = function () {
+        if (
+          document.getElementById("patioIdEdit") &&
+          document.getElementById("patioIdEdit").value
+        ) {
+          carregarVagasDisponiveisEdit();
+        }
+      };
+    </script>
   </body>
 </html>

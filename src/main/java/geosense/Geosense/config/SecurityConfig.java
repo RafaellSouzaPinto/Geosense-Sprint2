@@ -49,8 +49,8 @@ public class SecurityConfig {
                 .authenticationProvider(daoAuthenticationProvider())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/login", "/register", "/css/**", "/js/**").permitAll()
-                        .requestMatchers("/admin/**", "/usuarios/**").hasRole("ADMIN")
-                        .requestMatchers("/patios/**", "/motos/**", "/alocacoes/**").hasAnyRole("ADMIN", "MECANICO")
+                        .requestMatchers("/admin/**", "/usuarios/**").hasRole("ADMINISTRADOR")
+                        .requestMatchers("/patios/**", "/motos/**", "/alocacoes/**").hasAnyRole("ADMINISTRADOR", "MECANICO")
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form

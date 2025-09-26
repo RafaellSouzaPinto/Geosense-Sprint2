@@ -2,54 +2,337 @@
 <html xmlns:th="http://www.thymeleaf.org">
   <head>
     <meta charset="UTF-8" />
-    <title>Admin</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin - Geosense</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-      body {
-        font-family: Arial, sans-serif;
-        padding: 24px;
+      :root {
+        --primary: #667eea;
+        --secondary: #764ba2;
+        --success: #28a745;
+        --warning: #ffc107;
+        --danger: #dc3545;
+        --info: #17a2b8;
       }
-      .top {
+
+      .admin-header {
+        background: linear-gradient(
+          135deg,
+          var(--primary) 0%,
+          var(--secondary) 100%
+        );
+        color: white;
+        padding: 2rem 0;
+        margin-bottom: 2rem;
+      }
+
+      .stat-card {
+        border: none;
+        border-radius: 15px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s;
+        background: white;
+        overflow: hidden;
+      }
+
+      .stat-card:hover {
+        transform: translateY(-5px);
+      }
+
+      .stat-card .card-body {
+        padding: 1.5rem;
+      }
+
+      .stat-icon {
+        width: 60px;
+        height: 60px;
+        border-radius: 12px;
         display: flex;
-        justify-content: space-between;
         align-items: center;
-        margin-bottom: 16px;
+        justify-content: center;
+        font-size: 24px;
+        color: white;
+        margin-bottom: 1rem;
       }
-      a.btn {
-        background: #2f3640;
-        color: #fff;
-        padding: 8px 12px;
-        border-radius: 6px;
+
+      .stat-number {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin: 0;
+        line-height: 1;
+      }
+
+      .chart-card {
+        border: none;
+        border-radius: 15px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        margin-bottom: 2rem;
+      }
+
+      .chart-container {
+        position: relative;
+        height: 300px;
+        padding: 20px;
+      }
+
+      .btn-admin {
+        background: linear-gradient(
+          135deg,
+          var(--primary) 0%,
+          var(--secondary) 100%
+        );
+        border: none;
+        color: white;
+        border-radius: 10px;
+        padding: 12px 24px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+      }
+
+      .btn-admin:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+        color: white;
+      }
+
+      .recent-activity {
+        max-height: 400px;
+        overflow-y: auto;
+      }
+
+      .activity-item {
+        padding: 12px;
+        border-left: 4px solid var(--primary);
+        background: #f8f9fa;
+        margin-bottom: 10px;
+        border-radius: 5px;
+      }
+
+      .activity-time {
+        font-size: 0.85rem;
+        color: #6c757d;
+      }
+
+      .notification-badge {
+        position: relative;
+      }
+
+      .notification-badge::after {
+        content: attr(data-count);
+        position: absolute;
+        top: -8px;
+        right: -8px;
+        background: var(--danger);
+        color: white;
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+        font-size: 0.75rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .quick-actions {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 1rem;
+        margin-top: 2rem;
+      }
+
+      .action-btn {
+        padding: 1rem;
+        border: 2px solid var(--primary);
+        border-radius: 10px;
         text-decoration: none;
+        color: var(--primary);
+        text-align: center;
+        transition: all 0.3s ease;
+        background: white;
+      }
+
+      .action-btn:hover {
+        background: var(--primary);
+        color: white;
+        transform: translateY(-2px);
       }
     </style>
   </head>
-  <body>
-    <div th:replace="~{fragments :: navbar('GeoSense - Admin')}"></div>
-    <div class="top">
-      <h1>Admin</h1>
-    </div>
-    <p>Somente usuários com perfil ADMIN podem acessar esta página.</p>
-    <div style="margin: 16px 0">
-      <strong>Total de usuários cadastrados:</strong>
-      <span th:text="${userCount}">0</span>
-    </div>
-    <div style="display: flex; gap: 16px; margin: 16px 0; flex-wrap: wrap">
-      <div>
-        <strong>Pátios:</strong>
-        <span th:text="${patioCount}">0</span>
-      </div>
-      <div>
-        <strong>Motos:</strong>
-        <span th:text="${motoCount}">0</span>
-      </div>
-      <div>
-        <strong>Alocações:</strong>
-        <span th:text="${alocacaoCount}">0</span>
+  <body class="bg-light">
+    <div th:replace="~{fragments :: navbar('Admin - GeoSense')}"></div>
+
+    <!-- Header -->
+    <div class="admin-header">
+      <div class="container">
+        <div class="row">
+          <div class="col-12 text-center">
+            <h1 class="display-5 mb-2">
+              <i class="fas fa-cogs me-3"></i>Painel Administrativo
+            </h1>
+            <p class="lead">Gerencie todo o sistema GeoSense</p>
+          </div>
+        </div>
       </div>
     </div>
-    <div>
-      <a class="btn" th:href="@{/usuarios}">Gerenciar usuários</a>
+
+    <div class="container">
+      <!-- Estatísticas principais com dados reais -->
+      <div class="row mb-4">
+        <div class="col-lg-3 col-md-6 mb-3">
+          <div class="card stat-card">
+            <div class="card-body text-center">
+              <div class="stat-icon bg-primary mx-auto">
+                <i class="fas fa-users"></i>
+              </div>
+              <h3 class="stat-number text-primary" th:text="${userCount}">0</h3>
+              <p class="mb-0">Usuários Cadastrados</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-6 mb-3">
+          <div class="card stat-card">
+            <div class="card-body text-center">
+              <div class="stat-icon bg-success mx-auto">
+                <i class="fas fa-building"></i>
+              </div>
+              <h3 class="stat-number text-success" th:text="${patioCount}">
+                0
+              </h3>
+              <p class="mb-0">Pátios Ativos</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-6 mb-3">
+          <div class="card stat-card">
+            <div class="card-body text-center">
+              <div class="stat-icon bg-warning mx-auto">
+                <i class="fas fa-motorcycle"></i>
+              </div>
+              <h3 class="stat-number text-warning" th:text="${motoCount}">0</h3>
+              <p class="mb-0">Motos no Sistema</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-6 mb-3">
+          <div class="card stat-card">
+            <div class="card-body text-center">
+              <div class="stat-icon bg-info mx-auto">
+                <i class="fas fa-map-marker-alt"></i>
+              </div>
+              <h3 class="stat-number text-info" th:text="${alocacaoCount}">
+                0
+              </h3>
+              <p class="mb-0">Alocações Ativas</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Gráficos com dados reais -->
+      <div class="row mb-4">
+        <div class="col-lg-12">
+          <div class="card chart-card">
+            <div class="card-header bg-white">
+              <h5 class="mb-0">
+                <i class="fas fa-chart-pie me-2 text-primary"></i>
+                Status das Motos
+              </h5>
+            </div>
+            <div class="chart-container">
+              <canvas id="motosStatusChart"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Ações rápidas -->
+      <div class="row mb-4">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-header bg-white">
+              <h5 class="mb-0">
+                <i class="fas fa-bolt me-2 text-warning"></i>
+                Ações Rápidas
+              </h5>
+            </div>
+            <div class="card-body">
+              <div class="quick-actions">
+                <a th:href="@{/usuarios}" class="action-btn">
+                  <i class="fas fa-users fa-2x mb-2"></i>
+                  <div>Gerenciar Usuários</div>
+                </a>
+                <a th:href="@{/patios}" class="action-btn">
+                  <i class="fas fa-building fa-2x mb-2"></i>
+                  <div>Gerenciar Pátios</div>
+                </a>
+                <a th:href="@{/motos}" class="action-btn">
+                  <i class="fas fa-motorcycle fa-2x mb-2"></i>
+                  <div>Gerenciar Motos</div>
+                </a>
+                <a th:href="@{/alocacoes}" class="action-btn">
+                  <i class="fas fa-map-marker-alt fa-2x mb-2"></i>
+                  <div>Ver Alocações</div>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      // Inicializar página
+      document.addEventListener("DOMContentLoaded", function () {
+        initCharts();
+      });
+
+      // Inicializar gráficos com dados reais
+      function initCharts() {
+        // Gráfico de Status das Motos
+        const motosCtx = document
+          .getElementById("motosStatusChart")
+          .getContext("2d");
+        const totalMotos = parseInt(
+          document.querySelector(".text-warning").textContent || "0"
+        );
+        const motosAlocadas = parseInt(
+          document.querySelector(".text-info").textContent || "0"
+        );
+        const motosDisponiveis = totalMotos - motosAlocadas;
+
+        new Chart(motosCtx, {
+          type: "doughnut",
+          data: {
+            labels: ["Alocadas", "Disponíveis"],
+            datasets: [
+              {
+                data: [motosAlocadas, motosDisponiveis],
+                backgroundColor: ["#17a2b8", "#28a745"],
+                borderWidth: 2,
+                borderColor: "#fff",
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                position: "bottom",
+              },
+            },
+          },
+        });
+      }
+    </script>
   </body>
 </html>

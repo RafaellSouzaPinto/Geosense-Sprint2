@@ -43,24 +43,37 @@
         color: #c23616;
         font-size: 13px;
       }
+      .success {
+        color: #2ecc71;
+        margin-bottom: 12px;
+      }
+      .error {
+        color: #c23616;
+        margin-bottom: 12px;
+      }
     </style>
   </head>
   <body>
     <div th:replace="~{fragments :: navbar('GeoSense - Pátio')}"></div>
     <div class="card">
       <h2 th:text="${id} != null ? 'Editar pátio' : 'Novo pátio'"></h2>
+
+      <div class="success" th:if="${success}" th:text="${success}"></div>
+      <div class="error" th:if="${error}" th:text="${error}"></div>
+
       <form
         th:action="${id} != null ? @{'/patios/' + ${id}} : @{/patios}"
         th:object="${patio}"
         method="post"
       >
         <div class="field">
-          <label for="localizacao">Localização</label>
+          <label for="localizacao">Localização *</label>
           <input
             id="localizacao"
             th:field="*{localizacao}"
             type="text"
             required
+            placeholder="Ex: Rua das Flores, 123"
           />
           <div
             class="msg"
@@ -68,6 +81,55 @@
             th:errors="*{localizacao}"
           ></div>
         </div>
+
+        <div class="field">
+          <label for="enderecoDetalhado">Endereço Detalhado</label>
+          <input
+            id="enderecoDetalhado"
+            th:field="*{enderecoDetalhado}"
+            type="text"
+            placeholder="Ex: Setor A, Galpão 2"
+          />
+          <div
+            class="msg"
+            th:if="${#fields.hasErrors('enderecoDetalhado')}"
+            th:errors="*{enderecoDetalhado}"
+          ></div>
+        </div>
+
+        <div class="field">
+          <label for="nomeUnidade">Nome da Unidade *</label>
+          <input
+            id="nomeUnidade"
+            th:field="*{nomeUnidade}"
+            type="text"
+            required
+            placeholder="Ex: Unidade Central"
+          />
+          <div
+            class="msg"
+            th:if="${#fields.hasErrors('nomeUnidade')}"
+            th:errors="*{nomeUnidade}"
+          ></div>
+        </div>
+
+        <div class="field">
+          <label for="capacidade">Capacidade (número de vagas) *</label>
+          <input
+            id="capacidade"
+            th:field="*{capacidade}"
+            type="number"
+            min="1"
+            required
+            placeholder="Ex: 50"
+          />
+          <div
+            class="msg"
+            th:if="${#fields.hasErrors('capacidade')}"
+            th:errors="*{capacidade}"
+          ></div>
+        </div>
+
         <button type="submit">Salvar</button>
         <a th:href="@{/patios}" style="margin-left: 8px">Cancelar</a>
       </form>

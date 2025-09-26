@@ -19,7 +19,7 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        String roleName = usuario.getTipo() == TipoUsuario.ADMINISTRADOR ? "ROLE_ADMIN" : "ROLE_MECANICO";
+        String roleName = usuario.getTipo() == TipoUsuario.ADMINISTRADOR ? "ROLE_ADMINISTRADOR" : "ROLE_MECANICO";
         return List.of(new SimpleGrantedAuthority(roleName));
     }
 

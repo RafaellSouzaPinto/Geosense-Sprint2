@@ -2,7 +2,6 @@ package geosense.Geosense.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 import java.util.List;
@@ -26,7 +25,7 @@ public class Moto {
     @Column(nullable = true, unique = true)
     private String chassi;
 
-    @NotNull
+    @Column(nullable = true)
     private String problemaIdentificado;
 
     @OneToOne

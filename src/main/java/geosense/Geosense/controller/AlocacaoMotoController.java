@@ -1,124 +1,185 @@
 package geosense.Geosense.controller;
 
 import geosense.Geosense.dto.AlocacaoMotoDTO;
-import geosense.Geosense.entity.AlocacaoMoto;
 import geosense.Geosense.entity.Moto;
+import geosense.Geosense.entity.TipoUsuario;
 import geosense.Geosense.entity.Usuario;
-import geosense.Geosense.entity.Vaga;
-import geosense.Geosense.repository.AlocacaoMotoRepository;
 import geosense.Geosense.repository.MotoRepository;
 import geosense.Geosense.repository.UsuarioRepository;
-import geosense.Geosense.repository.VagaRepository;
+import geosense.Geosense.service.AlocacaoMotoService;
+import geosense.Geosense.service.PatioService;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * Controller SIMPLIFICADO para AlocaçãoMoto
+ * Foco: UX simples e direta
+ */
 @Controller
 @RequestMapping("/alocacoes")
 public class AlocacaoMotoController {
 
-    private final AlocacaoMotoRepository alocacaoRepo;
-    private final MotoRepository motoRepo;
-    private final VagaRepository vagaRepo;
-    private final UsuarioRepository usuarioRepo;
+    @Autowired
+    private AlocacaoMotoService alocacaoService;
+    
+    @Autowired
+    private MotoRepository motoRepository;
+    
+    @Autowired
+    private UsuarioRepository usuarioRepository;
+    
+    @Autowired
+    private PatioService patioService;
 
-    public AlocacaoMotoController(AlocacaoMotoRepository alocacaoRepo,
-                                  MotoRepository motoRepo,
-                                  VagaRepository vagaRepo,
-                                  UsuarioRepository usuarioRepo) {
-        this.alocacaoRepo = alocacaoRepo;
-        this.motoRepo = motoRepo;
-        this.vagaRepo = vagaRepo;
-        this.usuarioRepo = usuarioRepo;
-    }
-
+    /**
+     * LISTAR todas as alocações
+     */
     @GetMapping
-    public String list(Model model) {
-        List<AlocacaoMoto> alocacoes = alocacaoRepo.findAll();
-        model.addAttribute("alocacoes", alocacoes);
+    public String listar(Model model) {
+        model.addAttribute("alocacoes", alocacaoService.listarTodas());
         return "alocacoes/list";
     }
 
+    /**
+     * FORMULÁRIO para nova alocação
+     */
     @GetMapping("/novo")
-    public String createForm(Model model) {
-        model.addAttribute("alocacao", new AlocacaoMotoDTO(null, null, null, null, null));
-        model.addAttribute("motos", motoRepo.findAll());
-        model.addAttribute("vagas", vagaRepo.findAll());
-        model.addAttribute("mecanicos", usuarioRepo.findAll());
+    public String novaAlocacao(Model model) {
+        // Buscar TODAS as motos do sistema (não só as sem vaga)
+        List<Moto> todasMotos = motoRepository.findAll();
+        List<Usuario> mecanicos = usuarioRepository.findByTipo(TipoUsuario.MECANICO);
+        
+        model.addAttribute("alocacao", new AlocacaoMotoDTO());
+        model.addAttribute("motos", todasMotos);
+        model.addAttribute("patios", patioService.listarTodos());
+        model.addAttribute("mecanicos", mecanicos);
+        
+        System.out.println("=== FORMULÁRIO NOVA ALOCAÇÃO ===");
+        System.out.println("Total de motos no sistema: " + todasMotos.size());
+        System.out.println("Motos sem vaga: " + motoRepository.findMotosSemVaga().size());
+        System.out.println("Motos com vaga: " + motoRepository.findMotosComVaga().size());
+        System.out.println("Pátios: " + patioService.listarTodos().size());
+        
+        // Debug: listar todas as motos
+        if (todasMotos.isEmpty()) {
+            System.out.println("❌ PROBLEMA: Não há motos cadastradas no sistema!");
+            System.out.println("💡 SOLUÇÃO: Cadastre uma nova moto primeiro.");
+        } else {
+            System.out.println("✅ Todas as motos do sistema:");
+            todasMotos.forEach(m -> {
+                String status = m.getVaga() != null ? "ALOCADA (Vaga " + m.getVaga().getNumero() + ")" : "LIVRE";
+                System.out.println("- Moto " + m.getId() + ": " + m.getModelo() + " (" + (m.getPlaca() != null ? m.getPlaca() : m.getChassi()) + ") - " + status);
+            });
+        }
+        
         return "alocacoes/form";
     }
 
+    /**
+     * CRIAR nova alocação
+     */
     @PostMapping
-    public String create(@Valid AlocacaoMotoDTO dto,
-                         BindingResult bindingResult,
-                         RedirectAttributes redirectAttributes,
-                         Model model) {
-        if (bindingResult.hasErrors()) {
-            model.addAttribute("motos", motoRepo.findAll());
-            model.addAttribute("vagas", vagaRepo.findAll());
-            model.addAttribute("mecanicos", usuarioRepo.findAll());
+    public String criar(@Valid @ModelAttribute("alocacao") AlocacaoMotoDTO dto,
+                        BindingResult result,
+                        RedirectAttributes redirectAttributes,
+                        Model model) {
+        
+        System.out.println("=== CRIANDO ALOCAÇÃO ===");
+        System.out.println("DTO recebido: " + dto.getMotoId() + ", " + dto.getPatioId() + ", " + dto.getVagaId());
+        
+        if (result.hasErrors()) {
+            System.out.println("Erros de validação:");
+            result.getAllErrors().forEach(error -> System.out.println("- " + error.getDefaultMessage()));
+            
+            // Recarregar dados para o formulário
+            carregarDadosFormulario(model);
             return "alocacoes/form";
         }
-        AlocacaoMoto a = new AlocacaoMoto();
-        Moto m = motoRepo.findById(dto.getMotoId()).orElseThrow();
-        Vaga v = vagaRepo.findById(dto.getVagaId()).orElseThrow();
-        Usuario u = dto.getMecanicoResponsavelId() != null ? usuarioRepo.findById(dto.getMecanicoResponsavelId()).orElse(null) : null;
-        a.setMoto(m);
-        a.setVaga(v);
-        a.setMecanicoResponsavel(u);
-        a.setDataHoraAlocacao(LocalDateTime.now());
-        alocacaoRepo.save(a);
-        redirectAttributes.addFlashAttribute("success", "Alocação criada");
-        return "redirect:/alocacoes";
-    }
-
-    @GetMapping("/{id}/editar")
-    public String editForm(@PathVariable Long id, Model model) {
-        AlocacaoMoto a = alocacaoRepo.findById(id).orElseThrow();
-        model.addAttribute("alocacao", new AlocacaoMotoDTO(a.getId(), a.getMoto().getId(), a.getVaga().getId(), a.getMecanicoResponsavel() != null ? a.getMecanicoResponsavel().getId() : null, a.getDataHoraAlocacao()));
-        model.addAttribute("id", id);
-        model.addAttribute("motos", motoRepo.findAll());
-        model.addAttribute("vagas", vagaRepo.findAll());
-        model.addAttribute("mecanicos", usuarioRepo.findAll());
-        return "alocacoes/form";
-    }
-
-    @PostMapping("/{id}")
-    public String update(@PathVariable Long id,
-                         @Valid AlocacaoMotoDTO dto,
-                         BindingResult bindingResult,
-                         RedirectAttributes redirectAttributes,
-                         Model model) {
-        if (bindingResult.hasErrors()) {
-            model.addAttribute("motos", motoRepo.findAll());
-            model.addAttribute("vagas", vagaRepo.findAll());
-            model.addAttribute("mecanicos", usuarioRepo.findAll());
+        
+        try {
+            alocacaoService.alocar(dto);
+            redirectAttributes.addFlashAttribute("success", "Moto alocada com sucesso!");
+            return "redirect:/alocacoes";
+            
+        } catch (Exception e) {
+            System.err.println("Erro ao alocar: " + e.getMessage());
+            model.addAttribute("error", e.getMessage());
+            carregarDadosFormulario(model);
             return "alocacoes/form";
         }
-        AlocacaoMoto a = alocacaoRepo.findById(id).orElseThrow();
-        Moto m = motoRepo.findById(dto.getMotoId()).orElseThrow();
-        Vaga v = vagaRepo.findById(dto.getVagaId()).orElseThrow();
-        Usuario u = dto.getMecanicoResponsavelId() != null ? usuarioRepo.findById(dto.getMecanicoResponsavelId()).orElse(null) : null;
-        a.setMoto(m);
-        a.setVaga(v);
-        a.setMecanicoResponsavel(u);
-        alocacaoRepo.save(a);
-        redirectAttributes.addFlashAttribute("success", "Alocação atualizada");
-        return "redirect:/alocacoes";
     }
 
-    @PostMapping("/{id}/excluir")
-    public String delete(@PathVariable Long id, RedirectAttributes redirectAttributes) {
-        alocacaoRepo.deleteById(id);
-        redirectAttributes.addFlashAttribute("success", "Alocação removida");
+    /**
+     * REMOVER alocação (desalocar moto)
+     */
+    @PostMapping("/{id}/remover")
+    public String remover(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        try {
+            alocacaoService.desalocar(id);
+            redirectAttributes.addFlashAttribute("success", "Moto desalocada com sucesso!");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Erro ao desalocar: " + e.getMessage());
+        }
         return "redirect:/alocacoes";
+    }
+    
+    /**
+     * Helper: Carregar dados para o formulário
+     */
+    private void carregarDadosFormulario(Model model) {
+        List<Moto> todasMotos = motoRepository.findAll();
+        List<Usuario> mecanicos = usuarioRepository.findByTipo(TipoUsuario.MECANICO);
+        
+        model.addAttribute("motos", todasMotos);
+        model.addAttribute("patios", patioService.listarTodos());
+        model.addAttribute("mecanicos", mecanicos);
+        
+        System.out.println("Dados recarregados - Motos: " + todasMotos.size() + ", Pátios: " + patioService.listarTodos().size());
+    }
+    
+    /**
+     * PÁGINA DE DEBUG
+     */
+    @GetMapping("/debug")
+    public String paginaDebug() {
+        return "debug";
+    }
+    
+    /**
+     * ENDPOINT DE DEBUG: Desalocar todas as motos
+     */
+    @PostMapping("/debug/desalocar-todas")
+    @ResponseBody
+    public String desalocarTodasAsMotos() {
+        try {
+            List<AlocacaoMotoDTO> todasAlocacoes = alocacaoService.listarTodas();
+            
+            System.out.println("=== DESALOCANDO TODAS AS MOTOS ===");
+            System.out.println("Total de alocações encontradas: " + todasAlocacoes.size());
+            
+            if (todasAlocacoes.isEmpty()) {
+                return "❌ Nenhuma alocação encontrada para desalocar.";
+            }
+            
+            for (AlocacaoMotoDTO alocacao : todasAlocacoes) {
+                System.out.println("Desalocando: Moto " + alocacao.getMotoId() + " da Vaga " + alocacao.getVagaId());
+                alocacaoService.desalocar(alocacao.getId());
+            }
+            
+            System.out.println("✅ Todas as motos foram desalocadas!");
+            return "✅ SUCESSO! " + todasAlocacoes.size() + " motos foram desalocadas. Agora você pode fazer novas alocações.";
+            
+        } catch (Exception e) {
+            System.err.println("❌ Erro ao desalocar motos: " + e.getMessage());
+            e.printStackTrace();
+            return "❌ ERRO: " + e.getMessage();
+        }
     }
 }
-
-

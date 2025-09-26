@@ -2,21 +2,24 @@ package geosense.Geosense.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import geosense.Geosense.validation.ValidPlaca;
+import geosense.Geosense.validation.ValidChassi;
+import geosense.Geosense.validation.ValidProblema;
 
 public record MotoDTO(
         Long id,
 
-        @NotBlank(message = "Modelo e obrigatorio")
-        @Size(max = 50, message = "Modelo deve ter ate 50 caracteres")
+        @NotBlank(message = "Modelo é obrigatório")
+        @Size(max = 50, message = "Modelo deve ter até 50 caracteres")
         String modelo,
 
-        @Size(min = 7, max = 10, message = "Placa deve ter entre 7 e 10 caracteres")
+        @ValidPlaca(required = false)
         String placa,
 
-        @Size(max = 50, message = "Chassi deve ter ate 50 caracteres")
+        @ValidChassi(required = false)
         String chassi,
 
-        @NotBlank(message = "Problema identificado e obrigatorio")
+        @ValidProblema(required = false)
         String problemaIdentificado,
 
         Long vagaId

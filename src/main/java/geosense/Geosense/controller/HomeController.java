@@ -38,10 +38,12 @@ public class HomeController {
 
     @GetMapping("/admin")
     public String admin(Model model) {
+        // Dados reais do banco
         model.addAttribute("userCount", usuarioRepository.count());
         model.addAttribute("patioCount", patioRepository.count());
         model.addAttribute("motoCount", motoRepository.count());
         model.addAttribute("alocacaoCount", alocacaoMotoRepository.count());
+        
         return "admin";
     }
 }

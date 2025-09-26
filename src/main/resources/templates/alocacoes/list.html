@@ -1,95 +1,169 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
   <head>
     <meta charset="UTF-8" />
-    <title>Alocações</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Alocações - Geosense</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
     <style>
-      body {
-        font-family: Arial, sans-serif;
-        padding: 24px;
+      .card-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
       }
-      .top {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 16px;
+      .status-ativo {
+        color: #28a745;
+        font-weight: bold;
       }
-      a.btn {
-        background: #2f3640;
-        color: #fff;
-        padding: 8px 12px;
-        border-radius: 6px;
-        text-decoration: none;
-      }
-      table {
-        width: 100%;
-        border-collapse: collapse;
-      }
-      th,
-      td {
-        border: 1px solid #eee;
-        padding: 8px;
-        text-align: left;
-      }
-      th {
-        background: #f5f6fa;
-      }
-      form {
-        display: inline;
-      }
-      .success {
-        color: #2ecc71;
-        margin-bottom: 12px;
+      .btn-custom {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border: none;
       }
     </style>
   </head>
-  <body>
-    <div th:replace="~{fragments :: navbar('GeoSense - Alocações')}"></div>
-    <div class="top">
-      <h1>Alocações</h1>
-      <a class="btn" th:href="@{/alocacoes/novo}">Nova</a>
-    </div>
-    <div class="success" th:if="${success}" th:text="${success}"></div>
-    <table>
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Moto</th>
-          <th>Vaga</th>
-          <th>Mecânico</th>
-          <th>Data/Hora</th>
-          <th>Ações</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr th:each="a : ${alocacoes}">
-          <td th:text="${a.id}"></td>
-          <td th:text="${a.moto.id}"></td>
-          <td th:text="${a.vaga.id}"></td>
-          <td
-            th:text="${a.mecanicoResponsavel != null ? a.mecanicoResponsavel.nome : '-'}"
-          ></td>
-          <td
-            th:text="${#temporals.format(a.dataHoraAlocacao, 'dd/MM/yyyy HH:mm')}"
-          ></td>
-          <td>
-            <a th:href="@{'/alocacoes/' + ${a.id} + '/editar'}">Editar</a>
-            <form
-              th:action="@{'/alocacoes/' + ${a.id} + '/excluir'}"
-              method="post"
-              style="display: inline"
+  <body class="bg-light">
+    <div class="container mt-4">
+      <!-- Cabeçalho -->
+      <div class="card shadow">
+        <div
+          class="card-header d-flex justify-content-between align-items-center"
+        >
+          <div>
+            <h4 class="mb-0">📍 Alocações de Motos</h4>
+            <small>Gerenciar localização das motos nos pátios</small>
+          </div>
+          <a th:href="@{/alocacoes/novo}" class="btn btn-light">
+            📍 Alocar/Realocar Moto
+          </a>
+        </div>
+
+        <div class="card-body">
+          <!-- Mensagens -->
+          <div
+            th:if="${success}"
+            class="alert alert-success alert-dismissible fade show"
+          >
+            <i class="fas fa-check-circle"></i>
+            <span th:text="${success}"></span>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="alert"
+            ></button>
+          </div>
+
+          <div
+            th:if="${error}"
+            class="alert alert-danger alert-dismissible fade show"
+          >
+            <i class="fas fa-exclamation-triangle"></i>
+            <span th:text="${error}"></span>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="alert"
+            ></button>
+          </div>
+
+          <!-- Lista de Alocações -->
+          <div th:if="${#lists.isEmpty(alocacoes)}" class="text-center py-5">
+            <h5 class="text-muted">📭 Nenhuma moto alocada</h5>
+            <p class="text-muted">
+              Aloque motos em vagas dos pátios para gerenciar sua localização.
+            </p>
+            <a
+              th:href="@{/alocacoes/novo}"
+              class="btn btn-custom btn-primary text-white"
             >
-              <button
-                type="submit"
-                onclick="return confirm('Confirma excluir?')"
-              >
-                Excluir
-              </button>
-            </form>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+              📍 Alocar Primeira Moto
+            </a>
+          </div>
+
+          <div
+            th:unless="${#lists.isEmpty(alocacoes)}"
+            class="table-responsive"
+          >
+            <table class="table table-hover">
+              <thead class="table-light">
+                <tr>
+                  <th>🏍️ Moto</th>
+                  <th>🏢 Pátio</th>
+                  <th>🅿️ Vaga</th>
+                  <th>👨‍🔧 Mecânico</th>
+                  <th>📅 Data</th>
+                  <th>⚙️ Ações</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr th:each="alocacao : ${alocacoes}">
+                  <td>
+                    <strong
+                      >🏍️ Moto #<span
+                        th:text="${alocacao.motoId}"
+                      ></span></strong
+                    ><br />
+                    <small class="text-muted"
+                      >Clique em "Remover" para tirar esta moto da vaga</small
+                    >
+                  </td>
+                  <td>
+                    <span class="badge bg-primary"
+                      >Pátio #<span th:text="${alocacao.patioId}"></span
+                    ></span>
+                  </td>
+                  <td>
+                    <span class="status-ativo"
+                      >🟢 Vaga #<span th:text="${alocacao.vagaId}"></span
+                    ></span>
+                  </td>
+                  <td>
+                    <span th:if="${alocacao.mecanicoId != null}">
+                      👨‍🔧 Mecânico #<span
+                        th:text="${alocacao.mecanicoId}"
+                      ></span>
+                    </span>
+                    <span
+                      th:unless="${alocacao.mecanicoId != null}"
+                      class="text-muted"
+                    >
+                      Sem mecânico
+                    </span>
+                  </td>
+                  <td>
+                    <small th:text="${alocacao.observacoes}"></small>
+                  </td>
+                  <td>
+                    <form
+                      th:action="@{/alocacoes/{id}/remover(id=${alocacao.id})}"
+                      method="post"
+                      style="display: inline"
+                      onsubmit="return confirm('Remover esta moto da vaga? A vaga ficará disponível.')"
+                    >
+                      <button
+                        type="submit"
+                        class="btn btn-outline-danger btn-sm"
+                      >
+                        🗑️ Remover da Vaga
+                      </button>
+                    </form>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Links de navegação -->
+      <div class="mt-3 text-center">
+        <a th:href="@{/}" class="btn btn-outline-secondary">🏠 Início</a>
+        <a th:href="@{/patios}" class="btn btn-outline-info">🏢 Pátios</a>
+        <a th:href="@{/motos}" class="btn btn-outline-warning">🏍️ Motos</a>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   </body>
 </html>

@@ -1,165 +1,272 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
   <head>
     <meta charset="UTF-8" />
-    <title>Alocação - Formulário</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Nova Alocação - Geosense</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
     <style>
-      body {
-        font-family: Arial, sans-serif;
-        padding: 24px;
+      .card-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
       }
-      .card {
-        max-width: 680px;
-        margin: 0 auto;
-        background: #fff;
-        padding: 16px;
-        border: 1px solid #eee;
+      .form-section {
+        border-left: 4px solid #667eea;
+        padding-left: 15px;
+        margin-bottom: 20px;
+      }
+      .alert-custom {
         border-radius: 8px;
       }
-      .field {
-        margin-bottom: 12px;
-      }
-      label {
-        display: block;
-        margin-bottom: 6px;
-        font-size: 14px;
-      }
-      select,
-      input {
-        width: 100%;
-        padding: 10px;
-        border: 1px solid #dcdde1;
-        border-radius: 6px;
-      }
-      button {
-        padding: 10px 16px;
-        background: #2f3640;
-        color: #fff;
+      .btn-custom {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         border: none;
-        border-radius: 6px;
-        cursor: pointer;
       }
-      .msg {
-        color: #c23616;
-        font-size: 13px;
+      .vaga-disponivel {
+        color: #28a745;
+        font-weight: bold;
+      }
+      .vaga-ocupada {
+        color: #dc3545;
+        font-weight: bold;
       }
     </style>
   </head>
-  <body>
-    <div th:replace="~{fragments::navbar('GeoSense - Alocação')}"></div>
-    <div class="card">
-      <h2 th:text="${id} != null ? 'Editar alocação' : 'Nova alocação'"></h2>
+  <body class="bg-light">
+    <div class="container mt-4">
+      <div class="row justify-content-center">
+        <div class="col-lg-8">
+          <!-- Cabeçalho -->
+          <div class="card shadow">
+            <div class="card-header">
+              <h4 class="mb-0">📍 Alocar/Realocar Moto</h4>
+              <small
+                >Mova uma moto para uma nova vaga ou aloque moto sem vaga</small
+              >
+            </div>
 
-      <!-- Formulário de criação -->
-      <form
-        th:if="${id} == null"
-        th:action="@{/alocacoes}"
-        th:object="${alocacao}"
-        method="post"
-      >
-        <div class="field">
-          <label for="motoId">Moto</label>
-          <select id="motoId" th:field="*{motoId}" required>
-            <option
-              th:each="m : ${motos}"
-              th:value="${m.id}"
-              th:text="|${m.id} - ${m.modelo}|"
-            ></option>
-          </select>
-          <div
-            class="msg"
-            th:if="${#fields.hasErrors('motoId')}"
-            th:errors="*{motoId}"
-          ></div>
-        </div>
-        <div class="field">
-          <label for="vagaId">Vaga</label>
-          <select id="vagaId" th:field="*{vagaId}" required>
-            <option
-              th:each="v : ${vagas}"
-              th:value="${v.id}"
-              th:text="${v.id}"
-            ></option>
-          </select>
-          <div
-            class="msg"
-            th:if="${#fields.hasErrors('vagaId')}"
-            th:errors="*{vagaId}"
-          ></div>
-        </div>
-        <div class="field">
-          <label for="mecanicoResponsavelId">Mecânico</label>
-          <select
-            id="mecanicoResponsavelId"
-            th:field="*{mecanicoResponsavelId}"
-          >
-            <option th:value="${null}" th:text="'-- Nenhum --'"></option>
-            <option
-              th:each="u : ${mecanicos}"
-              th:value="${u.id}"
-              th:text="${u.nome}"
-            ></option>
-          </select>
-        </div>
-        <button type="submit">Salvar</button>
-        <a th:href="@{/alocacoes}" style="margin-left: 8px">Cancelar</a>
-      </form>
+            <div class="card-body">
+              <!-- Mensagens de erro/sucesso -->
+              <div th:if="${error}" class="alert alert-danger alert-custom">
+                <i class="fas fa-exclamation-triangle"></i>
+                <span th:text="${error}"></span>
+              </div>
 
-      <!-- Formulário de edição -->
-      <form
-        th:if="${id} != null"
-        th:action="@{/alocacoes/{id}(id=${id})}"
-        th:object="${alocacao}"
-        method="post"
-      >
-        <div class="field">
-          <label for="motoId">Moto</label>
-          <select id="motoId" th:field="*{motoId}" required>
-            <option
-              th:each="m : ${motos}"
-              th:value="${m.id}"
-              th:text="|${m.id} - ${m.modelo}|"
-            ></option>
-          </select>
-          <div
-            class="msg"
-            th:if="${#fields.hasErrors('motoId')}"
-            th:errors="*{motoId}"
-          ></div>
+              <!-- Formulário -->
+              <form
+                th:action="@{/alocacoes}"
+                th:object="${alocacao}"
+                method="post"
+              >
+                <!-- 1. Seleção da Moto -->
+                <div class="form-section">
+                  <h6 class="text-primary">🏍️ Selecionar Moto</h6>
+                  <div class="mb-3">
+                    <label for="motoId" class="form-label"
+                      >Moto <span class="text-danger">*</span></label
+                    >
+                    <select
+                      class="form-select"
+                      id="motoId"
+                      th:field="*{motoId}"
+                      required
+                    >
+                      <option value="">-- Selecione uma moto --</option>
+                      <option
+                        th:each="moto : ${motos}"
+                        th:value="${moto.id}"
+                        th:text="${moto.modelo + ' - ' + (moto.placa != null ? moto.placa : moto.chassi) + (moto.vaga != null ? ' (Atual: Vaga ' + moto.vaga.numero + ')' : ' (Sem vaga)')}"
+                      ></option>
+                    </select>
+                    <div class="form-text">
+                      Selecione qualquer moto para alocar/realocar em uma nova
+                      vaga
+                    </div>
+                    <div
+                      th:if="${#fields.hasErrors('motoId')}"
+                      class="text-danger"
+                      th:errors="*{motoId}"
+                    ></div>
+                  </div>
+                </div>
+
+                <!-- 2. Seleção do Pátio -->
+                <div class="form-section">
+                  <h6 class="text-primary">🏢 Selecionar Pátio</h6>
+                  <div class="mb-3">
+                    <label for="patioId" class="form-label"
+                      >Pátio <span class="text-danger">*</span></label
+                    >
+                    <select
+                      class="form-select"
+                      id="patioId"
+                      th:field="*{patioId}"
+                      onchange="carregarVagasDisponiveis()"
+                      required
+                    >
+                      <option value="">-- Selecione um pátio --</option>
+                      <option
+                        th:each="patio : ${patios}"
+                        th:value="${patio.id}"
+                        th:text="${patio.nomeUnidade + ' - ' + patio.localizacao + ' (' + patio.vagasDisponiveis + ' vagas disponíveis)'}"
+                      ></option>
+                    </select>
+                    <div
+                      th:if="${#fields.hasErrors('patioId')}"
+                      class="text-danger"
+                      th:errors="*{patioId}"
+                    ></div>
+                  </div>
+                </div>
+
+                <!-- 3. Seleção da Vaga -->
+                <div class="form-section">
+                  <h6 class="text-primary">🅿️ Selecionar Vaga</h6>
+                  <div class="mb-3">
+                    <label for="vagaId" class="form-label"
+                      >Vaga <span class="text-danger">*</span></label
+                    >
+                    <select
+                      class="form-select"
+                      id="vagaId"
+                      th:field="*{vagaId}"
+                      required
+                      disabled
+                    >
+                      <option value="">
+                        -- Primeiro selecione um pátio --
+                      </option>
+                    </select>
+                    <div class="form-text">
+                      As vagas disponíveis aparecerão após selecionar o pátio
+                    </div>
+                    <div
+                      th:if="${#fields.hasErrors('vagaId')}"
+                      class="text-danger"
+                      th:errors="*{vagaId}"
+                    ></div>
+                  </div>
+                </div>
+
+                <!-- 4. Mecânico Responsável (Opcional) -->
+                <div class="form-section">
+                  <h6 class="text-primary">👨‍🔧 Mecânico Responsável</h6>
+                  <div class="mb-3">
+                    <label for="mecanicoId" class="form-label"
+                      >Mecânico (Opcional)</label
+                    >
+                    <select
+                      class="form-select"
+                      id="mecanicoId"
+                      th:field="*{mecanicoId}"
+                    >
+                      <option value="">-- Nenhum mecânico --</option>
+                      <option
+                        th:each="mecanico : ${mecanicos}"
+                        th:value="${mecanico.id}"
+                        th:text="${mecanico.nome}"
+                      ></option>
+                    </select>
+                  </div>
+                </div>
+
+                <!-- 5. Observações -->
+                <div class="form-section">
+                  <h6 class="text-primary">📝 Observações</h6>
+                  <div class="mb-4">
+                    <label for="observacoes" class="form-label"
+                      >Observações (Opcional)</label
+                    >
+                    <textarea
+                      class="form-control"
+                      id="observacoes"
+                      th:field="*{observacoes}"
+                      rows="3"
+                      placeholder="Ex: Moto para revisão completa..."
+                    ></textarea>
+                  </div>
+                </div>
+
+                <!-- Botões -->
+                <div class="d-flex gap-2">
+                  <button
+                    type="submit"
+                    class="btn btn-custom btn-primary text-white"
+                  >
+                    📍 Alocar/Realocar Moto
+                  </button>
+                  <a th:href="@{/alocacoes}" class="btn btn-outline-secondary">
+                    ↩️ Cancelar
+                  </a>
+                </div>
+              </form>
+            </div>
+          </div>
         </div>
-        <div class="field">
-          <label for="vagaId">Vaga</label>
-          <select id="vagaId" th:field="*{vagaId}" required>
-            <option
-              th:each="v : ${vagas}"
-              th:value="${v.id}"
-              th:text="${v.id}"
-            ></option>
-          </select>
-          <div
-            class="msg"
-            th:if="${#fields.hasErrors('vagaId')}"
-            th:errors="*{vagaId}"
-          ></div>
-        </div>
-        <div class="field">
-          <label for="mecanicoResponsavelId">Mecânico</label>
-          <select
-            id="mecanicoResponsavelId"
-            th:field="*{mecanicoResponsavelId}"
-          >
-            <option th:value="${null}" th:text="'-- Nenhum --'"></option>
-            <option
-              th:each="u : ${mecanicos}"
-              th:value="${u.id}"
-              th:text="${u.nome}"
-            ></option>
-          </select>
-        </div>
-        <button type="submit">Salvar</button>
-        <a th:href="@{/alocacoes}" style="margin-left: 8px">Cancelar</a>
-      </form>
+      </div>
     </div>
+
+    <!-- JavaScript para carregar vagas -->
+    <script>
+      function carregarVagasDisponiveis() {
+        const patioId = document.getElementById("patioId").value;
+        const vagaSelect = document.getElementById("vagaId");
+
+        if (!patioId) {
+          vagaSelect.innerHTML =
+            '<option value="">-- Primeiro selecione um pátio --</option>';
+          vagaSelect.disabled = true;
+          return;
+        }
+
+        console.log("Carregando vagas para pátio:", patioId);
+
+        // Resetar select
+        vagaSelect.innerHTML =
+          '<option value="">🔄 Carregando vagas...</option>';
+        vagaSelect.disabled = true;
+
+        // Buscar vagas via AJAX
+        fetch(`/patios/${patioId}/vagas-disponiveis`)
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error("Erro ao buscar vagas");
+            }
+            return response.json();
+          })
+          .then((vagas) => {
+            console.log("Vagas recebidas:", vagas);
+
+            vagaSelect.innerHTML = "";
+
+            if (vagas.length === 0) {
+              vagaSelect.innerHTML =
+                '<option value="">❌ Nenhuma vaga disponível</option>';
+            } else {
+              vagaSelect.innerHTML =
+                '<option value="">-- Selecione uma vaga --</option>';
+
+              vagas.forEach((vaga) => {
+                const option = document.createElement("option");
+                option.value = vaga.id;
+                option.textContent = `🟢 Vaga ${vaga.numero} (${vaga.tipo})`;
+                vagaSelect.appendChild(option);
+              });
+
+              vagaSelect.disabled = false;
+            }
+          })
+          .catch((error) => {
+            console.error("Erro ao carregar vagas:", error);
+            vagaSelect.innerHTML =
+              '<option value="">❌ Erro ao carregar vagas</option>';
+          });
+      }
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   </body>
 </html>

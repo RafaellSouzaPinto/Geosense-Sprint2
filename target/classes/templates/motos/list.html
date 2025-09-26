@@ -42,6 +42,10 @@
         color: #2ecc71;
         margin-bottom: 12px;
       }
+      .error {
+        color: #c23616;
+        margin-bottom: 12px;
+      }
     </style>
   </head>
   <body>
@@ -51,6 +55,7 @@
       <a class="btn" th:href="@{/motos/novo}">Nova</a>
     </div>
     <div class="success" th:if="${success}" th:text="${success}"></div>
+    <div class="error" th:if="${error}" th:text="${error}"></div>
     <table>
       <thead>
         <tr>
@@ -59,7 +64,7 @@
           <th>Placa</th>
           <th>Chassi</th>
           <th>Problema</th>
-          <th>Vaga</th>
+          <th>Vaga/Pátio</th>
           <th>Ações</th>
         </tr>
       </thead>
@@ -70,7 +75,16 @@
           <td th:text="${m.placa}"></td>
           <td th:text="${m.chassi}"></td>
           <td th:text="${m.problemaIdentificado}"></td>
-          <td th:text="${m.vaga != null ? m.vaga.id : '-'}"></td>
+          <td>
+            <div th:if="${m.vaga != null}">
+              <strong>Vaga:</strong> <span th:text="${m.vaga.numero}"></span
+              ><br />
+              <small th:text="${m.vaga.patio.nomeUnidade}"></small>
+            </div>
+            <div th:unless="${m.vaga != null}">
+              <span style="color: #95a5a6">Sem vaga</span>
+            </div>
+          </td>
           <td>
             <a th:href="@{'/motos/' + ${m.id} + '/editar'}">Editar</a>
             <form

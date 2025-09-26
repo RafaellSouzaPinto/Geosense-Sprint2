@@ -1,20 +1,27 @@
 package geosense.Geosense.dto;
 
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import geosense.Geosense.validation.ValidEmail;
+import geosense.Geosense.validation.ValidSenha;
 
 public record UsuarioDTO(
-        @NotBlank(message = "Nome e obrigatorio")
-        @Size(max = 100, message = "Nome deve ter ate 100 caracteres")
+        @NotBlank(message = "Nome é obrigatório")
+        @Size(max = 100, message = "Nome deve ter até 100 caracteres")
         String nome,
 
-        @NotBlank(message = "Email e obrigatorio")
-        @Email(message = "Email invalido")
+        @ValidEmail(required = true)
         String email,
 
-        @NotBlank(message = "Senha e obrigatoria")
-        @Size(min = 6, message = "Senha deve ter no minimo 6 caracteres")
+        @ValidSenha(
+            minLength = 8,
+            maxLength = 128,
+            requireUppercase = true,
+            requireLowercase = true,
+            requireDigit = true,
+            requireSpecialChar = true,
+            required = true
+        )
         String senha
 ) {
     // Getters de compatibilidade com codigo legado

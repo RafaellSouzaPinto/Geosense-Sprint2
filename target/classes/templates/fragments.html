@@ -29,19 +29,25 @@
         <div th:text="${title}">GeoSense</div>
         <div class="right">
           <a th:href="@{/}">Home</a>
-          <a th:href="@{/admin}" sec:authorize="hasRole('ADMIN')">Admin</a>
-          <a th:href="@{/usuarios}" sec:authorize="hasRole('ADMIN')"
+          <a th:href="@{/admin}" sec:authorize="hasRole('ADMINISTRADOR')"
+            >Admin</a
+          >
+          <a th:href="@{/usuarios}" sec:authorize="hasRole('ADMINISTRADOR')"
             >Usuários</a
           >
-          <a th:href="@{/patios}" sec:authorize="hasAnyRole('ADMIN','MECANICO')"
+          <a
+            th:href="@{/patios}"
+            sec:authorize="hasAnyRole('ADMINISTRADOR','MECANICO')"
             >Pátios</a
           >
-          <a th:href="@{/motos}" sec:authorize="hasAnyRole('ADMIN','MECANICO')"
+          <a
+            th:href="@{/motos}"
+            sec:authorize="hasAnyRole('ADMINISTRADOR','MECANICO')"
             >Motos</a
           >
           <a
             th:href="@{/alocacoes}"
-            sec:authorize="hasAnyRole('ADMIN','MECANICO')"
+            sec:authorize="hasAnyRole('ADMINISTRADOR','MECANICO')"
             >Alocações</a
           >
           <a th:href="@{/logout}">Sair</a>
