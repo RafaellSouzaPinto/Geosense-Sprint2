@@ -1,6 +1,5 @@
 -- V5: Ensure ALOCACAO_MOTO table, FKs and indexes exist (Oracle-safe)
 
--- Create table if missing
 DECLARE v_exists NUMBER; BEGIN
   SELECT COUNT(*) INTO v_exists FROM user_tables WHERE table_name = 'ALOCACAO_MOTO';
   IF v_exists = 0 THEN
@@ -15,7 +14,7 @@ DECLARE v_exists NUMBER; BEGIN
 END;
 /
 
--- FKs (idempotent)
+-- FKs
 DECLARE n NUMBER; t NUMBER; t2 NUMBER; BEGIN
   SELECT COUNT(*) INTO t FROM user_tables WHERE table_name = 'ALOCACAO_MOTO';
   SELECT COUNT(*) INTO t2 FROM user_tables WHERE table_name = 'MOTO';

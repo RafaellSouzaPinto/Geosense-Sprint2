@@ -23,7 +23,6 @@ public record PatioDTO(
         Integer vagasOcupadas,
         Integer vagasDisponiveis
 ) {
-    // Getters de compatibilidade
     public Long getId() { return id; }
     public String getLocalizacao() { return localizacao; }
     public String getEnderecoDetalhado() { return enderecoDetalhado; }

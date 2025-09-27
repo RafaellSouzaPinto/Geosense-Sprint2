@@ -32,18 +32,14 @@ public class AdminInitializer implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        // Aguardar um pouco para garantir que as migrations do Flyway terminaram
         Thread.sleep(2000);
         
         try {
             createAdminIfNotExists();
         } catch (Exception e) {
-            // Se falhar, significa que as tabelas ainda não existem ou há problema de sincronização
-            // O usuário admin será criado pela migration V3__seed_data.sql ou V10__reset_complete.sql
-            System.out.println("⚠️ Erro ao verificar/criar usuário admin via código: " + e.getMessage());
-            System.out.println("✅ Usuário admin será criado pelas migrations do banco de dados");
+            System.out.println("Erro ao verificar/criar usuário admin via código: " + e.getMessage());
+            System.out.println("Usuário admin será criado pelas migrations do banco de dados");
             
-            // Log detalhado apenas em caso de erro inesperado
             if (!(e.getMessage() != null && (
                 e.getMessage().contains("ORA-00942") || 
                 e.getMessage().contains("table or view does not exist") ||
@@ -57,11 +53,9 @@ public class AdminInitializer implements CommandLineRunner {
     }
 
     private void createAdminIfNotExists() {
-        // Verificar se já existe um admin com o email específico
         Optional<Usuario> existingAdmin = usuarioRepository.findByEmail(ADMIN_EMAIL);
         
         if (existingAdmin.isEmpty()) {
-            // Criar o usuário administrador
             Usuario admin = new Usuario();
             admin.setNome(ADMIN_NAME);
             admin.setEmail(ADMIN_EMAIL);
@@ -77,14 +71,12 @@ public class AdminInitializer implements CommandLineRunner {
         } else {
             Usuario admin = existingAdmin.get();
             
-            // Verificar se o admin existente tem a senha correta (pode ter sido alterada)
             if (!passwordEncoder.matches(ADMIN_PASSWORD, admin.getSenha())) {
                 admin.setSenha(passwordEncoder.encode(ADMIN_PASSWORD));
                 usuarioRepository.save(admin);
                 System.out.println("🔄 Senha do administrador atualizada!");
             }
             
-            // Garantir que é do tipo ADMINISTRADOR
             if (admin.getTipo() != TipoUsuario.ADMINISTRADOR) {
                 admin.setTipo(TipoUsuario.ADMINISTRADOR);
                 usuarioRepository.save(admin);

@@ -15,7 +15,6 @@ public record VagaDTO(
         Long patioId,
         Long motoId
 ) {
-    // Getters de compatibilidade
     public Long getId() { return id; }
     public int getNumero() { return numero; }
     public StatusVaga getStatus() { return status; }

@@ -24,7 +24,6 @@ public record UsuarioEditDTO(
         )
         String senha
 ) {
-    // Getters de compatibilidade com codigo legado
     public String getNome() { return nome; }
     public String getEmail() { return email; }
     public String getSenha() { return senha; }

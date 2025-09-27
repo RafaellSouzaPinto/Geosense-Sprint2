@@ -5,10 +5,6 @@ import geosense.Geosense.entity.AlocacaoMoto.StatusAlocacao;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-/**
- * DTO melhorado para Alocação de Moto
- * Inclui controle de status e histórico completo das alocações
- */
 public class AlocacaoMotoDTO {
     
     private Long id;
@@ -25,25 +21,21 @@ public class AlocacaoMotoDTO {
     private Long mecanicoId;
     private String observacoes;
     
-    // Novos campos para controle de histórico
     private LocalDateTime dataHoraAlocacao;
     private LocalDateTime dataHoraFinalizacao;
     private StatusAlocacao status;
     private String motivoFinalizacao;
     private Long usuarioFinalizacaoId;
     
-    // Campos extras para exibição
-    private String motoInfo;        // Ex: "CB 600F - ABC1234"
-    private String patioInfo;       // Ex: "Pátio Central"
-    private String vagaInfo;        // Ex: "Vaga 15"
-    private String mecanicoInfo;    // Ex: "João Silva"
-    private String usuarioFinalizacaoInfo; // Ex: "Maria Santos"
-    private String duracaoFormatada; // Ex: "2 dias, 3 horas"
+    private String motoInfo;
+    private String patioInfo;
+    private String vagaInfo;
+    private String mecanicoInfo;
+    private String usuarioFinalizacaoInfo;
+    private String duracaoFormatada;
     
-    // Construtores
     public AlocacaoMotoDTO() {}
     
-    // Construtor básico (compatibilidade com código existente)
     public AlocacaoMotoDTO(Long id, Long motoId, Long patioId, Long vagaId, Long mecanicoId, String observacoes) {
         this.id = id;
         this.motoId = motoId;
@@ -53,7 +45,6 @@ public class AlocacaoMotoDTO {
         this.observacoes = observacoes;
     }
     
-    // Construtor completo com status e histórico
     public AlocacaoMotoDTO(Long id, Long motoId, Long patioId, Long vagaId, Long mecanicoId, String observacoes,
                           LocalDateTime dataHoraAlocacao, LocalDateTime dataHoraFinalizacao, StatusAlocacao status,
                           String motivoFinalizacao, Long usuarioFinalizacaoId) {
@@ -70,7 +61,6 @@ public class AlocacaoMotoDTO {
         this.usuarioFinalizacaoId = usuarioFinalizacaoId;
     }
     
-    // Construtor para exibição com informações formatadas
     public AlocacaoMotoDTO(Long id, String motoInfo, String patioInfo, String vagaInfo, String mecanicoInfo,
                           LocalDateTime dataHoraAlocacao, LocalDateTime dataHoraFinalizacao, StatusAlocacao status,
                           String observacoes, String motivoFinalizacao, String usuarioFinalizacaoInfo) {
@@ -88,7 +78,6 @@ public class AlocacaoMotoDTO {
         this.duracaoFormatada = calcularDuracao();
     }
     
-    // Getters e Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
     
@@ -107,7 +96,6 @@ public class AlocacaoMotoDTO {
     public String getObservacoes() { return observacoes; }
     public void setObservacoes(String observacoes) { this.observacoes = observacoes; }
 
-    // Novos getters e setters
     public LocalDateTime getDataHoraAlocacao() { return dataHoraAlocacao; }
     public void setDataHoraAlocacao(LocalDateTime dataHoraAlocacao) { this.dataHoraAlocacao = dataHoraAlocacao; }
 
@@ -123,7 +111,6 @@ public class AlocacaoMotoDTO {
     public Long getUsuarioFinalizacaoId() { return usuarioFinalizacaoId; }
     public void setUsuarioFinalizacaoId(Long usuarioFinalizacaoId) { this.usuarioFinalizacaoId = usuarioFinalizacaoId; }
 
-    // Campos para exibição
     public String getMotoInfo() { return motoInfo; }
     public void setMotoInfo(String motoInfo) { this.motoInfo = motoInfo; }
 
@@ -148,7 +135,6 @@ public class AlocacaoMotoDTO {
         return getDuracaoFormatada();
     }
 
-    // Métodos utilitários
     public boolean isAtiva() {
         return status == StatusAlocacao.ATIVA;
     }

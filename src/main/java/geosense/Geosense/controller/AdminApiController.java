@@ -20,10 +20,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.time.LocalDateTime;
 
-/**
- * Controller para APIs do painel administrativo
- * Fornece dados reais do banco para o dashboard
- */
+
 @RestController
 @RequestMapping("/api/admin")
 @PreAuthorize("hasAnyRole('ADMINISTRADOR','MECANICO')")
@@ -47,14 +44,10 @@ public class AdminApiController {
         this.vagaRepository = vagaRepository;
     }
 
-    /**
-     * Dados gerais do dashboard
-     */
     @GetMapping("/dashboard-data")
     public ResponseEntity<Map<String, Object>> getDashboardData() {
         Map<String, Object> data = new HashMap<>();
 
-        // Contar vagas livres e ocupadas usando o status correto das vagas (mesmo método do PatioService)
         long totalVagas = vagaRepository.count();
         
         long vagasOcupadas = patioRepository.findAll().stream()
@@ -67,12 +60,10 @@ public class AdminApiController {
             .mapToLong(vaga -> vaga.getStatus() == StatusVaga.DISPONIVEL ? 1 : 0)
             .sum();
 
-        // Contar motos disponíveis (sem alocação)
         long totalMotos = motoRepository.count();
         long motosAlocadas = alocacaoRepository.count();
         long motosDisponiveis = totalMotos - motosAlocadas;
 
-        // Calcular taxa de ocupação
         double taxaOcupacao = totalVagas > 0 ? (double) vagasOcupadas / totalVagas * 100 : 0;
 
         data.put("vagasLivres", vagasLivres);
@@ -86,9 +77,6 @@ public class AdminApiController {
         return ResponseEntity.ok(data);
     }
 
-    /**
-     * Dados dos pátios para gráficos
-     */
     @GetMapping("/patios-data")
     public ResponseEntity<List<Map<String, Object>>> getPatiosData() {
         List<Map<String, Object>> patiosData = new ArrayList<>();
@@ -96,7 +84,6 @@ public class AdminApiController {
         patioRepository.findAll().forEach(patio -> {
             Map<String, Object> patioInfo = new HashMap<>();
             
-            // Contar vagas do pátio
             long totalVagas = patio.getVagas().size();
             long vagasOcupadas = patio.getVagas().stream()
                 .mapToLong(vaga -> vaga.getMoto() != null ? 1 : 0)
@@ -115,32 +102,22 @@ public class AdminApiController {
         return ResponseEntity.ok(patiosData);
     }
 
-    /**
-     * Notificações recentes do sistema - APENAS DADOS REAIS DO BANCO
-     */
     @GetMapping("/notifications")
     public ResponseEntity<List<Map<String, Object>>> getNotifications() {
         List<Map<String, Object>> notifications = new ArrayList<>();
 
-        // RETORNA SEMPRE LISTA VAZIA - SEM DADOS FICTÍCIOS
-        // As notificações só aparecerão quando houver eventos reais registrados no banco
-        // com campos de timestamp próprios
+
 
         return ResponseEntity.ok(notifications);
     }
 
-    /**
-     * Atividades recentes do sistema - APENAS DADOS REAIS COM TIMESTAMP
-     */
     @GetMapping("/recent-activities")
     public ResponseEntity<List<Map<String, Object>>> getRecentActivities() {
         List<Map<String, Object>> activities = new ArrayList<>();
 
-        // APENAS alocações reais que existem no banco E que tenham data/hora válida
         List<AlocacaoMoto> alocacoes = alocacaoRepository.findAll();
         for (AlocacaoMoto alocacao : alocacoes) {
-            // Só exibe se tiver dados completos E data/hora de alocação
-            if (alocacao.getMoto() != null && 
+            if (alocacao.getMoto() != null &&
                 alocacao.getVaga() != null && 
                 alocacao.getVaga().getPatio() != null &&
                 alocacao.getDataHoraAlocacao() != null) {
@@ -162,12 +139,10 @@ public class AdminApiController {
             }
         }
 
-        // Se não há atividades reais com data válida, retornar lista vazia
         if (activities.isEmpty()) {
             return ResponseEntity.ok(activities);
         }
 
-        // Ordenar por data (mais recentes primeiro) e limitar a 10
         activities.sort((a, b) -> {
             LocalDateTime dateA = (LocalDateTime) a.get("dateTime");
             LocalDateTime dateB = (LocalDateTime) b.get("dateTime");
@@ -178,25 +153,19 @@ public class AdminApiController {
                                 activities.subList(0, 10) : activities);
     }
 
-    /**
-     * Estatísticas detalhadas do sistema
-     */
     @GetMapping("/stats")
     public ResponseEntity<Map<String, Object>> getDetailedStats() {
         Map<String, Object> stats = new HashMap<>();
 
-        // Estatísticas de usuários por tipo
         Map<String, Long> userStats = new HashMap<>();
         userStats.put("administradores", usuarioRepository.countByTipo(TipoUsuario.ADMINISTRADOR));
         userStats.put("mecanicos", usuarioRepository.countByTipo(TipoUsuario.MECANICO));
 
-        // Estatísticas de motos
         Map<String, Object> motoStats = new HashMap<>();
         motoStats.put("total", motoRepository.count());
         motoStats.put("alocadas", alocacaoRepository.count());
         motoStats.put("disponiveis", motoRepository.count() - alocacaoRepository.count());
 
-        // Estatísticas de pátios
         Map<String, Object> patioStats = new HashMap<>();
         patioStats.put("total", patioRepository.count());
         patioStats.put("totalVagas", vagaRepository.count());
@@ -209,20 +178,15 @@ public class AdminApiController {
         return ResponseEntity.ok(stats);
     }
 
-    /**
-     * Últimas motos cadastradas no sistema
-     */
+
     @GetMapping("/latest-motorcycles")
     public ResponseEntity<List<Map<String, Object>>> getLatestMotorcycles() {
         List<Map<String, Object>> motorcycles = new ArrayList<>();
 
-        // Buscar todas as motos ordenadas por ID (proxy para data de cadastro)
         List<geosense.Geosense.entity.Moto> allMotos = motoRepository.findAll();
         
-        // Reverter lista para mostrar as mais recentes primeiro
         java.util.Collections.reverse(allMotos);
         
-        // Limitar a 4 motos mais recentes
         int limit = Math.min(4, allMotos.size());
         
         for (int i = 0; i < limit; i++) {
@@ -247,14 +211,13 @@ public class AdminApiController {
         return ResponseEntity.ok(motorcycles);
     }
 
-    // Métodos auxiliares
 
     private Map<String, Object> createActivity(String action, String details, LocalDateTime time, String icon, String color) {
         Map<String, Object> activity = new HashMap<>();
         activity.put("action", action);
         activity.put("details", details);
         activity.put("time", formatTimeAgo(time));
-        activity.put("dateTime", time); // Para ordenação
+        activity.put("dateTime", time);
         activity.put("icon", icon);
         activity.put("color", color);
         return activity;

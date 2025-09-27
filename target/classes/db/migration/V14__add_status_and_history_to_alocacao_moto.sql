@@ -1,8 +1,6 @@
 -- V14: Adicionar campos de status e histórico para controle completo de alocações
--- Esta migração adiciona campos para manter histórico completo de todas as alocações
--- sem perder dados ao fazer re-alocações ou finalizações
 
--- Adicionar novos campos na tabela ALOCACAO_MOTO (sintaxe Oracle)
+
 ALTER TABLE ALOCACAO_MOTO ADD (
     DATA_HORA_FINALIZACAO TIMESTAMP,
     STATUS VARCHAR2(20) DEFAULT 'ATIVA' NOT NULL,
@@ -10,21 +8,17 @@ ALTER TABLE ALOCACAO_MOTO ADD (
     USUARIO_FINALIZACAO_ID NUMBER(19)
 );
 
--- Adicionar chave estrangeira para usuário de finalização
-ALTER TABLE ALOCACAO_MOTO 
+ALTER TABLE ALOCACAO_MOTO
 ADD CONSTRAINT FK_ALOCACAO_MOTO_USUARIO_FINALIZACAO 
 FOREIGN KEY (USUARIO_FINALIZACAO_ID) REFERENCES USUARIO(ID);
 
--- Criar índices para melhorar performance das consultas
 CREATE INDEX IDX_ALOCACAO_MOTO_STATUS ON ALOCACAO_MOTO(STATUS);
 CREATE INDEX IDX_ALOCACAO_MOTO_DATA_ALOCACAO ON ALOCACAO_MOTO(DATA_HORA_ALOCACAO);
 CREATE INDEX IDX_ALOCACAO_MOTO_DATA_FINALIZACAO ON ALOCACAO_MOTO(DATA_HORA_FINALIZACAO);
 CREATE INDEX IDX_ALOCACAO_MOTO_MOTO_STATUS ON ALOCACAO_MOTO(MOTO_ID, STATUS);
 
--- Atualizar registros existentes para ter o status ATIVA
 UPDATE ALOCACAO_MOTO SET STATUS = 'ATIVA' WHERE STATUS IS NULL;
 
--- Adicionar comentários para documentação
 COMMENT ON COLUMN ALOCACAO_MOTO.STATUS IS 'Status da alocação: ATIVA, REALOCADA, FINALIZADA, CANCELADA';
 COMMENT ON COLUMN ALOCACAO_MOTO.DATA_HORA_FINALIZACAO IS 'Data e hora quando a alocação foi finalizada';
 COMMENT ON COLUMN ALOCACAO_MOTO.MOTIVO_FINALIZACAO IS 'Motivo da finalização da alocação';

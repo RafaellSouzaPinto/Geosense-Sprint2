@@ -5,10 +5,7 @@ import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
 
-/**
- * Entidade melhorada para controle completo de alocações de motos
- * Mantém histórico completo de todas as alocações realizadas
- */
+
 @Entity
 @Table(name = "ALOCACAO_MOTO")
 public class AlocacaoMoto {
@@ -51,12 +48,11 @@ public class AlocacaoMoto {
     @Column(name = "OBSERVACOES", length = 1000)
     private String observacoes;
 
-    // Enum para status da alocação
     public enum StatusAlocacao {
-        ATIVA,           // Alocação atual ativa
-        REALOCADA,       // Moto foi movida para outro local
-        FINALIZADA,      // Alocação encerrada normalmente
-        CANCELADA        // Alocação cancelada por algum motivo
+        ATIVA,
+        REALOCADA,
+        FINALIZADA,
+        CANCELADA
     }
 
     public AlocacaoMoto() {
@@ -72,8 +68,7 @@ public class AlocacaoMoto {
         this.status = StatusAlocacao.ATIVA;
     }
 
-    // Construtor completo
-    public AlocacaoMoto(Long id, Moto moto, Vaga vaga, Usuario mecanicoResponsavel, 
+    public AlocacaoMoto(Long id, Moto moto, Vaga vaga, Usuario mecanicoResponsavel,
                        LocalDateTime dataHoraAlocacao, LocalDateTime dataHoraFinalizacao,
                        StatusAlocacao status, String motivoFinalizacao, Usuario usuarioFinalizacao,
                        String observacoes) {
@@ -169,7 +164,6 @@ public class AlocacaoMoto {
         this.usuarioFinalizacao = usuarioFinalizacao;
     }
 
-    // Métodos de conveniência
     public boolean isAtiva() {
         return status == StatusAlocacao.ATIVA;
     }
@@ -189,9 +183,6 @@ public class AlocacaoMoto {
         this.usuarioFinalizacao = usuario;
     }
 
-    /**
-     * Retorna o status formatado para exibição
-     */
     public String statusFormatado() {
         if (status == null) return "Ativa";
         
@@ -204,9 +195,6 @@ public class AlocacaoMoto {
         }
     }
 
-    /**
-     * Retorna a classe CSS do ícone FontAwesome baseado no status
-     */
     public String getIconeStatus() {
         if (status == null) return "fa-check-circle";
         

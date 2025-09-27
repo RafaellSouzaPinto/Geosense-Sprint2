@@ -36,7 +36,7 @@ public class UsuarioService {
                 Usuario admin = new Usuario();
                 admin.setNome("Administrador");
                 admin.setEmail(ADMIN_EMAIL);
-                admin.setSenha(passwordEncoder.encode(ADMIN_PASSWORD)); // Criptografar a senha
+                admin.setSenha(passwordEncoder.encode(ADMIN_PASSWORD));
                 admin.setTipo(TipoUsuario.ADMINISTRADOR);
                 repo.save(admin);
                 return ResponseEntity.status(HttpStatus.CREATED)

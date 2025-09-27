@@ -1,17 +1,13 @@
 -- V15: Corrigir e consistir dados existentes de alocações
--- Esta migração garante que os dados existentes estejam consistentes
--- com a nova estrutura de controle de histórico
 
--- Corrigir alocações duplicadas (Oracle PL/SQL)
+
 DECLARE
     contador NUMBER := 0;
     v_count NUMBER;
     v_latest_id NUMBER;
 BEGIN
-    -- Log do início do processo
     DBMS_OUTPUT.PUT_LINE('Iniciando correção de dados existentes de alocações...');
     
-    -- Processar alocações duplicadas para cada moto
     FOR moto_rec IN (
         SELECT MOTO_ID, COUNT(*) as qtd_alocacoes
         FROM ALOCACAO_MOTO 
@@ -19,7 +15,6 @@ BEGIN
         GROUP BY MOTO_ID
         HAVING COUNT(*) > 1
     ) LOOP
-        -- Encontrar a alocação mais recente para manter ativa
         SELECT ID INTO v_latest_id
         FROM (
             SELECT ID 
@@ -28,8 +23,7 @@ BEGIN
             ORDER BY DATA_HORA_ALOCACAO DESC
         ) WHERE ROWNUM = 1;
         
-        -- Marcar as outras como REALOCADA
-        UPDATE ALOCACAO_MOTO 
+        UPDATE ALOCACAO_MOTO
         SET STATUS = 'REALOCADA',
             DATA_HORA_FINALIZACAO = DATA_HORA_ALOCACAO + INTERVAL '1' MINUTE,
             MOTIVO_FINALIZACAO = 'Alocação substituída durante migração de dados'
@@ -46,8 +40,6 @@ BEGIN
 END;
 /
 
--- Verificar consistência dos relacionamentos
--- Garantir que motos com vaga tenham alocação ativa
 UPDATE MOTO 
 SET VAGA_ID = NULL 
 WHERE ID IN (
@@ -57,8 +49,7 @@ WHERE ID IN (
     WHERE m.VAGA_ID IS NOT NULL AND a.ID IS NULL
 );
 
--- Garantir que vagas ocupadas tenham moto alocada
-UPDATE VAGA 
+UPDATE VAGA
 SET STATUS = 'DISPONIVEL' 
 WHERE STATUS = 'OCUPADA' AND ID NOT IN (
     SELECT DISTINCT m.VAGA_ID 
@@ -67,7 +58,6 @@ WHERE STATUS = 'OCUPADA' AND ID NOT IN (
     WHERE m.VAGA_ID IS NOT NULL
 );
 
--- Verificar e reportar estatísticas finais (Oracle PL/SQL)
 DECLARE
     total_alocacoes NUMBER;
     alocacoes_ativas NUMBER;

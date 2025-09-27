@@ -466,7 +466,6 @@
     </style>
   </head>
   <body>
-    <!-- Header -->
     <header class="header">
       <div class="header-content">
         <h1 class="page-title">
@@ -480,7 +479,6 @@
       </div>
     </header>
 
-    <!-- Main Content -->
     <main class="main-content">
       <div class="form-container">
         <!-- Mensagens de erro/sucesso -->
@@ -489,9 +487,7 @@
           <span th:text="${error}"></span>
         </div>
 
-        <!-- Formulário -->
         <form th:action="@{/alocacoes}" th:object="${alocacao}" method="post">
-          <!-- 1. Seleção da Moto -->
           <div class="form-section">
             <h3 class="section-title">
               <i class="fas fa-motorcycle"></i>
@@ -526,7 +522,6 @@
             </div>
           </div>
 
-          <!-- 2. Seleção do Pátio -->
           <div class="form-section">
             <h3 class="section-title">
               <i class="fas fa-building"></i>
@@ -557,7 +552,6 @@
             </div>
           </div>
 
-          <!-- 3. Seleção da Vaga -->
           <div class="form-section">
             <h3 class="section-title">
               <i class="fas fa-parking"></i>
@@ -582,7 +576,6 @@
             </div>
           </div>
 
-          <!-- 4. Mecânico Responsável (Opcional) -->
           <div class="form-section">
             <h3 class="section-title">
               <i class="fas fa-user-cog"></i>
@@ -609,7 +602,6 @@
             </div>
           </div>
 
-          <!-- 5. Observações -->
           <div class="form-section">
             <h3 class="section-title">
               <i class="fas fa-sticky-note"></i>
@@ -633,7 +625,6 @@
             </div>
           </div>
 
-          <!-- Botões -->
           <div class="form-actions">
             <button type="submit" class="btn-primary">
               <i class="fas fa-car-side"></i>
@@ -648,7 +639,6 @@
       </div>
     </main>
 
-    <!-- Bottom Navigation (mobile) -->
     <nav class="bottom-nav">
       <div class="nav-container">
         <a href="/" class="nav-item">
@@ -670,7 +660,6 @@
       </div>
     </nav>
 
-    <!-- JavaScript para carregar vagas -->
     <script>
       function carregarVagasDisponiveis() {
         const patioId = document.getElementById("patioId").value;
@@ -686,17 +675,14 @@
 
         console.log("Carregando vagas para pátio:", patioId, "moto:", motoId);
 
-        // Resetar select
         vagaSelect.innerHTML =
           '<option value="">🔄 Carregando vagas...</option>';
         vagaSelect.disabled = true;
 
-        // Usar endpoint que inclui vaga atual se moto estiver selecionada
         const url = motoId
           ? `/patios/${patioId}/vagas-disponiveis/${motoId}`
           : `/patios/${patioId}/vagas-disponiveis`;
 
-        // Buscar vagas via AJAX
         fetch(url)
           .then((response) => {
             if (!response.ok) {

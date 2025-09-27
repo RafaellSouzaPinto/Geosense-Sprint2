@@ -46,7 +46,6 @@
         padding-bottom: 80px;
       }
 
-      /* Background decorative elements */
       body::before {
         content: "";
         position: fixed;
@@ -63,7 +62,6 @@
         z-index: -1;
       }
 
-      /* Header */
       .header {
         background: var(--card-bg);
         backdrop-filter: blur(10px);
@@ -203,7 +201,6 @@
         transform: translateY(-1px);
       }
 
-      /* Stats Cards */
       .stats-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -239,7 +236,6 @@
         font-weight: 500;
       }
 
-      /* Status badges */
       .status-badge {
         display: inline-flex;
         align-items: center;
@@ -378,7 +374,6 @@
         font-style: italic;
       }
 
-      /* Info destacada */
       .info-highlight {
         background: rgba(255, 255, 255, 0.05);
         border-radius: 12px;
@@ -396,7 +391,6 @@
         gap: 6px;
       }
 
-      /* Duration badge */
       .duration-badge {
         background: rgba(168, 85, 247, 0.2);
         color: #c4b5fd;
@@ -407,7 +401,6 @@
         font-weight: 500;
       }
 
-      /* Actions */
       .alocacao-actions {
         display: flex;
         gap: 8px;
@@ -466,7 +459,6 @@
         color: white;
       }
 
-      /* Empty state */
       .empty-state {
         text-align: center;
         padding: 60px 20px;
@@ -491,7 +483,6 @@
         margin-bottom: 30px;
       }
 
-      /* Bottom Navigation (mobile) */
       .bottom-nav {
         position: fixed;
         bottom: 0;
@@ -541,7 +532,6 @@
         font-weight: 500;
       }
 
-      /* Animations */
       @keyframes pulse {
         0%,
         100% {
@@ -630,12 +620,10 @@
     </style>
   </head>
   <body>
-    <!-- Desktop Navigation (hidden on mobile) -->
     <div class="desktop-nav">
       <div th:replace="~{fragments :: navbar('GeoSense - Alocações')}"></div>
     </div>
 
-    <!-- Header -->
     <header class="header">
       <div class="header-content">
         <h1 class="page-title">
@@ -653,9 +641,7 @@
       </div>
     </header>
 
-    <!-- Main Content -->
     <main class="main-content">
-      <!-- Mensagens -->
       <div th:if="${success}" class="alert alert-success">
         <i class="fas fa-check-circle"></i>
         <span th:text="${success}"></span>
@@ -666,7 +652,6 @@
         <span th:text="${error}"></span>
       </div>
 
-      <!-- Tabs Navigation -->
       <div class="tabs-container">
         <nav class="tabs-nav">
           <a
@@ -695,7 +680,6 @@
           </a>
         </nav>
 
-        <!-- Estatísticas -->
         <div th:if="${stats != null}" class="stats-grid">
           <div class="stat-card">
             <div class="stat-value" th:text="${stats.alocacoesAtivas}">0</div>
@@ -714,7 +698,6 @@
         </div>
       </div>
 
-      <!-- Lista de Alocações -->
       <div th:if="${#lists.isEmpty(alocacoes)}" class="empty-state">
         <i class="fas fa-motorcycle"></i>
         <h3
@@ -739,7 +722,6 @@
 
       <div th:unless="${#lists.isEmpty(alocacoes)}" class="alocacoes-grid">
         <div th:each="alocacao : ${alocacoes}" class="alocacao-card">
-          <!-- Header do card -->
           <div class="alocacao-header">
             <div class="alocacao-info">
               <h3>
@@ -755,7 +737,6 @@
             </div>
           </div>
 
-          <!-- Status Badge -->
           <div
             class="status-badge"
             th:classappend="${alocacao.status != null ? 'status-' + alocacao.status.name().toLowerCase() : 'status-ativa'}"
@@ -794,7 +775,6 @@
             </div>
           </div>
 
-          <!-- Informações de Localização -->
           <div class="info-highlight">
             <h4>
               <i class="fas fa-map-marker-alt"></i>
@@ -833,7 +813,6 @@
             </div>
           </div>
 
-          <!-- Informações do Mecânico (se houver) -->
           <div
             class="alocacao-details"
             th:if="${alocacao.mecanicoInfo != null and alocacao.mecanicoInfo != 'N/A'}"
@@ -851,7 +830,6 @@
             </div>
           </div>
 
-          <!-- Datas e Duração -->
           <div class="info-highlight">
             <h4>
               <i class="fas fa-clock"></i>
@@ -903,7 +881,6 @@
             </div>
           </div>
 
-          <!-- Motivo de Finalização (se houver) -->
           <div
             class="alocacao-details"
             th:if="${alocacao.motivoFinalizacao != null and !alocacao.motivoFinalizacao.isEmpty()}"
@@ -919,7 +896,6 @@
             </div>
           </div>
 
-          <!-- Usuário de Finalização (se houver) -->
           <div
             class="alocacao-details"
             th:if="${alocacao.usuarioFinalizacaoInfo != null and alocacao.usuarioFinalizacaoInfo != 'N/A'}"
@@ -935,7 +911,6 @@
             </div>
           </div>
 
-          <!-- Observações (se houver) -->
           <div
             class="alocacao-details"
             th:if="${alocacao.observacoes != null and !alocacao.observacoes.isEmpty()}"
@@ -951,7 +926,6 @@
             </div>
           </div>
 
-          <!-- Actions (apenas para alocações ativas) -->
           <div
             class="alocacao-actions"
             th:if="${alocacao.status == null or alocacao.status.name() == 'ATIVA'}"
@@ -993,7 +967,6 @@
             </form>
           </div>
 
-          <!-- Action para visualizar histórico da moto -->
           <div class="alocacao-actions" th:if="${alocacao.motoId != null}">
             <a
               th:href="@{/alocacoes/moto/{motoId}/historico(motoId=${alocacao.motoId})}"
@@ -1007,7 +980,6 @@
       </div>
     </main>
 
-    <!-- Bottom Navigation (mobile) -->
     <nav class="bottom-nav">
       <div class="nav-container">
         <a href="/" class="nav-item">

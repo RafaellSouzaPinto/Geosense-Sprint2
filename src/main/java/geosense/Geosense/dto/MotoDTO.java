@@ -24,7 +24,6 @@ public record MotoDTO(
 
         Long vagaId
 ) {
-    // Getters de compatibilidade com codigo existente
     public Long getId() { return id; }
     public String getModelo() { return modelo; }
     public String getPlaca() { return placa; }

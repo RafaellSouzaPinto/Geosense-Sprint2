@@ -75,7 +75,6 @@ public class MotoController {
         System.out.println("Problema: " + dto.getProblemaIdentificado());
         System.out.println("VagaId: " + dto.getVagaId());
         
-        // Validação customizada: placa OU chassi deve ser informado
         boolean placaVazia = dto.getPlaca() == null || dto.getPlaca().trim().isEmpty();
         boolean chassiVazio = dto.getChassi() == null || dto.getChassi().trim().isEmpty();
         
@@ -86,7 +85,7 @@ public class MotoController {
         if (bindingResult.hasErrors()) {
             System.out.println("Erros de validação:");
             bindingResult.getAllErrors().forEach(error -> System.out.println("- " + error.getDefaultMessage()));
-            model.addAttribute("moto", dto);  // ✅ Adicionar o objeto moto para o Thymeleaf
+            model.addAttribute("moto", dto);
             model.addAttribute("patios", patioService.listarTodos());
             model.addAttribute("vagas", vagaRepository.findAll());
             return "motos/form";
@@ -106,7 +105,6 @@ public class MotoController {
                 
                 System.out.println("Vaga encontrada: " + v.getNumero() + " - Status: " + v.getStatus() + " - Moto atual: " + (v.getMoto() != null ? v.getMoto().getId() : "null"));
                 
-                // Verificar se a vaga está disponível E não tem moto
                 if (v.getStatus() != StatusVaga.DISPONIVEL) {
                     throw new RuntimeException("Vaga " + v.getNumero() + " não está com status DISPONÍVEL (Status atual: " + v.getStatus() + ")");
                 }
@@ -115,21 +113,17 @@ public class MotoController {
                     throw new RuntimeException("Vaga " + v.getNumero() + " já tem uma moto alocada (Moto ID: " + v.getMoto().getId() + ")");
                 }
                 
-                // Verificar se já existe outra moto nesta vaga (double check)
                 if (motoRepository.existsByVagaId(dto.getVagaId())) {
                     throw new RuntimeException("Já existe uma moto registrada nesta vaga no sistema");
                 }
                 
-                // Salvar moto primeiro
                 Moto motoSalva = motoRepository.save(m);
                 System.out.println("Moto salva com ID: " + motoSalva.getId());
                 
-                // Depois alocar vaga
                 motoSalva.setVaga(v);
                 v.setMoto(motoSalva);
                 v.setStatus(StatusVaga.OCUPADA);
                 
-                // Salvar vaga e moto com relacionamento
                 vagaRepository.save(v);
                 motoRepository.save(motoSalva);
                 System.out.println("✅ Vaga " + v.getNumero() + " ocupada pela moto " + motoSalva.getModelo());
@@ -137,10 +131,10 @@ public class MotoController {
                 System.out.println("Moto criada sem vaga");
                 motoRepository.save(m);
             }
-            System.out.println("✅ Moto salva com sucesso: " + m.getModelo());
+            System.out.println("Moto salva com sucesso: " + m.getModelo());
             redirectAttributes.addFlashAttribute("success", "Moto criada com sucesso");
         } catch (Exception e) {
-            System.err.println("❌ Erro ao criar moto: " + e.getMessage());
+            System.err.println("Erro ao criar moto: " + e.getMessage());
             e.printStackTrace();
             redirectAttributes.addFlashAttribute("error", "Erro ao criar moto: " + e.getMessage());
         }
@@ -172,7 +166,6 @@ public class MotoController {
         System.out.println("Problema: " + dto.getProblemaIdentificado());
         System.out.println("VagaId: " + dto.getVagaId());
         
-        // Validação customizada: placa OU chassi deve ser informado
         boolean placaVazia = dto.getPlaca() == null || dto.getPlaca().trim().isEmpty();
         boolean chassiVazio = dto.getChassi() == null || dto.getChassi().trim().isEmpty();
         
@@ -183,12 +176,11 @@ public class MotoController {
         if (bindingResult.hasErrors()) {
             System.out.println("Erros de validação:");
             bindingResult.getAllErrors().forEach(error -> System.out.println("- " + error.getDefaultMessage()));
-            model.addAttribute("moto", dto);  // ✅ Adicionar o objeto moto para o Thymeleaf
+            model.addAttribute("moto", dto);
             model.addAttribute("id", id);
             model.addAttribute("patios", patioService.listarTodos());
             model.addAttribute("vagas", vagaRepository.findAll());
             
-            // Recuperar pátio selecionado se houver vaga
             if (dto.getVagaId() != null) {
                 Vaga vaga = vagaRepository.findById(dto.getVagaId()).orElse(null);
                 if (vaga != null) {
@@ -201,7 +193,6 @@ public class MotoController {
         try {
             Moto moto = motoRepository.findById(id).orElseThrow(() -> new RuntimeException("Moto não encontrada"));
             
-            // Limpar vaga anterior se existir
             if (moto.getVaga() != null) {
                 Vaga vagaAnterior = moto.getVaga();
                 vagaAnterior.setMoto(null);
@@ -211,13 +202,11 @@ public class MotoController {
                 System.out.println("Vaga " + vagaAnterior.getNumero() + " liberada");
             }
             
-            // Atualizar dados da moto
             moto.setModelo(dto.getModelo());
             moto.setPlaca(dto.getPlaca() != null && !dto.getPlaca().isBlank() ? dto.getPlaca() : null);
             moto.setChassi(dto.getChassi() != null && !dto.getChassi().isBlank() ? dto.getChassi() : null);
             moto.setProblemaIdentificado(dto.getProblemaIdentificado() != null && !dto.getProblemaIdentificado().isBlank() ? dto.getProblemaIdentificado() : null);
             
-            // Alocar nova vaga se fornecida
             if (dto.getVagaId() != null) {
                 System.out.println("Tentando alocar vaga ID: " + dto.getVagaId());
                 Vaga v = vagaRepository.findById(dto.getVagaId()).orElseThrow(() -> 
@@ -225,7 +214,6 @@ public class MotoController {
                 
                 System.out.println("Vaga encontrada: " + v.getNumero() + " - Status: " + v.getStatus() + " - Moto atual: " + (v.getMoto() != null ? v.getMoto().getId() : "null"));
                 
-                // Verificar se a vaga está disponível E não tem moto
                 if (v.getStatus() != StatusVaga.DISPONIVEL) {
                     throw new RuntimeException("Vaga " + v.getNumero() + " não está com status DISPONÍVEL (Status atual: " + v.getStatus() + ")");
                 }
@@ -234,7 +222,6 @@ public class MotoController {
                     throw new RuntimeException("Vaga " + v.getNumero() + " já tem uma moto alocada (Moto ID: " + v.getMoto().getId() + ")");
                 }
                 
-                // Alocar vaga
                 moto.setVaga(v);
                 v.setMoto(moto);
                 v.setStatus(StatusVaga.OCUPADA);
@@ -262,11 +249,9 @@ public class MotoController {
             
             System.out.println("=== EXCLUINDO MOTO " + moto.getModelo() + " ===");
             
-            // 1. Buscar TODAS as alocações da moto (ativas e finalizadas)
             List<AlocacaoMoto> todasAlocacoes = alocacaoRepository.findHistoricoByMoto(moto);
             System.out.println("Encontradas " + todasAlocacoes.size() + " alocações para a moto");
             
-            // 2. Finalizar alocações ativas e liberar vagas
             List<AlocacaoMoto> alocacoesAtivas = todasAlocacoes.stream()
                     .filter(a -> a.getStatus() == AlocacaoMoto.StatusAlocacao.ATIVA)
                     .collect(java.util.stream.Collectors.toList());
@@ -278,7 +263,6 @@ public class MotoController {
                                              "Moto excluída do sistema", null);
                     alocacaoRepository.save(alocacao);
                     
-                    // Liberar vaga
                     Vaga vaga = alocacao.getVaga();
                     vaga.setMoto(null);
                     vaga.setStatus(StatusVaga.DISPONIVEL);
@@ -287,17 +271,15 @@ public class MotoController {
                 }
             }
             
-            // 3. Excluir TODAS as alocações da moto (ativas e finalizadas)
             System.out.println("Excluindo " + todasAlocacoes.size() + " alocações da moto...");
             alocacaoRepository.deleteAll(todasAlocacoes);
             
-            // 4. Excluir a moto
             motoRepository.delete(moto);
-            System.out.println("✅ Moto excluída com sucesso: " + moto.getModelo());
+            System.out.println("Moto excluída com sucesso: " + moto.getModelo());
             redirectAttributes.addFlashAttribute("success", "Moto excluída com sucesso. " + 
                                                 (todasAlocacoes.size() > 0 ? todasAlocacoes.size() + " alocações foram removidas." : ""));
         } catch (Exception e) {
-            System.err.println("❌ Erro ao excluir moto: " + e.getMessage());
+            System.err.println("Erro ao excluir moto: " + e.getMessage());
             e.printStackTrace();
             redirectAttributes.addFlashAttribute("error", "Erro ao excluir moto: " + e.getMessage());
         }

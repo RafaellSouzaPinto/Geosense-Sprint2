@@ -97,7 +97,6 @@ public class PatioController {
         return "redirect:/patios";
     }
 
-    // API endpoint para buscar vagas disponíveis por pátio
     @GetMapping("/{patioId}/vagas-disponiveis")
     @ResponseBody
     public ResponseEntity<List<Vaga>> getVagasDisponiveis(@PathVariable Long patioId) {
@@ -119,24 +118,21 @@ public class PatioController {
         }
     }
 
-    // API endpoint para buscar vagas disponíveis por pátio incluindo vaga atual da moto
     @GetMapping("/{patioId}/vagas-disponiveis/{motoId}")
     @ResponseBody
     public ResponseEntity<List<Vaga>> getVagasDisponiveisComVagaAtual(@PathVariable Long patioId, @PathVariable Long motoId) {
         try {
             List<Vaga> vagasDisponiveis = vagaRepository.findVagasDisponiveisByPatioId(patioId);
             
-            // Buscar vaga atual da moto se ela estiver alocada
             List<Vaga> todasVagas = vagaRepository.findByPatioIdOrderByNumeroAsc(patioId);
             Vaga vagaAtualMoto = todasVagas.stream()
                     .filter(v -> v.getMoto() != null && v.getMoto().getId().equals(motoId))
                     .findFirst()
                     .orElse(null);
             
-            // Se a moto tem vaga atual e não está na lista de disponíveis, adicionar
             if (vagaAtualMoto != null && !vagasDisponiveis.contains(vagaAtualMoto)) {
                 vagasDisponiveis.add(0, vagaAtualMoto); // Adicionar no início
-                System.out.println("✅ Vaga atual da moto adicionada: Vaga " + vagaAtualMoto.getNumero());
+                System.out.println("Vaga atual da moto adicionada: Vaga " + vagaAtualMoto.getNumero());
             }
             
             System.out.println("=== VAGAS DISPONÍVEIS + VAGA ATUAL ===");
@@ -156,7 +152,6 @@ public class PatioController {
         }
     }
 
-    // API endpoint para listar todos os pátios (para AJAX)
     @GetMapping("/api/all")
     @ResponseBody
     public ResponseEntity<List<PatioDTO>> getAllPatios() {
@@ -164,7 +159,6 @@ public class PatioController {
         return ResponseEntity.ok(patios);
     }
 
-    // Endpoint de debug para verificar estado das vagas
     @GetMapping("/{patioId}/debug")
     @ResponseBody
     public ResponseEntity<String> debugPatioVagas(@PathVariable Long patioId) {

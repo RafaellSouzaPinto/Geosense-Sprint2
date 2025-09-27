@@ -36,12 +36,10 @@ public class SenhaValidator implements ConstraintValidator<ValidSenha, String> {
     
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
-        // Se não é obrigatório e está vazio, é válido
         if (!required && (value == null || value.isEmpty())) {
             return true;
         }
         
-        // Se é obrigatório e está vazio, é inválido
         if (required && (value == null || value.isEmpty())) {
             context.disableDefaultConstraintViolation();
             context.buildConstraintViolationWithTemplate("Senha é obrigatória")

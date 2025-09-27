@@ -1,9 +1,7 @@
 -- V11: Corrigir enum TipoUsuario - substituir ADMIN por ADMINISTRADOR
 
--- Atualizar dados existentes
 UPDATE USUARIO SET TIPO = 'ADMINISTRADOR' WHERE TIPO = 'ADMIN';
 
--- Se ainda não existir dados válidos, inserir usuários padrão
 MERGE INTO USUARIO u
 USING (SELECT 'Admin' as nome, 'admin@geosense.com' as email, '$2a$10$D4CqT4GWL.NBIlrOxNwLIOY3X1xPTVLR5bKCkPjGtQjV1b.QsWyTu' as senha, 'ADMINISTRADOR' as tipo FROM DUAL) dados
 ON (u.EMAIL = dados.email)
@@ -16,5 +14,4 @@ ON (u.EMAIL = dados.email)
 WHEN NOT MATCHED THEN
   INSERT (NOME, EMAIL, SENHA, TIPO) VALUES (dados.nome, dados.email, dados.senha, dados.tipo);
 
--- Commit das alterações
 COMMIT;

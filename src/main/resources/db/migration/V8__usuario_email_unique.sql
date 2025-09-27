@@ -1,6 +1,5 @@
 -- V8: Ensure unique constraint/index for USUARIO.EMAIL (Oracle-safe)
 
--- Create unique index if not exists
 DECLARE n NUMBER; t NUMBER; BEGIN
   SELECT COUNT(*) INTO t FROM user_tables WHERE table_name = 'USUARIO';
   IF t > 0 THEN

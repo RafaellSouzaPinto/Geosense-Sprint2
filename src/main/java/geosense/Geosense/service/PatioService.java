@@ -32,7 +32,6 @@ public class PatioService {
 
         Patio salvo = patioRepository.save(patio);
         
-        // Criar exatamente a quantidade de vagas especificada na capacidade
         if (dto.getCapacidade() != null && dto.getCapacidade() > 0) {
             List<Vaga> vagas = new ArrayList<>();
             for (int i = 1; i <= dto.getCapacidade(); i++) {
@@ -67,7 +66,6 @@ public class PatioService {
         patio.setEnderecoDetalhado(dto.getEnderecoDetalhado());
         patio.setNomeUnidade(dto.getNomeUnidade());
         
-        // Se a capacidade mudou, ajustar vagas
         if (dto.getCapacidade() != null && !dto.getCapacidade().equals(patio.getCapacidade())) {
             ajustarCapacidade(patio, dto.getCapacidade());
         }
@@ -82,7 +80,6 @@ public class PatioService {
         long vagasExistentes = vagaRepository.countByPatioId(patio.getId());
         
         if (novaCapacidade > vagasExistentes) {
-            // Criar novas vagas até atingir exatamente a nova capacidade
             List<Vaga> novasVagas = new ArrayList<>();
             for (int i = (int) vagasExistentes + 1; i <= novaCapacidade; i++) {
                 Vaga vaga = new Vaga();
@@ -93,13 +90,11 @@ public class PatioService {
             }
             vagaRepository.saveAll(novasVagas);
         } else if (novaCapacidade < vagasExistentes) {
-            // Buscar vagas do pátio ordenadas por número
             List<Vaga> todasVagas = vagaRepository.findByPatioIdOrderByNumeroAsc(patio.getId());
             List<Vaga> vagasParaRemover = todasVagas.stream()
                     .filter(v -> v.getNumero() > novaCapacidade)
                     .collect(Collectors.toList());
             
-            // Verificar se há vagas ocupadas que seriam removidas
             boolean temVagaOcupada = vagasParaRemover.stream()
                     .anyMatch(v -> v.getStatus() == StatusVaga.OCUPADA);
             
@@ -115,11 +110,7 @@ public class PatioService {
         Patio patio = patioRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Pátio não encontrado"));
         
-        // Validação removida: agora permite excluir pátio mesmo com vagas ocupadas
-        // long vagasOcupadas = vagaRepository.countByPatioIdAndStatus(id, StatusVaga.OCUPADA);
-        // if (vagasOcupadas > 0) {
-        //     throw new RuntimeException("Não é possível excluir o pátio. Há vagas ocupadas.");
-        // }
+
         
         patioRepository.deleteById(id);
     }
@@ -129,7 +120,6 @@ public class PatioService {
                 patio.getVagas().stream().map(Vaga::getId).collect(Collectors.toList()) : 
                 new ArrayList<>();
         
-        // Buscar vagas atuais do banco para ter dados corretos
         long vagasOcupadas = vagaRepository.countByPatioIdAndStatus(patio.getId(), StatusVaga.OCUPADA);
         long vagasDisponiveis = vagaRepository.countByPatioIdAndStatus(patio.getId(), StatusVaga.DISPONIVEL);
         long totalVagas = vagaRepository.countByPatioId(patio.getId());

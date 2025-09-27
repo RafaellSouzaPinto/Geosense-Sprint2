@@ -15,7 +15,6 @@ public record DefeitoDTO(
         @NotNull(message = "motoId e obrigatorio")
         Long motoId
 ) {
-    // Getters de compatibilidade
     public Long getId() { return id; }
     public TiposDefeitos getTiposDefeitos() { return tiposDefeitos; }
     public String getDescricao() { return descricao; }

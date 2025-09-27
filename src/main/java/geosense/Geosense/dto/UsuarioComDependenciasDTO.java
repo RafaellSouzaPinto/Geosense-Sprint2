@@ -15,7 +15,6 @@ public class UsuarioComDependenciasDTO {
         this.podeExcluir = (alocacoesComoMecanico == 0 && alocacoesComoFinalizador == 0);
     }
 
-    // Getters
     public Usuario getUsuario() {
         return usuario;
     }
@@ -32,7 +31,6 @@ public class UsuarioComDependenciasDTO {
         return podeExcluir;
     }
 
-    // Delegar métodos do usuário para facilitar o acesso
     public Long getId() {
         return usuario.getId();
     }

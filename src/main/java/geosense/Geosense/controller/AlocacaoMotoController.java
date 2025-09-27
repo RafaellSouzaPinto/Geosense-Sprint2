@@ -21,14 +21,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.List;
 import java.util.Optional;
 
-/**
- * Controller MELHORADO para AlocaçãoMoto
- * Recursos:
- * - Visualização separada: alocações ativas vs histórico completo
- * - Controle inteligente de re-alocações
- * - Rastreamento completo de status e histórico
- * - Estatísticas de uso
- */
+
 @Controller
 @RequestMapping("/alocacoes")
 public class AlocacaoMotoController {
@@ -48,17 +41,13 @@ public class AlocacaoMotoController {
     @Autowired
     private PatioService patioService;
 
-    /**
-     * PÁGINA PRINCIPAL: Alocações ativas (default)
-     */
+
     @GetMapping
     public String listar(Model model) {
         return listarAtivas(model);
     }
     
-    /**
-     * LISTAR apenas alocações ativas (em uso no momento)
-     */
+
     @GetMapping("/ativas")
     public String listarAtivas(Model model) {
         List<AlocacaoMotoDTO> alocacoesAtivas = alocacaoService.listarAlocacoesAtivas();
@@ -80,10 +69,7 @@ public class AlocacaoMotoController {
         model.addAttribute("tituloLista", "Alocações Ativas");
         return "alocacoes/list";
     }
-    
-    /**
-     * HISTÓRICO completo (todas as alocações - ativas e finalizadas)
-     */
+
     @GetMapping("/historico")
     public String listarHistorico(Model model) {
         List<AlocacaoMotoDTO> historicoCompleto = alocacaoService.listarHistoricoCompleto();
@@ -99,10 +85,7 @@ public class AlocacaoMotoController {
         model.addAttribute("tituloLista", "Histórico Completo de Alocações");
         return "alocacoes/list";
     }
-    
-    /**
-     * HISTÓRICO apenas de alocações finalizadas
-     */
+
     @GetMapping("/historico/finalizadas")
     public String listarHistoricoFinalizadas(Model model) {
         List<AlocacaoMotoDTO> historicoFinalizadas = alocacaoService.listarHistoricoFinalizadas();
@@ -118,12 +101,8 @@ public class AlocacaoMotoController {
         return "alocacoes/list";
     }
 
-    /**
-     * FORMULÁRIO para nova alocação
-     */
     @GetMapping("/novo")
     public String novaAlocacao(Model model) {
-        // Buscar TODAS as motos do sistema (não só as sem vaga)
         List<Moto> todasMotos = motoRepository.findAll();
         List<Usuario> mecanicos = usuarioRepository.findByTipo(TipoUsuario.MECANICO);
         
@@ -138,12 +117,11 @@ public class AlocacaoMotoController {
         System.out.println("Motos com vaga: " + motoRepository.findMotosComVaga().size());
         System.out.println("Pátios: " + patioService.listarTodos().size());
         
-        // Debug: listar todas as motos
         if (todasMotos.isEmpty()) {
-            System.out.println("❌ PROBLEMA: Não há motos cadastradas no sistema!");
-            System.out.println("💡 SOLUÇÃO: Cadastre uma nova moto primeiro.");
+            System.out.println("PROBLEMA: Não há motos cadastradas no sistema");
+            System.out.println("SOLUÇÃO: Cadastre uma nova moto primeiro");
         } else {
-            System.out.println("✅ Todas as motos do sistema:");
+            System.out.println("Todas as motos do sistema:");
             todasMotos.forEach(m -> {
                 String status = m.getVaga() != null ? "ALOCADA (Vaga " + m.getVaga().getNumero() + ")" : "LIVRE";
                 System.out.println("- Moto " + m.getId() + ": " + m.getModelo() + " (" + (m.getPlaca() != null ? m.getPlaca() : m.getChassi()) + ") - " + status);
@@ -153,9 +131,6 @@ public class AlocacaoMotoController {
         return "alocacoes/form";
     }
 
-    /**
-     * CRIAR nova alocação
-     */
     @PostMapping
     public String criar(@Valid @ModelAttribute("alocacao") AlocacaoMotoDTO dto,
                         BindingResult result,
@@ -166,11 +141,10 @@ public class AlocacaoMotoController {
         System.out.println("DTO recebido: " + dto.getMotoId() + ", " + dto.getPatioId() + ", " + dto.getVagaId());
         
         if (result.hasErrors()) {
-            System.out.println("Erros de validação:");
+            System.out.println("Erros de validação");
             result.getAllErrors().forEach(error -> System.out.println("- " + error.getDefaultMessage()));
             
-            // Recarregar dados para o formulário
-            model.addAttribute("alocacao", dto);  // ✅ Adicionar o objeto alocacao para o Thymeleaf
+            model.addAttribute("alocacao", dto);
             carregarDadosFormulario(model);
             return "alocacoes/form";
         }
@@ -189,9 +163,6 @@ public class AlocacaoMotoController {
         }
     }
 
-    /**
-     * HISTÓRICO de uma moto específica
-     */
     @GetMapping("/moto/{motoId}/historico")
     public String listarHistoricoPorMoto(@PathVariable Long motoId, Model model) {
         try {
@@ -210,10 +181,7 @@ public class AlocacaoMotoController {
             return "redirect:/alocacoes";
         }
     }
-    
-    /**
-     * ALOCAÇÕES de um pátio específico
-     */
+
     @GetMapping("/patio/{patioId}")
     public String listarPorPatio(@PathVariable Long patioId, Model model) {
         try {
@@ -234,10 +202,7 @@ public class AlocacaoMotoController {
             return "redirect:/alocacoes";
         }
     }
-    
-    /**
-     * REMOVER alocação (desalocar moto) - mantém histórico
-     */
+
     @PostMapping("/{id}/remover")
     public String remover(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         try {
@@ -248,10 +213,7 @@ public class AlocacaoMotoController {
         }
         return "redirect:/alocacoes";
     }
-    
-    /**
-     * CANCELAR alocação - diferente de remover
-     */
+
     @PostMapping("/{id}/cancelar")
     public String cancelar(@PathVariable Long id, 
                           @RequestParam(required = false) String motivo,
@@ -266,10 +228,7 @@ public class AlocacaoMotoController {
         }
         return "redirect:/alocacoes";
     }
-    
-    /**
-     * Helper: Carregar dados para o formulário
-     */
+
     private void carregarDadosFormulario(Model model) {
         List<Moto> todasMotos = motoRepository.findAll();
         List<Usuario> mecanicos = usuarioRepository.findByTipo(TipoUsuario.MECANICO);
@@ -280,45 +239,30 @@ public class AlocacaoMotoController {
         
         System.out.println("Dados recarregados - Motos: " + todasMotos.size() + ", Pátios: " + patioService.listarTodos().size());
     }
-    
-    /**
-     * PÁGINA DE DEBUG
-     */
+
     @GetMapping("/debug")
     public String paginaDebug() {
         return "debug";
     }
-    
-    /**
-     * ESTATÍSTICAS das alocações
-     */
+
     @GetMapping("/estatisticas")
     @ResponseBody
     public AlocacaoMotoService.AlocacaoEstatisticas obterEstatisticas() {
         return alocacaoService.obterEstatisticas();
     }
-    
-    /**
-     * API: Verificar se moto tem alocação ativa
-     */
+
     @GetMapping("/api/moto/{motoId}/ativa")
     @ResponseBody
     public boolean motoTemAlocacaoAtiva(@PathVariable Long motoId) {
         return alocacaoService.motoTemAlocacaoAtiva(motoId);
     }
-    
-    /**
-     * API: Buscar alocação ativa de uma moto
-     */
+
     @GetMapping("/api/moto/{motoId}/alocacao-ativa")
     @ResponseBody
     public Optional<AlocacaoMotoDTO> buscarAlocacaoAtivaPorMoto(@PathVariable Long motoId) {
         return alocacaoService.buscarAlocacaoAtivaPorMoto(motoId);
     }
-    
-    /**
-     * ENDPOINT DE DEBUG: Finalizar todas as alocações ativas (mantém histórico)
-     */
+
     @PostMapping("/debug/finalizar-todas")
     @ResponseBody
     public String finalizarTodasAsAlocacoes() {
@@ -329,7 +273,7 @@ public class AlocacaoMotoController {
             System.out.println("Total de alocações ativas encontradas: " + alocacoesAtivas.size());
             
             if (alocacoesAtivas.isEmpty()) {
-                return "❌ Nenhuma alocação ativa encontrada para finalizar.";
+                return "Nenhuma alocação ativa encontrada para finalizar.";
             }
             
             for (AlocacaoMotoDTO alocacao : alocacoesAtivas) {
@@ -338,8 +282,8 @@ public class AlocacaoMotoController {
                 alocacaoService.desalocar(alocacao.getId(), "Finalização em lote via debug", null);
             }
             
-            System.out.println("✅ Todas as alocações ativas foram finalizadas!");
-            return "✅ SUCESSO! " + alocacoesAtivas.size() + " alocações foram finalizadas. " +
+            System.out.println("Todas as alocações ativas foram finalizadas!");
+            return "SUCESSO! " + alocacoesAtivas.size() + " alocações foram finalizadas. " +
                    "Histórico mantido. Agora você pode fazer novas alocações.";
             
         } catch (Exception e) {
@@ -348,10 +292,7 @@ public class AlocacaoMotoController {
             return "❌ ERRO: " + e.getMessage();
         }
     }
-    
-    /**
-     * ENDPOINT DE DEBUG: Exibir estatísticas completas
-     */
+
     @GetMapping("/debug/stats")
     @ResponseBody
     public String exibirEstatisticas() {

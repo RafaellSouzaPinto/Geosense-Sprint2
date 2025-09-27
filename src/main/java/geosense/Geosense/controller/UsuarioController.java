@@ -34,7 +34,6 @@ public class UsuarioController {
     public String list(Model model) {
         List<Usuario> usuarios = usuarioRepository.findAll();
         
-        // Criar DTOs com informações de dependências
         List<UsuarioComDependenciasDTO> usuariosComDependencias = usuarios.stream()
             .map(usuario -> {
                 long alocacoesComoMecanico = usuarioRepository.countAlocacoesComoMecanico(usuario.getId());
@@ -103,7 +102,6 @@ public class UsuarioController {
         Usuario u = usuarioRepository.findById(id).orElseThrow();
         u.setNome(dto.getNome());
         u.setEmail(dto.getEmail());
-        // Só atualiza a senha se foi fornecida (não está vazia)
         if (dto.getSenha() != null && !dto.getSenha().trim().isEmpty()) {
             u.setSenha(passwordEncoder.encode(dto.getSenha()));
         }
@@ -116,11 +114,9 @@ public class UsuarioController {
     @PostMapping("/{id}/excluir")
     public String delete(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         try {
-            // Verificar se o usuário existe
-            Usuario usuario = usuarioRepository.findById(id).orElseThrow(() -> 
+            Usuario usuario = usuarioRepository.findById(id).orElseThrow(() ->
                 new RuntimeException("Usuário não encontrado"));
             
-            // Verificar se o usuário tem alocações como mecânico responsável
             long alocacoesComoMecanico = usuarioRepository.countAlocacoesComoMecanico(id);
             if (alocacoesComoMecanico > 0) {
                 redirectAttributes.addFlashAttribute("error", 
@@ -129,7 +125,6 @@ public class UsuarioController {
                 return "redirect:/usuarios";
             }
             
-            // Verificar se o usuário tem alocações como usuário de finalização
             long alocacoesComoFinalizador = usuarioRepository.countAlocacoesComoFinalizador(id);
             if (alocacoesComoFinalizador > 0) {
                 redirectAttributes.addFlashAttribute("error", 
@@ -138,7 +133,6 @@ public class UsuarioController {
                 return "redirect:/usuarios";
             }
             
-            // Se chegou até aqui, pode excluir
             usuarioRepository.deleteById(id);
             redirectAttributes.addFlashAttribute("success", "Usuário removido com sucesso");
             
@@ -154,20 +148,16 @@ public class UsuarioController {
     @Transactional
     public String deleteDependencies(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         try {
-            // Verificar se o usuário existe
-            Usuario usuario = usuarioRepository.findById(id).orElseThrow(() -> 
+            Usuario usuario = usuarioRepository.findById(id).orElseThrow(() ->
                 new RuntimeException("Usuário não encontrado"));
             
-            // Contar dependências antes da exclusão
             long alocacoesComoMecanico = usuarioRepository.countAlocacoesComoMecanico(id);
             long alocacoesComoFinalizador = usuarioRepository.countAlocacoesComoFinalizador(id);
             
-            // Excluir alocações onde o usuário é mecânico responsável
             if (alocacoesComoMecanico > 0) {
                 usuarioRepository.deleteAlocacoesComoMecanico(id);
             }
             
-            // Excluir alocações onde o usuário é responsável pela finalização
             if (alocacoesComoFinalizador > 0) {
                 usuarioRepository.deleteAlocacoesComoFinalizador(id);
             }
