@@ -835,7 +835,7 @@ Para suporte técnico ou dúvidas sobre o projeto:
 
 <img src="https://img.shields.io/badge/Disciplina-Desenvolvimento%20Web%20com%20Spring%20Boot-blue?style=for-the-badge" alt="Disciplina"/>
 
-<img src="https://img.shields.io/badge/Ano-2024-green?style=for-the-badge" alt="Ano"/>
+<img src="https://img.shields.io/badge/Ano-2025-green?style=for-the-badge" alt="Ano"/>
 
 </div>
 
