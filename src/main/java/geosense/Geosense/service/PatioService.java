@@ -115,10 +115,11 @@ public class PatioService {
         Patio patio = patioRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Pátio não encontrado"));
         
-        long vagasOcupadas = vagaRepository.countByPatioIdAndStatus(id, StatusVaga.OCUPADA);
-        if (vagasOcupadas > 0) {
-            throw new RuntimeException("Não é possível excluir o pátio. Há vagas ocupadas.");
-        }
+        // Validação removida: agora permite excluir pátio mesmo com vagas ocupadas
+        // long vagasOcupadas = vagaRepository.countByPatioIdAndStatus(id, StatusVaga.OCUPADA);
+        // if (vagasOcupadas > 0) {
+        //     throw new RuntimeException("Não é possível excluir o pátio. Há vagas ocupadas.");
+        // }
         
         patioRepository.deleteById(id);
     }

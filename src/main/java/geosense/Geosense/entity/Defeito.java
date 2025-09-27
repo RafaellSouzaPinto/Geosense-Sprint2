@@ -13,6 +13,7 @@ public class Defeito {
     private Long id;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "TIPOS_DEFEITOS")
     @NotNull
     private TiposDefeitos tiposDefeitos;
 
@@ -21,6 +22,7 @@ public class Defeito {
     private String descricao;
 
     @ManyToOne
+    @JoinColumn(name = "MOTO_ID")
     @NotNull
     private Moto moto;
 

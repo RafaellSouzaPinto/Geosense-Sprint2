@@ -25,10 +25,11 @@ public class Moto {
     @Column(nullable = true, unique = true)
     private String chassi;
 
-    @Column(nullable = true)
+    @Column(name = "PROBLEMA_IDENTIFICADO", nullable = true)
     private String problemaIdentificado;
 
     @OneToOne
+    @JoinColumn(name = "VAGA_ID")
     private Vaga vaga;
 
     @OneToMany(mappedBy = "moto")

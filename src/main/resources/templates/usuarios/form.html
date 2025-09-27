@@ -2,106 +2,708 @@
 <html xmlns:th="http://www.thymeleaf.org">
   <head>
     <meta charset="UTF-8" />
-    <title>Usuário - Formulário</title>
+    <title>Geosense - Usuário</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
     <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      :root {
+        --primary-dark: #020817;
+        --primary-cyan: #00cccf;
+        --text-secondary: #94a3b8;
+        --card-bg: rgba(255, 255, 255, 0.08);
+        --border-color: rgba(255, 255, 255, 0.1);
+        --success-color: #10b981;
+        --error-color: #ef4444;
+        --warning-color: #f59e0b;
+        --info-color: #0ea5e9;
+        --purple-color: #a855f7;
+        --admin-color: #8b5cf6;
+        --mecanico-color: #06b6d4;
+      }
+
       body {
-        font-family: Arial, sans-serif;
-        padding: 24px;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(
+          135deg,
+          #020817 0%,
+          #0f172a 50%,
+          #1e293b 100%
+        );
+        min-height: 100vh;
+        color: white;
+        position: relative;
+        overflow-x: hidden;
+        padding-bottom: 80px;
       }
-      .card {
-        max-width: 520px;
+
+      /* Background decorative elements */
+      body::before {
+        content: "";
+        position: fixed;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(
+          circle,
+          rgba(0, 204, 207, 0.08) 0%,
+          transparent 70%
+        );
+        animation: pulse 8s ease-in-out infinite;
+        z-index: -1;
+      }
+
+      /* Header */
+      .header {
+        background: var(--card-bg);
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid var(--border-color);
+        padding: 20px;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        margin-bottom: 30px;
+      }
+
+      .header-content {
+        max-width: 1200px;
         margin: 0 auto;
-        background: #fff;
-        padding: 16px;
-        border: 1px solid #eee;
-        border-radius: 8px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
       }
-      .field {
-        margin-bottom: 12px;
+
+      .page-title {
+        font-size: 28px;
+        font-weight: 700;
+        color: white;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
       }
-      label {
+
+      .page-title i {
+        color: var(--primary-cyan);
+        font-size: 24px;
+      }
+
+      .header-actions {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+      }
+
+      .btn-secondary {
+        background: rgba(255, 255, 255, 0.1);
+        color: var(--text-secondary);
+        padding: 12px 20px;
+        border-radius: 10px;
+        text-decoration: none;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        transition: all 0.3s ease;
+        border: 1px solid var(--border-color);
+        cursor: pointer;
+        font-size: 14px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .btn-secondary:hover {
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+        text-decoration: none;
+        transform: translateY(-2px);
+      }
+
+      /* Main Content */
+      .main-content {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+
+      /* Form Card */
+      .form-card {
+        background: var(--card-bg);
+        backdrop-filter: blur(10px);
+        border: 1px solid var(--border-color);
+        border-radius: 20px;
+        padding: 40px;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+      }
+
+      .form-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, var(--primary-cyan), #0891b2);
+        opacity: 0.8;
+      }
+
+      .form-title {
+        font-size: 24px;
+        font-weight: 700;
+        color: white;
+        margin-bottom: 30px;
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+      }
+
+      .form-title i {
+        color: var(--primary-cyan);
+        font-size: 20px;
+      }
+
+      /* Form Fields */
+      .form-group {
+        margin-bottom: 24px;
+        position: relative;
+      }
+
+      .form-label {
         display: block;
-        margin-bottom: 6px;
+        margin-bottom: 8px;
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--text-secondary);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .form-label i {
+        color: var(--primary-cyan);
+        font-size: 12px;
+      }
+
+      .form-input {
+        width: 100%;
+        padding: 16px 20px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 2px solid var(--border-color);
+        border-radius: 12px;
+        color: white;
+        font-size: 16px;
+        transition: all 0.3s ease;
+        backdrop-filter: blur(10px);
+      }
+
+      .form-input:focus {
+        outline: none;
+        border-color: var(--primary-cyan);
+        box-shadow: 0 0 0 3px rgba(0, 204, 207, 0.1);
+        background: rgba(255, 255, 255, 0.08);
+      }
+
+      .form-input::placeholder {
+        color: var(--text-secondary);
+        opacity: 0.7;
+      }
+
+      .form-select {
+        width: 100%;
+        padding: 16px 20px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 2px solid var(--border-color);
+        border-radius: 12px;
+        color: white;
+        font-size: 16px;
+        transition: all 0.3s ease;
+        backdrop-filter: blur(10px);
+        cursor: pointer;
+        appearance: none;
+        background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2300cccf' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+        background-repeat: no-repeat;
+        background-position: right 16px center;
+        background-size: 16px;
+        padding-right: 50px;
+      }
+
+      .form-select:focus {
+        outline: none;
+        border-color: var(--primary-cyan);
+        box-shadow: 0 0 0 3px rgba(0, 204, 207, 0.1);
+        background-color: rgba(255, 255, 255, 0.08);
+      }
+
+      .form-select option {
+        background: var(--primary-dark);
+        color: white;
+        padding: 10px;
+      }
+
+      /* Password field special styling */
+      .password-field {
+        position: relative;
+      }
+
+      .password-toggle {
+        position: absolute;
+        right: 16px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        color: var(--text-secondary);
+        cursor: pointer;
+        font-size: 16px;
+        transition: color 0.3s ease;
+        z-index: 2;
+      }
+
+      .password-toggle:hover {
+        color: var(--primary-cyan);
+      }
+
+      .password-field .form-input {
+        padding-right: 50px;
+      }
+
+      /* Error Messages */
+      .error-message {
+        color: var(--error-color);
+        font-size: 13px;
+        margin-top: 8px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-weight: 500;
+      }
+
+      .error-message i {
+        font-size: 12px;
+      }
+
+      /* Form Actions */
+      .form-actions {
+        display: flex;
+        gap: 16px;
+        margin-top: 40px;
+        padding-top: 30px;
+        border-top: 1px solid var(--border-color);
+      }
+
+      .btn-primary {
+        flex: 1;
+        background: linear-gradient(
+          135deg,
+          var(--primary-cyan) 0%,
+          #0891b2 100%
+        );
+        color: white;
+        padding: 16px 24px;
+        border-radius: 12px;
+        text-decoration: none;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        transition: all 0.3s ease;
+        border: none;
+        cursor: pointer;
+        font-size: 16px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(0, 204, 207, 0.4);
+        text-decoration: none;
+        color: white;
+      }
+
+      .btn-cancel {
+        flex: 1;
+        background: rgba(255, 255, 255, 0.1);
+        color: var(--text-secondary);
+        padding: 16px 24px;
+        border-radius: 12px;
+        text-decoration: none;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        transition: all 0.3s ease;
+        border: 1px solid var(--border-color);
+        cursor: pointer;
+        font-size: 16px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .btn-cancel:hover {
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+        text-decoration: none;
+        transform: translateY(-2px);
+      }
+
+      /* Password hint */
+      .password-hint {
+        background: rgba(14, 165, 233, 0.1);
+        border: 1px solid rgba(14, 165, 233, 0.3);
+        border-radius: 8px;
+        padding: 12px 16px;
+        margin-top: 8px;
+        font-size: 13px;
+        color: #7dd3fc;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .password-hint i {
+        color: var(--info-color);
         font-size: 14px;
       }
-      input,
-      select {
-        width: 100%;
-        padding: 10px;
-        border: 1px solid #dcdde1;
-        border-radius: 6px;
+
+      /* Bottom Navigation (mobile) */
+      .bottom-nav {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: var(--card-bg);
+        backdrop-filter: blur(10px);
+        border-top: 1px solid var(--border-color);
+        padding: 12px 0;
+        z-index: 100;
       }
-      button {
-        padding: 10px 16px;
-        background: #2f3640;
-        color: #fff;
-        border: none;
-        border-radius: 6px;
-        cursor: pointer;
+
+      .nav-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
       }
-      .msg {
-        color: #c23616;
-        font-size: 13px;
+
+      .nav-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+        text-decoration: none;
+        color: var(--text-secondary);
+        transition: all 0.3s ease;
+        padding: 8px 16px;
+        border-radius: 12px;
+        min-width: 60px;
+      }
+
+      .nav-item:hover,
+      .nav-item.active {
+        color: var(--primary-cyan);
+        background: rgba(0, 204, 207, 0.1);
+        text-decoration: none;
+      }
+
+      .nav-item i {
+        font-size: 20px;
+      }
+
+      .nav-item span {
+        font-size: 12px;
+        font-weight: 500;
+      }
+
+      /* Animations */
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 0.6;
+          transform: scale(1);
+        }
+        50% {
+          opacity: 1;
+          transform: scale(1.05);
+        }
+      }
+
+      /* Desktop Navigation */
+      .desktop-nav {
+        display: none;
+      }
+
+      @media (min-width: 768px) {
+        .desktop-nav {
+          display: block;
+        }
+
+        .bottom-nav {
+          display: none;
+        }
+
+        body {
+          padding-bottom: 0;
+        }
+      }
+
+      @media (max-width: 767px) {
+        .main-content {
+          padding: 0 15px;
+        }
+
+        .page-title {
+          font-size: 24px;
+        }
+
+        .header-content {
+          flex-direction: column;
+          gap: 16px;
+          align-items: stretch;
+        }
+
+        .header-actions {
+          justify-content: center;
+        }
+
+        .form-card {
+          padding: 30px 20px;
+        }
+
+        .form-actions {
+          flex-direction: column;
+          gap: 12px;
+        }
+
+        .btn-primary,
+        .btn-cancel {
+          flex: none;
+        }
       }
     </style>
   </head>
   <body>
-    <div th:replace="~{fragments :: navbar('GeoSense - Usuário')}"></div>
-    <div class="card">
-      <h2 th:text="${id} != null ? 'Editar usuário' : 'Novo usuário'"></h2>
-      <form
-        th:action="${id} != null ? @{'/usuarios/' + ${id}} : @{/usuarios}"
-        th:object="${usuario}"
-        method="post"
-      >
-        <div class="field">
-          <label for="nome">Nome</label>
-          <input id="nome" th:field="*{nome}" type="text" required />
-          <div
-            class="msg"
-            th:if="${#fields.hasErrors('nome')}"
-            th:errors="*{nome}"
-          ></div>
-        </div>
-        <div class="field">
-          <label for="email">Email</label>
-          <input id="email" th:field="*{email}" type="email" required />
-          <div
-            class="msg"
-            th:if="${#fields.hasErrors('email')}"
-            th:errors="*{email}"
-          ></div>
-        </div>
-        <div class="field">
-          <label for="senha">Senha</label>
-          <input
-            id="senha"
-            th:field="*{senha}"
-            type="text"
-            minlength="6"
-            required
-          />
-          <div
-            class="msg"
-            th:if="${#fields.hasErrors('senha')}"
-            th:errors="*{senha}"
-          ></div>
-        </div>
-        <div class="field">
-          <label for="tipo">Tipo</label>
-          <select id="tipo" name="tipo" th:value="${tipoAtual}">
-            <option
-              th:each="t : ${tipos}"
-              th:value="${t}"
-              th:text="${t}"
-              th:selected="${t} == ${tipoAtual}"
-            ></option>
-          </select>
-        </div>
-        <button type="submit">Salvar</button>
-        <a th:href="@{/usuarios}" style="margin-left: 8px">Cancelar</a>
-      </form>
+    <!-- Desktop Navigation (hidden on mobile) -->
+    <div class="desktop-nav">
+      <div th:replace="~{fragments :: navbar('GeoSense - Usuário')}"></div>
     </div>
+
+    <!-- Header -->
+    <header class="header">
+      <div class="header-content">
+        <h1 class="page-title">
+          <i class="fas fa-user-edit"></i>
+          <span th:text="${id} != null ? 'Editar Usuário' : 'Novo Usuário'"
+            >Usuário</span
+          >
+        </h1>
+        <div class="header-actions">
+          <a th:href="@{/usuarios}" class="btn-secondary">
+            <i class="fas fa-arrow-left"></i>
+            Voltar
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <div class="form-card">
+        <h2 class="form-title">
+          <i class="fas fa-user"></i>
+          <span th:text="${id} != null ? 'Editar Usuário' : 'Novo Usuário'"
+            >Usuário</span
+          >
+        </h2>
+
+        <form
+          th:action="${id} != null ? @{'/usuarios/' + ${id}} : @{/usuarios}"
+          th:object="${usuario}"
+          method="post"
+        >
+          <div class="form-group">
+            <label for="nome" class="form-label">
+              <i class="fas fa-user"></i>
+              Nome Completo
+            </label>
+            <input
+              id="nome"
+              th:field="*{nome}"
+              type="text"
+              class="form-input"
+              placeholder="Digite o nome completo do usuário"
+              required
+            />
+            <div
+              class="error-message"
+              th:if="${#fields.hasErrors('nome')}"
+              th:errors="*{nome}"
+            >
+              <i class="fas fa-exclamation-circle"></i>
+              <span th:errors="*{nome}"></span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="email" class="form-label">
+              <i class="fas fa-envelope"></i>
+              Email
+            </label>
+            <input
+              id="email"
+              th:field="*{email}"
+              type="email"
+              class="form-input"
+              placeholder="Digite o email do usuário"
+              required
+            />
+            <div
+              class="error-message"
+              th:if="${#fields.hasErrors('email')}"
+              th:errors="*{email}"
+            >
+              <i class="fas fa-exclamation-circle"></i>
+              <span th:errors="*{email}"></span>
+            </div>
+          </div>
+
+          <div class="form-group password-field">
+            <label for="senha" class="form-label">
+              <i class="fas fa-lock"></i>
+              Senha
+              <span
+                th:if="${id != null}"
+                style="
+                  color: var(--info-color);
+                  font-size: 12px;
+                  font-weight: normal;
+                "
+              >
+                (opcional - deixe em branco para manter a senha atual)
+              </span>
+            </label>
+            <input
+              id="senha"
+              th:field="*{senha}"
+              type="password"
+              class="form-input"
+              placeholder="Digite uma nova senha"
+              th:minlength="${id != null ? 0 : 6}"
+              th:required="${id == null}"
+            />
+            <button
+              type="button"
+              class="password-toggle"
+              onclick="togglePassword()"
+            >
+              <i class="fas fa-eye" id="toggleIcon"></i>
+            </button>
+            <div
+              class="error-message"
+              th:if="${#fields.hasErrors('senha')}"
+              th:errors="*{senha}"
+            >
+              <i class="fas fa-exclamation-circle"></i>
+              <span th:errors="*{senha}"></span>
+            </div>
+            <div th:if="${id != null}" class="password-hint">
+              <i class="fas fa-info-circle"></i>
+              <span
+                >Deixe em branco para manter a senha atual. Preencha apenas se
+                desejar alterar.</span
+              >
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="tipo" class="form-label">
+              <i class="fas fa-user-tag"></i>
+              Tipo de Usuário
+            </label>
+            <select
+              id="tipo"
+              name="tipo"
+              class="form-select"
+              th:value="${tipoAtual}"
+            >
+              <option
+                th:each="t : ${tipos}"
+                th:value="${t}"
+                th:text="${t.name()}"
+                th:selected="${t} == ${tipoAtual}"
+              ></option>
+            </select>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn-primary">
+              <i class="fas fa-save"></i>
+              <span th:text="${id} != null ? 'Atualizar' : 'Criar'"
+                >Salvar</span
+              >
+            </button>
+            <a th:href="@{/usuarios}" class="btn-cancel">
+              <i class="fas fa-times"></i>
+              Cancelar
+            </a>
+          </div>
+        </form>
+      </div>
+    </main>
+
+    <!-- Bottom Navigation (mobile) -->
+    <nav class="bottom-nav">
+      <div class="nav-container">
+        <a href="/" class="nav-item">
+          <i class="fas fa-home"></i>
+          <span>Início</span>
+        </a>
+        <a href="/patios" class="nav-item">
+          <i class="fas fa-building"></i>
+          <span>Pátios</span>
+        </a>
+        <a href="/motos" class="nav-item">
+          <i class="fas fa-motorcycle"></i>
+          <span>Motos</span>
+        </a>
+        <a href="/usuarios" class="nav-item active">
+          <i class="fas fa-users"></i>
+          <span>Usuários</span>
+        </a>
+      </div>
+    </nav>
+
+    <script>
+      function togglePassword() {
+        const passwordInput = document.getElementById("senha");
+        const toggleIcon = document.getElementById("toggleIcon");
+
+        if (passwordInput.type === "password") {
+          passwordInput.type = "text";
+          toggleIcon.className = "fas fa-eye-slash";
+        } else {
+          passwordInput.type = "password";
+          toggleIcon.className = "fas fa-eye";
+        }
+      }
+    </script>
   </body>
 </html>

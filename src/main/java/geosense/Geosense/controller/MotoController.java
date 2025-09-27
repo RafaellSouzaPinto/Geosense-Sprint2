@@ -2,9 +2,11 @@ package geosense.Geosense.controller;
 
 import geosense.Geosense.dto.MotoDTO;
 import geosense.Geosense.dto.PatioDTO;
+import geosense.Geosense.entity.AlocacaoMoto;
 import geosense.Geosense.entity.Moto;
 import geosense.Geosense.entity.StatusVaga;
 import geosense.Geosense.entity.Vaga;
+import geosense.Geosense.repository.AlocacaoMotoRepository;
 import geosense.Geosense.repository.MotoRepository;
 import geosense.Geosense.repository.VagaRepository;
 import geosense.Geosense.service.PatioService;
@@ -25,12 +27,14 @@ public class MotoController {
     private final MotoRepository motoRepository;
     private final VagaRepository vagaRepository;
     private final PatioService patioService;
+    private final AlocacaoMotoRepository alocacaoRepository;
 
     public MotoController(MotoRepository motoRepository, VagaRepository vagaRepository, 
-                         PatioService patioService) {
+                         PatioService patioService, AlocacaoMotoRepository alocacaoRepository) {
         this.motoRepository = motoRepository;
         this.vagaRepository = vagaRepository;
         this.patioService = patioService;
+        this.alocacaoRepository = alocacaoRepository;
     }
 
     @GetMapping
@@ -256,20 +260,45 @@ public class MotoController {
         try {
             Moto moto = motoRepository.findById(id).orElseThrow(() -> new RuntimeException("Moto não encontrada"));
             
-            // Liberar vaga se existir
-            if (moto.getVaga() != null) {
-                Vaga vaga = moto.getVaga();
-                vaga.setMoto(null);
-                vaga.setStatus(StatusVaga.DISPONIVEL);
-                vagaRepository.save(vaga);
-                System.out.println("Vaga " + vaga.getNumero() + " liberada");
+            System.out.println("=== EXCLUINDO MOTO " + moto.getModelo() + " ===");
+            
+            // 1. Buscar TODAS as alocações da moto (ativas e finalizadas)
+            List<AlocacaoMoto> todasAlocacoes = alocacaoRepository.findHistoricoByMoto(moto);
+            System.out.println("Encontradas " + todasAlocacoes.size() + " alocações para a moto");
+            
+            // 2. Finalizar alocações ativas e liberar vagas
+            List<AlocacaoMoto> alocacoesAtivas = todasAlocacoes.stream()
+                    .filter(a -> a.getStatus() == AlocacaoMoto.StatusAlocacao.ATIVA)
+                    .collect(java.util.stream.Collectors.toList());
+            
+            if (!alocacoesAtivas.isEmpty()) {
+                System.out.println("Finalizando " + alocacoesAtivas.size() + " alocações ativas...");
+                for (AlocacaoMoto alocacao : alocacoesAtivas) {
+                    alocacao.finalizarAlocacao(AlocacaoMoto.StatusAlocacao.CANCELADA, 
+                                             "Moto excluída do sistema", null);
+                    alocacaoRepository.save(alocacao);
+                    
+                    // Liberar vaga
+                    Vaga vaga = alocacao.getVaga();
+                    vaga.setMoto(null);
+                    vaga.setStatus(StatusVaga.DISPONIVEL);
+                    vagaRepository.save(vaga);
+                    System.out.println("Vaga " + vaga.getNumero() + " liberada");
+                }
             }
             
+            // 3. Excluir TODAS as alocações da moto (ativas e finalizadas)
+            System.out.println("Excluindo " + todasAlocacoes.size() + " alocações da moto...");
+            alocacaoRepository.deleteAll(todasAlocacoes);
+            
+            // 4. Excluir a moto
             motoRepository.delete(moto);
             System.out.println("✅ Moto excluída com sucesso: " + moto.getModelo());
-            redirectAttributes.addFlashAttribute("success", "Moto excluída com sucesso");
+            redirectAttributes.addFlashAttribute("success", "Moto excluída com sucesso. " + 
+                                                (todasAlocacoes.size() > 0 ? todasAlocacoes.size() + " alocações foram removidas." : ""));
         } catch (Exception e) {
             System.err.println("❌ Erro ao excluir moto: " + e.getMessage());
+            e.printStackTrace();
             redirectAttributes.addFlashAttribute("error", "Erro ao excluir moto: " + e.getMessage());
         }
         return "redirect:/motos";

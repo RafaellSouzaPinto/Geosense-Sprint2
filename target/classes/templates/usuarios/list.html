@@ -5,88 +5,838 @@
 >
   <head>
     <meta charset="UTF-8" />
-    <title>Usuários</title>
+    <title>Geosense - Usuários</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
     <style>
-      body {
-        font-family: Arial, sans-serif;
-        padding: 24px;
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
       }
-      .top {
+
+      :root {
+        --primary-dark: #020817;
+        --primary-cyan: #00cccf;
+        --text-secondary: #94a3b8;
+        --card-bg: rgba(255, 255, 255, 0.08);
+        --border-color: rgba(255, 255, 255, 0.1);
+        --success-color: #10b981;
+        --error-color: #ef4444;
+        --warning-color: #f59e0b;
+        --info-color: #0ea5e9;
+        --purple-color: #a855f7;
+        --admin-color: #8b5cf6;
+        --mecanico-color: #06b6d4;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(
+          135deg,
+          #020817 0%,
+          #0f172a 50%,
+          #1e293b 100%
+        );
+        min-height: 100vh;
+        color: white;
+        position: relative;
+        overflow-x: hidden;
+        padding-bottom: 80px;
+      }
+
+      /* Background decorative elements */
+      body::before {
+        content: "";
+        position: fixed;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(
+          circle,
+          rgba(0, 204, 207, 0.08) 0%,
+          transparent 70%
+        );
+        animation: pulse 8s ease-in-out infinite;
+        z-index: -1;
+      }
+
+      /* Header */
+      .header {
+        background: var(--card-bg);
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid var(--border-color);
+        padding: 20px;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        margin-bottom: 30px;
+      }
+
+      .header-content {
+        max-width: 1200px;
+        margin: 0 auto;
         display: flex;
         justify-content: space-between;
         align-items: center;
+      }
+
+      .page-title {
+        font-size: 28px;
+        font-weight: 700;
+        color: white;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+      }
+
+      .page-title i {
+        color: var(--primary-cyan);
+        font-size: 24px;
+      }
+
+      .header-actions {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+      }
+
+      .btn-primary {
+        background: linear-gradient(
+          135deg,
+          var(--primary-cyan) 0%,
+          #0891b2 100%
+        );
+        color: white;
+        padding: 12px 20px;
+        border-radius: 10px;
+        text-decoration: none;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        transition: all 0.3s ease;
+        border: none;
+        cursor: pointer;
+        font-size: 14px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(0, 204, 207, 0.4);
+        text-decoration: none;
+        color: white;
+      }
+
+      /* Main Content */
+      .main-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+
+      /* Alerts */
+      .alert {
+        padding: 16px 20px;
+        border-radius: 12px;
+        margin-bottom: 24px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-weight: 500;
+        backdrop-filter: blur(10px);
+        border: 1px solid;
+      }
+
+      .alert-success {
+        background: rgba(16, 185, 129, 0.1);
+        border-color: rgba(16, 185, 129, 0.3);
+        color: #86efac;
+      }
+
+      .alert-error {
+        background: rgba(239, 68, 68, 0.1);
+        border-color: rgba(239, 68, 68, 0.3);
+        color: #fca5a5;
+      }
+
+      /* Stats Cards */
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+        margin-bottom: 30px;
+      }
+
+      .stat-card {
+        background: var(--card-bg);
+        backdrop-filter: blur(10px);
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        padding: 20px;
+        text-align: center;
+        transition: all 0.3s ease;
+      }
+
+      .stat-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 10px 25px rgba(0, 204, 207, 0.15);
+      }
+
+      .stat-value {
+        font-size: 32px;
+        font-weight: 700;
+        color: var(--primary-cyan);
+        margin-bottom: 8px;
+      }
+
+      .stat-label {
+        color: var(--text-secondary);
+        font-size: 14px;
+        font-weight: 500;
+      }
+
+      /* Status badges */
+      .status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .status-admin {
+        background: rgba(139, 92, 246, 0.2);
+        color: #c4b5fd;
+        border: 1px solid rgba(139, 92, 246, 0.3);
+      }
+
+      .status-mecanico {
+        background: rgba(6, 182, 212, 0.2);
+        color: #67e8f9;
+        border: 1px solid rgba(6, 182, 212, 0.3);
+      }
+
+      /* Usuários Grid */
+      .usuarios-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+        gap: 24px;
+        margin-top: 20px;
+      }
+
+      .usuario-card {
+        background: var(--card-bg);
+        backdrop-filter: blur(10px);
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        padding: 24px;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .usuario-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, var(--primary-cyan), #0891b2);
+        opacity: 0.8;
+      }
+
+      .usuario-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 20px 40px rgba(0, 204, 207, 0.2);
+        border-color: rgba(0, 204, 207, 0.3);
+      }
+
+      .usuario-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
         margin-bottom: 16px;
       }
-      a.btn {
-        background: #2f3640;
-        color: #fff;
-        padding: 8px 12px;
+
+      .usuario-info h3 {
+        font-size: 18px;
+        font-weight: 700;
+        color: white;
+        margin-bottom: 4px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .usuario-icon {
+        color: var(--primary-cyan);
+        font-size: 16px;
+      }
+
+      .usuario-id {
+        font-size: 12px;
+        color: var(--text-secondary);
+        background: rgba(255, 255, 255, 0.1);
+        padding: 4px 8px;
         border-radius: 6px;
+        font-weight: 500;
+      }
+
+      .usuario-details {
+        margin: 16px 0;
+      }
+
+      .detail-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 8px;
+        padding: 8px 0;
+      }
+
+      .detail-label {
+        color: var(--text-secondary);
+        font-size: 13px;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .detail-value {
+        color: white;
+        font-weight: 600;
+        font-size: 14px;
+        text-align: right;
+      }
+
+      .detail-value.empty {
+        color: var(--text-secondary);
+        font-style: italic;
+      }
+
+      /* Info destacada */
+      .info-highlight {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 12px;
+        padding: 16px;
+        margin: 16px 0;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .info-highlight h4 {
+        color: var(--primary-cyan);
+        font-size: 14px;
+        margin-bottom: 12px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      /* Actions */
+      .usuario-actions {
+        display: flex;
+        gap: 8px;
+        margin-top: 20px;
+        padding-top: 20px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .btn-action {
+        flex: 1;
+        padding: 10px 16px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 600;
+        text-align: center;
+        transition: all 0.3s ease;
+        border: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+      }
+
+      .btn-editar {
+        background: rgba(14, 165, 233, 0.2);
+        color: #7dd3fc;
+        border: 1px solid rgba(14, 165, 233, 0.3);
+      }
+
+      .btn-editar:hover {
+        background: rgba(14, 165, 233, 0.3);
+        color: white;
+      }
+
+      .btn-excluir {
+        background: rgba(239, 68, 68, 0.2);
+        color: #fca5a5;
+        border: 1px solid rgba(239, 68, 68, 0.3);
+      }
+
+      .btn-excluir:hover {
+        background: rgba(239, 68, 68, 0.3);
+        color: white;
+      }
+
+      .btn-disabled {
+        background: rgba(156, 163, 175, 0.2);
+        color: #9ca3af;
+        border: 1px solid rgba(156, 163, 175, 0.3);
+        cursor: not-allowed;
+        opacity: 0.6;
+      }
+
+      .btn-disabled:hover {
+        background: rgba(156, 163, 175, 0.2);
+        color: #9ca3af;
+        transform: none;
+      }
+
+      /* Empty state */
+      .empty-state {
+        text-align: center;
+        padding: 60px 20px;
+        color: var(--text-secondary);
+      }
+
+      .empty-state i {
+        font-size: 64px;
+        color: var(--primary-cyan);
+        margin-bottom: 20px;
+        opacity: 0.6;
+      }
+
+      .empty-state h3 {
+        font-size: 24px;
+        margin-bottom: 8px;
+        color: white;
+      }
+
+      .empty-state p {
+        font-size: 16px;
+        margin-bottom: 30px;
+      }
+
+      /* Bottom Navigation (mobile) */
+      .bottom-nav {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: var(--card-bg);
+        backdrop-filter: blur(10px);
+        border-top: 1px solid var(--border-color);
+        padding: 12px 0;
+        z-index: 100;
+      }
+
+      .nav-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+      }
+
+      .nav-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+        text-decoration: none;
+        color: var(--text-secondary);
+        transition: all 0.3s ease;
+        padding: 8px 16px;
+        border-radius: 12px;
+        min-width: 60px;
+      }
+
+      .nav-item:hover,
+      .nav-item.active {
+        color: var(--primary-cyan);
+        background: rgba(0, 204, 207, 0.1);
         text-decoration: none;
       }
-      table {
-        width: 100%;
-        border-collapse: collapse;
+
+      .nav-item i {
+        font-size: 20px;
       }
-      th,
-      td {
-        border: 1px solid #eee;
-        padding: 8px;
-        text-align: left;
+
+      .nav-item span {
+        font-size: 12px;
+        font-weight: 500;
       }
-      th {
-        background: #f5f6fa;
+
+      /* Animations */
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 0.6;
+          transform: scale(1);
+        }
+        50% {
+          opacity: 1;
+          transform: scale(1.05);
+        }
       }
-      form {
-        display: inline;
+
+      /* Desktop Navigation */
+      .desktop-nav {
+        display: none;
       }
-      .success {
-        color: #2ecc71;
-        margin-bottom: 12px;
+
+      @media (min-width: 768px) {
+        .desktop-nav {
+          display: block;
+        }
+
+        .bottom-nav {
+          display: none;
+        }
+
+        body {
+          padding-bottom: 0;
+        }
+
+        .usuarios-grid {
+          grid-template-columns: repeat(auto-fill, minmax(450px, 1fr));
+        }
+      }
+
+      @media (max-width: 767px) {
+        .main-content {
+          padding: 0 15px;
+        }
+
+        .page-title {
+          font-size: 24px;
+        }
+
+        .header-content {
+          flex-direction: column;
+          gap: 16px;
+          align-items: stretch;
+        }
+
+        .header-actions {
+          justify-content: center;
+        }
+
+        .usuarios-grid {
+          grid-template-columns: 1fr;
+          gap: 16px;
+        }
+
+        .usuario-card {
+          padding: 20px;
+        }
+
+        .stats-grid {
+          grid-template-columns: repeat(2, 1fr);
+          gap: 12px;
+        }
+
+        .stat-card {
+          padding: 16px;
+        }
+
+        .stat-value {
+          font-size: 24px;
+        }
       }
     </style>
   </head>
   <body>
-    <div th:replace="~{fragments :: navbar('GeoSense - Usuários')}"></div>
-    <div class="top">
-      <h1>Usuários</h1>
-      <a class="btn" th:href="@{/usuarios/novo}">Novo</a>
+    <!-- Desktop Navigation (hidden on mobile) -->
+    <div class="desktop-nav">
+      <div th:replace="~{fragments :: navbar('GeoSense - Usuários')}"></div>
     </div>
-    <div class="success" th:if="${success}" th:text="${success}"></div>
-    <table>
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Nome</th>
-          <th>Email</th>
-          <th>Tipo</th>
-          <th>Ações</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr th:each="u : ${usuarios}">
-          <td th:text="${u.id}"></td>
-          <td th:text="${u.nome}"></td>
-          <td th:text="${u.email}"></td>
-          <td th:text="${u.tipo}"></td>
-          <td>
-            <a th:href="@{'/usuarios/' + ${u.id} + '/editar'}">Editar</a>
+
+    <!-- Header -->
+    <header class="header">
+      <div class="header-content">
+        <h1 class="page-title">
+          <i class="fas fa-users"></i>
+          <span>Usuários do Sistema</span>
+        </h1>
+        <div class="header-actions">
+          <a href="/usuarios/novo" class="btn-primary">
+            <i class="fas fa-plus"></i>
+            Novo Usuário
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Mensagens -->
+      <div th:if="${success}" class="alert alert-success">
+        <i class="fas fa-check-circle"></i>
+        <span th:text="${success}"></span>
+      </div>
+
+      <div th:if="${error}" class="alert alert-error">
+        <i class="fas fa-exclamation-triangle"></i>
+        <span th:text="${error}"></span>
+      </div>
+
+      <!-- Lista de Usuários -->
+      <div th:if="${#lists.isEmpty(usuarios)}" class="empty-state">
+        <i class="fas fa-users"></i>
+        <h3>Nenhum Usuário Cadastrado</h3>
+        <p>Ainda não há usuários registrados no sistema.</p>
+        <a href="/usuarios/novo" class="btn-primary">
+          <i class="fas fa-plus"></i>
+          Criar Primeiro Usuário
+        </a>
+      </div>
+
+      <div th:unless="${#lists.isEmpty(usuarios)}" class="usuarios-grid">
+        <div th:each="usuario : ${usuarios}" class="usuario-card">
+          <!-- Header do card -->
+          <div class="usuario-header">
+            <div class="usuario-info">
+              <h3>
+                <i class="fas fa-user alocacao-icon"></i>
+                <span th:text="${usuario.nome}">Usuário</span>
+              </h3>
+            </div>
+            <div class="usuario-id">
+              ID: <span th:text="${usuario.id}"></span>
+            </div>
+          </div>
+
+          <!-- Status Badge -->
+          <div
+            class="status-badge"
+            th:classappend="${usuario.tipo.name() == 'ADMIN' ? 'status-admin' : 'status-mecanico'}"
+          >
+            <i
+              class="fas"
+              th:classappend="${usuario.tipo.name() == 'ADMIN' ? 'fa-crown' : 'fa-wrench'}"
+            ></i>
+            <span th:text="${usuario.tipo.name()}">Tipo</span>
+          </div>
+
+          <!-- Detalhes do Usuário -->
+          <div class="usuario-details">
+            <div class="detail-row">
+              <span class="detail-label">
+                <i class="fas fa-user"></i>
+                Nome
+              </span>
+              <span class="detail-value" th:text="${usuario.nome}">Nome</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">
+                <i class="fas fa-envelope"></i>
+                Email
+              </span>
+              <span class="detail-value" th:text="${usuario.email}">Email</span>
+            </div>
+          </div>
+
+          <!-- Informações de Acesso -->
+          <div class="info-highlight">
+            <h4>
+              <i class="fas fa-key"></i>
+              Informações de Acesso
+            </h4>
+            <div class="detail-row">
+              <span class="detail-label">
+                <i class="fas fa-user-tag"></i>
+                Tipo de Usuário
+              </span>
+              <span class="detail-value" th:text="${usuario.tipo.name()}"
+                >Tipo</span
+              >
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">
+                <i class="fas fa-shield-alt"></i>
+                Permissões
+              </span>
+              <span
+                class="detail-value"
+                th:text="${usuario.tipo.name() == 'ADMIN' ? 'Administrador Completo' : 'Mecânico'}"
+                >Permissões</span
+              >
+            </div>
+          </div>
+
+          <!-- Informações de Dependências -->
+          <div
+            th:if="${usuario.alocacoesComoMecanico} > 0 or ${usuario.alocacoesComoFinalizador} > 0"
+            class="info-highlight"
+            style="
+              border-color: rgba(245, 158, 11, 0.3);
+              background: rgba(245, 158, 11, 0.1);
+            "
+          >
+            <h4 style="color: #fbbf24">
+              <i class="fas fa-exclamation-triangle"></i>
+              Dependências do Sistema
+            </h4>
+            <div
+              th:if="${usuario.alocacoesComoMecanico} > 0"
+              class="detail-row"
+            >
+              <span class="detail-label">
+                <i class="fas fa-motorcycle"></i>
+                Alocações como Mecânico
+              </span>
+              <span
+                class="detail-value"
+                style="color: #fbbf24"
+                th:text="${usuario.alocacoesComoMecanico} + ' alocação(ões)'"
+                >0</span
+              >
+            </div>
+            <div
+              th:if="${usuario.alocacoesComoFinalizador} > 0"
+              class="detail-row"
+            >
+              <span class="detail-label">
+                <i class="fas fa-history"></i>
+                Alocações Finalizadas
+              </span>
+              <span
+                class="detail-value"
+                style="color: #fbbf24"
+                th:text="${usuario.alocacoesComoFinalizador} + ' alocação(ões)'"
+                >0</span
+              >
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">
+                <i class="fas fa-info-circle"></i>
+                Status
+              </span>
+              <span class="detail-value" style="color: #fbbf24"
+                >Não pode ser excluído</span
+              >
+            </div>
+
+            <!-- Botão para excluir dependências -->
+            <div
+              class="detail-row"
+              style="
+                margin-top: 16px;
+                padding-top: 16px;
+                border-top: 1px solid rgba(245, 158, 11, 0.3);
+              "
+            >
+              <form
+                th:action="@{'/usuarios/' + ${usuario.id} + '/excluir-dependencias'}"
+                method="post"
+                style="width: 100%"
+              >
+                <button
+                  type="submit"
+                  class="btn-action"
+                  style="
+                    width: 100%;
+                    background: rgba(245, 158, 11, 0.2);
+                    color: #fbbf24;
+                    border: 1px solid rgba(245, 158, 11, 0.3);
+                    padding: 12px 16px;
+                    border-radius: 8px;
+                    font-weight: 600;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 8px;
+                    transition: all 0.3s ease;
+                    cursor: pointer;
+                  "
+                  onmouseover="this.style.background='rgba(245, 158, 11, 0.3)'; this.style.color='white';"
+                  onmouseout="this.style.background='rgba(245, 158, 11, 0.2)'; this.style.color='#fbbf24';"
+                  th:onclick="'return confirm(\'ATENÇÃO: Esta ação irá excluir TODAS as alocações relacionadas a este usuário!\\n\\n\' + 
+                           \'• Alocações como mecânico: \' + ' + ${usuario.alocacoesComoMecanico} + ' + \'\\n\' +
+                           \'• Alocações finalizadas: \' + ' + ${usuario.alocacoesComoFinalizador} + ' + \'\\n\\n\' +
+                           \'Esta ação NÃO PODE ser desfeita!\\n\\n\' +
+                           \'Confirma a exclusão das dependências?\')'"
+                >
+                  <i class="fas fa-trash-alt"></i>
+                  <span>Excluir Dependências e Liberar Usuário</span>
+                </button>
+              </form>
+            </div>
+          </div>
+
+          <!-- Actions -->
+          <div class="usuario-actions">
+            <a
+              th:href="@{'/usuarios/' + ${usuario.id} + '/editar'}"
+              class="btn-action btn-editar"
+            >
+              <i class="fas fa-edit"></i>
+              Editar
+            </a>
             <form
-              th:action="@{'/usuarios/' + ${u.id} + '/excluir'}"
+              th:action="@{'/usuarios/' + ${usuario.id} + '/excluir'}"
               method="post"
-              style="display: inline"
+              style="flex: 1"
             >
               <button
                 type="submit"
-                onclick="return confirm('Confirma excluir?')"
+                class="btn-action"
+                th:classappend="${usuario.podeExcluir} ? 'btn-excluir' : 'btn-disabled'"
+                style="width: 100%"
+                th:disabled="${!usuario.podeExcluir}"
+                th:onclick="${usuario.podeExcluir} ? 'return confirm(\'Confirma a exclusão deste usuário? Esta ação não pode ser desfeita.\')' : 'return false'"
               >
-                Excluir
+                <i class="fas fa-trash"></i>
+                <span
+                  th:text="${usuario.podeExcluir} ? 'Excluir' : 'Não pode excluir'"
+                  >Excluir</span
+                >
               </button>
             </form>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Bottom Navigation (mobile) -->
+    <nav class="bottom-nav">
+      <div class="nav-container">
+        <a href="/" class="nav-item">
+          <i class="fas fa-home"></i>
+          <span>Início</span>
+        </a>
+        <a href="/patios" class="nav-item">
+          <i class="fas fa-building"></i>
+          <span>Pátios</span>
+        </a>
+        <a href="/motos" class="nav-item">
+          <i class="fas fa-motorcycle"></i>
+          <span>Motos</span>
+        </a>
+        <a href="/usuarios" class="nav-item active">
+          <i class="fas fa-users"></i>
+          <span>Usuários</span>
+        </a>
+      </div>
+    </nav>
   </body>
 </html>

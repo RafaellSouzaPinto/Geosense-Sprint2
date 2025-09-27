@@ -19,10 +19,15 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
- * Controller SIMPLIFICADO para AlocaçãoMoto
- * Foco: UX simples e direta
+ * Controller MELHORADO para AlocaçãoMoto
+ * Recursos:
+ * - Visualização separada: alocações ativas vs histórico completo
+ * - Controle inteligente de re-alocações
+ * - Rastreamento completo de status e histórico
+ * - Estatísticas de uso
  */
 @Controller
 @RequestMapping("/alocacoes")
@@ -44,19 +49,72 @@ public class AlocacaoMotoController {
     private PatioService patioService;
 
     /**
-     * LISTAR todas as alocações
+     * PÁGINA PRINCIPAL: Alocações ativas (default)
      */
     @GetMapping
     public String listar(Model model) {
-        List<AlocacaoMoto> alocacoes = alocacaoRepository.findAllWithDetails();
-        System.out.println("=== LISTANDO ALOCAÇÕES ===");
-        System.out.println("Total de alocações encontradas: " + alocacoes.size());
-        alocacoes.forEach(a -> {
-            System.out.println("- Alocação " + a.getId() + ": Moto " + a.getMoto().getModelo() + 
-                             " na Vaga " + a.getVaga().getNumero() + " do Pátio " + a.getVaga().getPatio().getNomeUnidade());
+        return listarAtivas(model);
+    }
+    
+    /**
+     * LISTAR apenas alocações ativas (em uso no momento)
+     */
+    @GetMapping("/ativas")
+    public String listarAtivas(Model model) {
+        List<AlocacaoMotoDTO> alocacoesAtivas = alocacaoService.listarAlocacoesAtivas();
+        AlocacaoMotoService.AlocacaoEstatisticas stats = alocacaoService.obterEstatisticas();
+        
+        System.out.println("=== LISTANDO ALOCAÇÕES ATIVAS ===");
+        System.out.println("Alocações ativas encontradas: " + alocacoesAtivas.size());
+        System.out.println(stats.toString());
+        
+        alocacoesAtivas.forEach(a -> {
+            System.out.println("- Alocação " + a.getId() + ": " + a.getMotoInfo() + 
+                             " na " + a.getVagaInfo() + " do " + a.getPatioInfo() +
+                             " desde " + a.getDataAlocacaoFormatada());
         });
         
-        model.addAttribute("alocacoes", alocacoes);
+        model.addAttribute("alocacoes", alocacoesAtivas);
+        model.addAttribute("stats", stats);
+        model.addAttribute("tipoLista", "ativas");
+        model.addAttribute("tituloLista", "Alocações Ativas");
+        return "alocacoes/list";
+    }
+    
+    /**
+     * HISTÓRICO completo (todas as alocações - ativas e finalizadas)
+     */
+    @GetMapping("/historico")
+    public String listarHistorico(Model model) {
+        List<AlocacaoMotoDTO> historicoCompleto = alocacaoService.listarHistoricoCompleto();
+        AlocacaoMotoService.AlocacaoEstatisticas stats = alocacaoService.obterEstatisticas();
+        
+        System.out.println("=== LISTANDO HISTÓRICO COMPLETO ===");
+        System.out.println("Total de alocações no histórico: " + historicoCompleto.size());
+        System.out.println(stats.toString());
+        
+        model.addAttribute("alocacoes", historicoCompleto);
+        model.addAttribute("stats", stats);
+        model.addAttribute("tipoLista", "historico");
+        model.addAttribute("tituloLista", "Histórico Completo de Alocações");
+        return "alocacoes/list";
+    }
+    
+    /**
+     * HISTÓRICO apenas de alocações finalizadas
+     */
+    @GetMapping("/historico/finalizadas")
+    public String listarHistoricoFinalizadas(Model model) {
+        List<AlocacaoMotoDTO> historicoFinalizadas = alocacaoService.listarHistoricoFinalizadas();
+        AlocacaoMotoService.AlocacaoEstatisticas stats = alocacaoService.obterEstatisticas();
+        
+        System.out.println("=== LISTANDO HISTÓRICO DE FINALIZADAS ===");
+        System.out.println("Alocações finalizadas encontradas: " + historicoFinalizadas.size());
+        
+        model.addAttribute("alocacoes", historicoFinalizadas);
+        model.addAttribute("stats", stats);
+        model.addAttribute("tipoLista", "finalizadas");
+        model.addAttribute("tituloLista", "Histórico de Alocações Finalizadas");
         return "alocacoes/list";
     }
 
@@ -132,15 +190,79 @@ public class AlocacaoMotoController {
     }
 
     /**
-     * REMOVER alocação (desalocar moto)
+     * HISTÓRICO de uma moto específica
+     */
+    @GetMapping("/moto/{motoId}/historico")
+    public String listarHistoricoPorMoto(@PathVariable Long motoId, Model model) {
+        try {
+            List<AlocacaoMotoDTO> historico = alocacaoService.buscarHistoricoPorMoto(motoId);
+            
+            System.out.println("=== HISTÓRICO DA MOTO " + motoId + " ===");
+            System.out.println("Total de alocações encontradas: " + historico.size());
+            
+            model.addAttribute("alocacoes", historico);
+            model.addAttribute("motoId", motoId);
+            model.addAttribute("tipoLista", "historico-moto");
+            model.addAttribute("tituloLista", "Histórico da Moto");
+            return "alocacoes/list";
+        } catch (Exception e) {
+            model.addAttribute("error", "Erro ao buscar histórico da moto: " + e.getMessage());
+            return "redirect:/alocacoes";
+        }
+    }
+    
+    /**
+     * ALOCAÇÕES de um pátio específico
+     */
+    @GetMapping("/patio/{patioId}")
+    public String listarPorPatio(@PathVariable Long patioId, Model model) {
+        try {
+            List<AlocacaoMotoDTO> alocacoesPatio = alocacaoService.buscarPorPatio(patioId);
+            AlocacaoMotoService.AlocacaoEstatisticas stats = alocacaoService.obterEstatisticas();
+            
+            System.out.println("=== ALOCAÇÕES DO PÁTIO " + patioId + " ===");
+            System.out.println("Total de alocações encontradas: " + alocacoesPatio.size());
+            
+            model.addAttribute("alocacoes", alocacoesPatio);
+            model.addAttribute("stats", stats);
+            model.addAttribute("patioId", patioId);
+            model.addAttribute("tipoLista", "patio");
+            model.addAttribute("tituloLista", "Alocações do Pátio");
+            return "alocacoes/list";
+        } catch (Exception e) {
+            model.addAttribute("error", "Erro ao buscar alocações do pátio: " + e.getMessage());
+            return "redirect:/alocacoes";
+        }
+    }
+    
+    /**
+     * REMOVER alocação (desalocar moto) - mantém histórico
      */
     @PostMapping("/{id}/remover")
     public String remover(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         try {
-            alocacaoService.desalocar(id);
-            redirectAttributes.addFlashAttribute("success", "Moto desalocada com sucesso!");
+            alocacaoService.desalocar(id, "Desalocação via interface web", null);
+            redirectAttributes.addFlashAttribute("success", "Moto desalocada com sucesso! Histórico mantido.");
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Erro ao desalocar: " + e.getMessage());
+        }
+        return "redirect:/alocacoes";
+    }
+    
+    /**
+     * CANCELAR alocação - diferente de remover
+     */
+    @PostMapping("/{id}/cancelar")
+    public String cancelar(@PathVariable Long id, 
+                          @RequestParam(required = false) String motivo,
+                          RedirectAttributes redirectAttributes) {
+        try {
+            String motivoCancelamento = motivo != null && !motivo.trim().isEmpty() ? 
+                                      motivo : "Cancelamento via interface web";
+            alocacaoService.cancelarAlocacao(id, motivoCancelamento, null);
+            redirectAttributes.addFlashAttribute("success", "Alocação cancelada com sucesso! Histórico mantido.");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Erro ao cancelar: " + e.getMessage());
         }
         return "redirect:/alocacoes";
     }
@@ -168,33 +290,91 @@ public class AlocacaoMotoController {
     }
     
     /**
-     * ENDPOINT DE DEBUG: Desalocar todas as motos
+     * ESTATÍSTICAS das alocações
      */
-    @PostMapping("/debug/desalocar-todas")
+    @GetMapping("/estatisticas")
     @ResponseBody
-    public String desalocarTodasAsMotos() {
+    public AlocacaoMotoService.AlocacaoEstatisticas obterEstatisticas() {
+        return alocacaoService.obterEstatisticas();
+    }
+    
+    /**
+     * API: Verificar se moto tem alocação ativa
+     */
+    @GetMapping("/api/moto/{motoId}/ativa")
+    @ResponseBody
+    public boolean motoTemAlocacaoAtiva(@PathVariable Long motoId) {
+        return alocacaoService.motoTemAlocacaoAtiva(motoId);
+    }
+    
+    /**
+     * API: Buscar alocação ativa de uma moto
+     */
+    @GetMapping("/api/moto/{motoId}/alocacao-ativa")
+    @ResponseBody
+    public Optional<AlocacaoMotoDTO> buscarAlocacaoAtivaPorMoto(@PathVariable Long motoId) {
+        return alocacaoService.buscarAlocacaoAtivaPorMoto(motoId);
+    }
+    
+    /**
+     * ENDPOINT DE DEBUG: Finalizar todas as alocações ativas (mantém histórico)
+     */
+    @PostMapping("/debug/finalizar-todas")
+    @ResponseBody
+    public String finalizarTodasAsAlocacoes() {
         try {
-            List<AlocacaoMotoDTO> todasAlocacoes = alocacaoService.listarTodas();
+            List<AlocacaoMotoDTO> alocacoesAtivas = alocacaoService.listarAlocacoesAtivas();
             
-            System.out.println("=== DESALOCANDO TODAS AS MOTOS ===");
-            System.out.println("Total de alocações encontradas: " + todasAlocacoes.size());
+            System.out.println("=== FINALIZANDO TODAS AS ALOCAÇÕES ATIVAS ===");
+            System.out.println("Total de alocações ativas encontradas: " + alocacoesAtivas.size());
             
-            if (todasAlocacoes.isEmpty()) {
-                return "❌ Nenhuma alocação encontrada para desalocar.";
+            if (alocacoesAtivas.isEmpty()) {
+                return "❌ Nenhuma alocação ativa encontrada para finalizar.";
             }
             
-            for (AlocacaoMotoDTO alocacao : todasAlocacoes) {
-                System.out.println("Desalocando: Moto " + alocacao.getMotoId() + " da Vaga " + alocacao.getVagaId());
-                alocacaoService.desalocar(alocacao.getId());
+            for (AlocacaoMotoDTO alocacao : alocacoesAtivas) {
+                System.out.println("Finalizando: Alocação " + alocacao.getId() + 
+                                 " - Moto " + alocacao.getMotoId() + " da Vaga " + alocacao.getVagaId());
+                alocacaoService.desalocar(alocacao.getId(), "Finalização em lote via debug", null);
             }
             
-            System.out.println("✅ Todas as motos foram desalocadas!");
-            return "✅ SUCESSO! " + todasAlocacoes.size() + " motos foram desalocadas. Agora você pode fazer novas alocações.";
+            System.out.println("✅ Todas as alocações ativas foram finalizadas!");
+            return "✅ SUCESSO! " + alocacoesAtivas.size() + " alocações foram finalizadas. " +
+                   "Histórico mantido. Agora você pode fazer novas alocações.";
             
         } catch (Exception e) {
-            System.err.println("❌ Erro ao desalocar motos: " + e.getMessage());
+            System.err.println("❌ Erro ao finalizar alocações: " + e.getMessage());
             e.printStackTrace();
             return "❌ ERRO: " + e.getMessage();
+        }
+    }
+    
+    /**
+     * ENDPOINT DE DEBUG: Exibir estatísticas completas
+     */
+    @GetMapping("/debug/stats")
+    @ResponseBody
+    public String exibirEstatisticas() {
+        try {
+            AlocacaoMotoService.AlocacaoEstatisticas stats = alocacaoService.obterEstatisticas();
+            
+            StringBuilder sb = new StringBuilder();
+            sb.append("📊 ESTATÍSTICAS DE ALOCAÇÕES\n");
+            sb.append("============================\n");
+            sb.append("🟢 Alocações Ativas: ").append(stats.getAlocacoesAtivas()).append("\n");
+            sb.append("🔴 Alocações Finalizadas: ").append(stats.getAlocacoesFinalizadas()).append("\n");
+            sb.append("📈 Total de Alocações: ").append(stats.getTotalAlocacoes()).append("\n");
+            sb.append("============================\n");
+            
+            if (stats.getTotalAlocacoes() > 0) {
+                double percentualAtivas = (double) stats.getAlocacoesAtivas() / stats.getTotalAlocacoes() * 100;
+                sb.append("📊 Percentual Ativo: ").append(String.format("%.1f%%", percentualAtivas));
+            }
+            
+            return sb.toString();
+            
+        } catch (Exception e) {
+            return "❌ ERRO ao obter estatísticas: " + e.getMessage();
         }
     }
 }

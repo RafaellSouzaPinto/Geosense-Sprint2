@@ -5,6 +5,10 @@ import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
 
+/**
+ * Entidade melhorada para controle completo de alocações de motos
+ * Mantém histórico completo de todas as alocações realizadas
+ */
 @Entity
 @Table(name = "ALOCACAO_MOTO")
 public class AlocacaoMoto {
@@ -21,7 +25,7 @@ public class AlocacaoMoto {
     @ManyToOne
     @JoinColumn(name = "VAGA_ID")
     @NotNull
-    private Vaga vaga   ;
+    private Vaga vaga;
 
     @ManyToOne
     @JoinColumn(name = "MECANICO_RESPONSAVEL_ID")
@@ -30,8 +34,30 @@ public class AlocacaoMoto {
     @Column(name = "DATA_HORA_ALOCACAO")
     private LocalDateTime dataHoraAlocacao;
 
+    @Column(name = "DATA_HORA_FINALIZACAO")
+    private LocalDateTime dataHoraFinalizacao;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "STATUS", nullable = false)
+    private StatusAlocacao status = StatusAlocacao.ATIVA;
+
+    @Column(name = "MOTIVO_FINALIZACAO", length = 500)
+    private String motivoFinalizacao;
+
+    @ManyToOne
+    @JoinColumn(name = "USUARIO_FINALIZACAO_ID")
+    private Usuario usuarioFinalizacao;
+
     @Column(name = "OBSERVACOES", length = 1000)
     private String observacoes;
+
+    // Enum para status da alocação
+    public enum StatusAlocacao {
+        ATIVA,           // Alocação atual ativa
+        REALOCADA,       // Moto foi movida para outro local
+        FINALIZADA,      // Alocação encerrada normalmente
+        CANCELADA        // Alocação cancelada por algum motivo
+    }
 
     public AlocacaoMoto() {
     }
@@ -42,6 +68,24 @@ public class AlocacaoMoto {
         this.vaga = vaga;
         this.mecanicoResponsavel = mecanicoResponsavel;
         this.dataHoraAlocacao = dataHoraAlocacao;
+        this.observacoes = observacoes;
+        this.status = StatusAlocacao.ATIVA;
+    }
+
+    // Construtor completo
+    public AlocacaoMoto(Long id, Moto moto, Vaga vaga, Usuario mecanicoResponsavel, 
+                       LocalDateTime dataHoraAlocacao, LocalDateTime dataHoraFinalizacao,
+                       StatusAlocacao status, String motivoFinalizacao, Usuario usuarioFinalizacao,
+                       String observacoes) {
+        this.id = id;
+        this.moto = moto;
+        this.vaga = vaga;
+        this.mecanicoResponsavel = mecanicoResponsavel;
+        this.dataHoraAlocacao = dataHoraAlocacao;
+        this.dataHoraFinalizacao = dataHoraFinalizacao;
+        this.status = status;
+        this.motivoFinalizacao = motivoFinalizacao;
+        this.usuarioFinalizacao = usuarioFinalizacao;
         this.observacoes = observacoes;
     }
 
@@ -91,5 +135,87 @@ public class AlocacaoMoto {
 
     public void setObservacoes(String observacoes) {
         this.observacoes = observacoes;
+    }
+
+    public LocalDateTime getDataHoraFinalizacao() {
+        return dataHoraFinalizacao;
+    }
+
+    public void setDataHoraFinalizacao(LocalDateTime dataHoraFinalizacao) {
+        this.dataHoraFinalizacao = dataHoraFinalizacao;
+    }
+
+    public StatusAlocacao getStatus() {
+        return status;
+    }
+
+    public void setStatus(StatusAlocacao status) {
+        this.status = status;
+    }
+
+    public String getMotivoFinalizacao() {
+        return motivoFinalizacao;
+    }
+
+    public void setMotivoFinalizacao(String motivoFinalizacao) {
+        this.motivoFinalizacao = motivoFinalizacao;
+    }
+
+    public Usuario getUsuarioFinalizacao() {
+        return usuarioFinalizacao;
+    }
+
+    public void setUsuarioFinalizacao(Usuario usuarioFinalizacao) {
+        this.usuarioFinalizacao = usuarioFinalizacao;
+    }
+
+    // Métodos de conveniência
+    public boolean isAtiva() {
+        return status == StatusAlocacao.ATIVA;
+    }
+
+    public boolean isRealocada() {
+        return status == StatusAlocacao.REALOCADA;
+    }
+
+    public boolean isFinalizada() {
+        return status == StatusAlocacao.FINALIZADA || status == StatusAlocacao.CANCELADA || status == StatusAlocacao.REALOCADA;
+    }
+
+    public void finalizarAlocacao(StatusAlocacao novoStatus, String motivo, Usuario usuario) {
+        this.status = novoStatus;
+        this.dataHoraFinalizacao = LocalDateTime.now();
+        this.motivoFinalizacao = motivo;
+        this.usuarioFinalizacao = usuario;
+    }
+
+    /**
+     * Retorna o status formatado para exibição
+     */
+    public String statusFormatado() {
+        if (status == null) return "Ativa";
+        
+        switch (status) {
+            case ATIVA: return "Ativa";
+            case REALOCADA: return "Realocada";
+            case FINALIZADA: return "Finalizada";
+            case CANCELADA: return "Cancelada";
+            default: return "Ativa";
+        }
+    }
+
+    /**
+     * Retorna a classe CSS do ícone FontAwesome baseado no status
+     */
+    public String getIconeStatus() {
+        if (status == null) return "fa-check-circle";
+        
+        switch (status) {
+            case ATIVA: return "fa-check-circle";
+            case REALOCADA: return "fa-arrow-right";
+            case FINALIZADA: return "fa-check";
+            case CANCELADA: return "fa-times";
+            default: return "fa-check-circle";
+        }
     }
 }

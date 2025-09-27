@@ -4,6 +4,7 @@ import geosense.Geosense.entity.TipoUsuario;
 import geosense.Geosense.entity.Usuario;
 import geosense.Geosense.repository.UsuarioRepository;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -14,6 +15,7 @@ import java.util.Optional;
  * Garante que sempre exista um admin no sistema
  */
 @Component
+@DependsOn("flyway")
 public class AdminInitializer implements CommandLineRunner {
 
     private static final String ADMIN_EMAIL = "mottu@gmail.com";
@@ -30,7 +32,28 @@ public class AdminInitializer implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        createAdminIfNotExists();
+        // Aguardar um pouco para garantir que as migrations do Flyway terminaram
+        Thread.sleep(2000);
+        
+        try {
+            createAdminIfNotExists();
+        } catch (Exception e) {
+            // Se falhar, significa que as tabelas ainda não existem ou há problema de sincronização
+            // O usuário admin será criado pela migration V3__seed_data.sql ou V10__reset_complete.sql
+            System.out.println("⚠️ Erro ao verificar/criar usuário admin via código: " + e.getMessage());
+            System.out.println("✅ Usuário admin será criado pelas migrations do banco de dados");
+            
+            // Log detalhado apenas em caso de erro inesperado
+            if (!(e.getMessage() != null && (
+                e.getMessage().contains("ORA-00942") || 
+                e.getMessage().contains("table or view does not exist") ||
+                e.getMessage().contains("Table") ||
+                e.getMessage().contains("USUARIO")
+            ))) {
+                System.out.println("🔍 Detalhes do erro inesperado:");
+                e.printStackTrace();
+            }
+        }
     }
 
     private void createAdminIfNotExists() {

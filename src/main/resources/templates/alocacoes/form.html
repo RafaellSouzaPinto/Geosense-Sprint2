@@ -501,7 +501,12 @@
               <label for="motoId" class="required">Moto</label>
               <div class="input-wrapper">
                 <i class="fas fa-motorcycle"></i>
-                <select id="motoId" th:field="*{motoId}" required>
+                <select
+                  id="motoId"
+                  th:field="*{motoId}"
+                  onchange="carregarVagasDisponiveis()"
+                  required
+                >
                   <option value="">-- Selecione uma moto --</option>
                   <option
                     th:each="moto : ${motos}"
@@ -669,6 +674,7 @@
     <script>
       function carregarVagasDisponiveis() {
         const patioId = document.getElementById("patioId").value;
+        const motoId = document.getElementById("motoId").value;
         const vagaSelect = document.getElementById("vagaId");
 
         if (!patioId) {
@@ -678,15 +684,20 @@
           return;
         }
 
-        console.log("Carregando vagas para pátio:", patioId);
+        console.log("Carregando vagas para pátio:", patioId, "moto:", motoId);
 
         // Resetar select
         vagaSelect.innerHTML =
           '<option value="">🔄 Carregando vagas...</option>';
         vagaSelect.disabled = true;
 
+        // Usar endpoint que inclui vaga atual se moto estiver selecionada
+        const url = motoId
+          ? `/patios/${patioId}/vagas-disponiveis/${motoId}`
+          : `/patios/${patioId}/vagas-disponiveis`;
+
         // Buscar vagas via AJAX
-        fetch(`/patios/${patioId}/vagas-disponiveis`)
+        fetch(url)
           .then((response) => {
             if (!response.ok) {
               throw new Error("Erro ao buscar vagas");
@@ -708,7 +719,13 @@
               vagas.forEach((vaga) => {
                 const option = document.createElement("option");
                 option.value = vaga.id;
-                option.textContent = `🟢 Vaga ${vaga.numero} (${vaga.tipo})`;
+
+                // Verificar se é a vaga atual da moto
+                const isVagaAtual = vaga.moto && vaga.moto.id == motoId;
+                const icon = isVagaAtual ? "📍" : "🟢";
+                const status = isVagaAtual ? " (ATUAL)" : "";
+
+                option.textContent = `${icon} Vaga ${vaga.numero}${status}`;
                 vagaSelect.appendChild(option);
               });
 

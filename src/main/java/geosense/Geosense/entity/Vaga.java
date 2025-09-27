@@ -21,6 +21,7 @@ public class Vaga {
     private TipoVaga tipo;
 
     @ManyToOne
+    @JoinColumn(name = "PATIO_ID")
     @NotNull
     private Patio patio;
 

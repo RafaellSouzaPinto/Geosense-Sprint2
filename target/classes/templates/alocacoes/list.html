@@ -1,8 +1,11 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+>
   <head>
     <meta charset="UTF-8" />
-    <title>Geosense - Alocações</title>
+    <title>Geosense - Alocações de Motos</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
@@ -24,6 +27,8 @@
         --success-color: #10b981;
         --error-color: #ef4444;
         --warning-color: #f59e0b;
+        --info-color: #0ea5e9;
+        --purple-color: #a855f7;
       }
 
       body {
@@ -160,6 +165,117 @@
         color: #fca5a5;
       }
 
+      /* Tabs Navigation */
+      .tabs-container {
+        margin-bottom: 30px;
+      }
+
+      .tabs-nav {
+        display: flex;
+        background: var(--card-bg);
+        backdrop-filter: blur(10px);
+        border-radius: 12px;
+        padding: 8px;
+        border: 1px solid var(--border-color);
+        margin-bottom: 20px;
+        overflow-x: auto;
+      }
+
+      .tab-link {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 12px 20px;
+        border-radius: 8px;
+        text-decoration: none;
+        color: var(--text-secondary);
+        font-weight: 500;
+        transition: all 0.3s ease;
+        white-space: nowrap;
+        min-width: fit-content;
+      }
+
+      .tab-link:hover,
+      .tab-link.active {
+        background: var(--primary-cyan);
+        color: white;
+        text-decoration: none;
+        transform: translateY(-1px);
+      }
+
+      /* Stats Cards */
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+        margin-bottom: 30px;
+      }
+
+      .stat-card {
+        background: var(--card-bg);
+        backdrop-filter: blur(10px);
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        padding: 20px;
+        text-align: center;
+        transition: all 0.3s ease;
+      }
+
+      .stat-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 10px 25px rgba(0, 204, 207, 0.15);
+      }
+
+      .stat-value {
+        font-size: 32px;
+        font-weight: 700;
+        color: var(--primary-cyan);
+        margin-bottom: 8px;
+      }
+
+      .stat-label {
+        color: var(--text-secondary);
+        font-size: 14px;
+        font-weight: 500;
+      }
+
+      /* Status badges */
+      .status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .status-ativa {
+        background: rgba(16, 185, 129, 0.2);
+        color: #86efac;
+        border: 1px solid rgba(16, 185, 129, 0.3);
+      }
+
+      .status-realocada {
+        background: rgba(14, 165, 233, 0.2);
+        color: #7dd3fc;
+        border: 1px solid rgba(14, 165, 233, 0.3);
+      }
+
+      .status-finalizada {
+        background: rgba(156, 163, 175, 0.2);
+        color: #d1d5db;
+        border: 1px solid rgba(156, 163, 175, 0.3);
+      }
+
+      .status-cancelada {
+        background: rgba(239, 68, 68, 0.2);
+        color: #fca5a5;
+        border: 1px solid rgba(239, 68, 68, 0.3);
+      }
+
       /* Alocações Grid */
       .alocacoes-grid {
         display: grid;
@@ -204,7 +320,7 @@
       }
 
       .alocacao-info h3 {
-        font-size: 20px;
+        font-size: 18px;
         font-weight: 700;
         color: white;
         margin-bottom: 4px;
@@ -215,7 +331,7 @@
 
       .alocacao-icon {
         color: var(--primary-cyan);
-        font-size: 18px;
+        font-size: 16px;
       }
 
       .alocacao-id {
@@ -254,31 +370,12 @@
         color: white;
         font-weight: 600;
         font-size: 14px;
+        text-align: right;
       }
 
       .detail-value.empty {
         color: var(--text-secondary);
         font-style: italic;
-      }
-
-      /* Status badges */
-      .status-badge {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        padding: 6px 12px;
-        border-radius: 20px;
-        font-size: 12px;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        margin-bottom: 16px;
-      }
-
-      .status-ativo {
-        background: rgba(16, 185, 129, 0.2);
-        color: #86efac;
-        border: 1px solid rgba(16, 185, 129, 0.3);
       }
 
       /* Info destacada */
@@ -293,16 +390,21 @@
       .info-highlight h4 {
         color: var(--primary-cyan);
         font-size: 14px;
-        margin-bottom: 8px;
+        margin-bottom: 12px;
         display: flex;
         align-items: center;
         gap: 6px;
       }
 
-      .info-highlight .detail-value {
-        color: white;
+      /* Duration badge */
+      .duration-badge {
+        background: rgba(168, 85, 247, 0.2);
+        color: #c4b5fd;
+        border: 1px solid rgba(168, 85, 247, 0.3);
+        padding: 4px 8px;
+        border-radius: 8px;
+        font-size: 12px;
         font-weight: 500;
-        font-size: 13px;
       }
 
       /* Actions */
@@ -339,6 +441,28 @@
 
       .btn-remover:hover {
         background: rgba(239, 68, 68, 0.3);
+        color: white;
+      }
+
+      .btn-cancelar {
+        background: rgba(245, 158, 11, 0.2);
+        color: #fbbf24;
+        border: 1px solid rgba(245, 158, 11, 0.3);
+      }
+
+      .btn-cancelar:hover {
+        background: rgba(245, 158, 11, 0.3);
+        color: white;
+      }
+
+      .btn-historico {
+        background: rgba(14, 165, 233, 0.2);
+        color: #7dd3fc;
+        border: 1px solid rgba(14, 165, 233, 0.3);
+      }
+
+      .btn-historico:hover {
+        background: rgba(14, 165, 233, 0.3);
         color: white;
       }
 
@@ -430,8 +554,16 @@
         }
       }
 
-      /* Responsive Design */
+      /* Desktop Navigation */
+      .desktop-nav {
+        display: none;
+      }
+
       @media (min-width: 768px) {
+        .desktop-nav {
+          display: block;
+        }
+
         .bottom-nav {
           display: none;
         }
@@ -473,25 +605,44 @@
           padding: 20px;
         }
 
-        .desktop-nav {
-          display: none;
+        .tabs-nav {
+          padding: 4px;
         }
-      }
 
-      @media (min-width: 768px) {
-        .desktop-nav {
-          display: block;
+        .tab-link {
+          padding: 8px 12px;
+          font-size: 14px;
+        }
+
+        .stats-grid {
+          grid-template-columns: repeat(2, 1fr);
+          gap: 12px;
+        }
+
+        .stat-card {
+          padding: 16px;
+        }
+
+        .stat-value {
+          font-size: 24px;
         }
       }
     </style>
   </head>
   <body>
+    <!-- Desktop Navigation (hidden on mobile) -->
+    <div class="desktop-nav">
+      <div th:replace="~{fragments :: navbar('GeoSense - Alocações')}"></div>
+    </div>
+
     <!-- Header -->
     <header class="header">
       <div class="header-content">
         <h1 class="page-title">
-          <i class="fas fa-car-side"></i>
-          Alocações de Motos
+          <i class="fas fa-motorcycle"></i>
+          <span
+            th:text="${tituloLista != null ? tituloLista : 'Alocações de Motos'}"
+          ></span>
         </h1>
         <div class="header-actions">
           <a href="/alocacoes/novo" class="btn-primary">
@@ -515,15 +666,72 @@
         <span th:text="${error}"></span>
       </div>
 
+      <!-- Tabs Navigation -->
+      <div class="tabs-container">
+        <nav class="tabs-nav">
+          <a
+            href="/alocacoes/ativas"
+            class="tab-link"
+            th:classappend="${tipoLista == 'ativas' ? 'active' : ''}"
+          >
+            <i class="fas fa-check-circle"></i>
+            Alocações Ativas
+          </a>
+          <a
+            href="/alocacoes/historico"
+            class="tab-link"
+            th:classappend="${tipoLista == 'historico' ? 'active' : ''}"
+          >
+            <i class="fas fa-history"></i>
+            Histórico Completo
+          </a>
+          <a
+            href="/alocacoes/historico/finalizadas"
+            class="tab-link"
+            th:classappend="${tipoLista == 'finalizadas' ? 'active' : ''}"
+          >
+            <i class="fas fa-archive"></i>
+            Finalizadas
+          </a>
+        </nav>
+
+        <!-- Estatísticas -->
+        <div th:if="${stats != null}" class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-value" th:text="${stats.alocacoesAtivas}">0</div>
+            <div class="stat-label">Alocações Ativas</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value" th:text="${stats.alocacoesFinalizadas}">
+              0
+            </div>
+            <div class="stat-label">Finalizadas</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value" th:text="${stats.totalAlocacoes}">0</div>
+            <div class="stat-label">Total Geral</div>
+          </div>
+        </div>
+      </div>
+
       <!-- Lista de Alocações -->
       <div th:if="${#lists.isEmpty(alocacoes)}" class="empty-state">
-        <i class="fas fa-car-side"></i>
-        <h3>Nenhuma Alocação Registrada</h3>
-        <p>
-          Aloque motos em vagas dos pátios para começar a gerenciar sua
-          localização.
+        <i class="fas fa-motorcycle"></i>
+        <h3
+          th:text="${tipoLista == 'ativas' ? 'Nenhuma Alocação Ativa' : 'Nenhuma Alocação Registrada'}"
+        >
+          Nenhuma Alocação
+        </h3>
+        <p
+          th:text="${tipoLista == 'ativas' ? 'Todas as motos estão livres no momento.' : 'Ainda não há registros de alocações no sistema.'}"
+        >
+          Não há registros para exibir.
         </p>
-        <a href="/alocacoes/novo" class="btn-primary">
+        <a
+          href="/alocacoes/novo"
+          class="btn-primary"
+          th:if="${tipoLista == 'ativas'}"
+        >
           <i class="fas fa-plus"></i>
           Criar Primeira Alocação
         </a>
@@ -536,10 +744,10 @@
             <div class="alocacao-info">
               <h3>
                 <i class="fas fa-motorcycle alocacao-icon"></i>
-                Moto
                 <span
-                  th:text="${alocacao.moto != null ? alocacao.moto.modelo : 'N/A'}"
-                ></span>
+                  th:text="${alocacao.motoInfo != null ? alocacao.motoInfo : 'Moto N/A'}"
+                  >Moto</span
+                >
               </h3>
             </div>
             <div class="alocacao-id">
@@ -548,9 +756,12 @@
           </div>
 
           <!-- Status Badge -->
-          <div class="status-badge status-ativo">
-            <i class="fas fa-check-circle"></i>
-            Alocada
+          <div
+            class="status-badge"
+            th:classappend="${alocacao.status != null ? 'status-' + alocacao.status.name().toLowerCase() : 'status-ativa'}"
+          >
+            <i class="fas" th:classappend="${alocacao.getIconeStatus()}"></i>
+            <span th:text="${alocacao.statusFormatado()}">Status</span>
           </div>
 
           <!-- Detalhes da Moto -->
@@ -562,29 +773,23 @@
               </span>
               <span class="detail-value">
                 #<span
-                  th:text="${alocacao.moto != null ? alocacao.moto.id : 'N/A'}"
+                  th:text="${alocacao.motoId != null ? alocacao.motoId : 'N/A'}"
                 ></span>
-                -
                 <span
-                  th:text="${alocacao.moto != null ? alocacao.moto.modelo : 'N/A'}"
+                  th:if="${alocacao.motoInfo != null}"
+                  th:text="' - ' + ${alocacao.motoInfo}"
                 ></span>
               </span>
             </div>
             <div class="detail-row">
               <span class="detail-label">
                 <i class="fas fa-id-card"></i>
-                Placa/Chassi
+                Identificação
               </span>
-              <span class="detail-value" th:if="${alocacao.moto != null}">
+              <span class="detail-value">
                 <span
-                  th:text="${alocacao.moto.placa != null ? alocacao.moto.placa : alocacao.moto.chassi}"
+                  th:text="${alocacao.motoInfo != null ? alocacao.motoInfo : 'N/A'}"
                 ></span>
-              </span>
-              <span
-                class="detail-value empty"
-                th:unless="${alocacao.moto != null}"
-              >
-                Não informado
               </span>
             </div>
           </div>
@@ -602,19 +807,17 @@
               </span>
               <span class="detail-value">
                 <span
-                  th:text="${alocacao.vaga != null ? alocacao.vaga.patio.nomeUnidade : 'N/A'}"
+                  th:text="${alocacao.patioInfo != null ? alocacao.patioInfo : 'N/A'}"
                 ></span>
               </span>
             </div>
-            <div class="detail-row">
+            <div class="detail-row" th:if="${alocacao.patioInfo != null}">
               <span class="detail-label">
                 <i class="fas fa-map-pin"></i>
                 Endereço
               </span>
               <span class="detail-value">
-                <span
-                  th:text="${alocacao.vaga != null ? alocacao.vaga.patio.localizacao : 'N/A'}"
-                ></span>
+                <span th:text="${alocacao.patioInfo}"></span>
               </span>
             </div>
             <div class="detail-row">
@@ -623,14 +826,9 @@
                 Vaga
               </span>
               <span class="detail-value">
-                Nº
                 <span
-                  th:text="${alocacao.vaga != null ? alocacao.vaga.numero : 'N/A'}"
+                  th:text="${alocacao.vagaInfo != null ? alocacao.vagaInfo : 'N/A'}"
                 ></span>
-                (<span
-                  th:text="${alocacao.vaga != null ? alocacao.vaga.tipo : 'N/A'}"
-                ></span
-                >)
               </span>
             </div>
           </div>
@@ -638,7 +836,7 @@
           <!-- Informações do Mecânico (se houver) -->
           <div
             class="alocacao-details"
-            th:if="${alocacao.mecanicoResponsavel != null}"
+            th:if="${alocacao.mecanicoInfo != null and alocacao.mecanicoInfo != 'N/A'}"
           >
             <div class="detail-row">
               <span class="detail-label">
@@ -646,22 +844,93 @@
                 Mecânico
               </span>
               <span class="detail-value">
-                <span th:text="${alocacao.mecanicoResponsavel.nome}"></span>
+                <span
+                  th:text="${alocacao.mecanicoInfo != null ? alocacao.mecanicoInfo : 'N/A'}"
+                ></span>
               </span>
             </div>
           </div>
 
-          <!-- Data de Alocação -->
-          <div class="alocacao-details">
+          <!-- Datas e Duração -->
+          <div class="info-highlight">
+            <h4>
+              <i class="fas fa-clock"></i>
+              Controle de Tempo
+            </h4>
             <div class="detail-row">
               <span class="detail-label">
-                <i class="fas fa-calendar"></i>
-                Data da Alocação
+                <i class="fas fa-calendar-plus"></i>
+                Alocado em
               </span>
               <span class="detail-value">
                 <span
-                  th:text="${#temporals.format(alocacao.dataHoraAlocacao, 'dd/MM/yyyy HH:mm')}"
+                  th:text="${alocacao.dataAlocacaoFormatada() != null ? alocacao.dataAlocacaoFormatada() : 
+                                           (alocacao.dataHoraAlocacao != null ? #temporals.format(alocacao.dataHoraAlocacao, 'dd/MM/yyyy HH:mm') : 'N/A')}"
                 ></span>
+              </span>
+            </div>
+
+            <div
+              class="detail-row"
+              th:if="${alocacao.dataHoraFinalizacao != null}"
+            >
+              <span class="detail-label">
+                <i class="fas fa-calendar-check"></i>
+                Finalizado em
+              </span>
+              <span class="detail-value">
+                <span
+                  th:text="${alocacao.dataFinalizacaoFormatada() != null ? alocacao.dataFinalizacaoFormatada() : 
+                                           (alocacao.dataHoraFinalizacao != null ? #temporals.format(alocacao.dataHoraFinalizacao, 'dd/MM/yyyy HH:mm') : 'N/A')}"
+                ></span>
+              </span>
+            </div>
+
+            <div
+              class="detail-row"
+              th:if="${alocacao.duracaoFormatada() != null}"
+            >
+              <span class="detail-label">
+                <i class="fas fa-hourglass-half"></i>
+                Duração
+              </span>
+              <span class="detail-value">
+                <span
+                  class="duration-badge"
+                  th:text="${alocacao.duracaoFormatada()}"
+                ></span>
+              </span>
+            </div>
+          </div>
+
+          <!-- Motivo de Finalização (se houver) -->
+          <div
+            class="alocacao-details"
+            th:if="${alocacao.motivoFinalizacao != null and !alocacao.motivoFinalizacao.isEmpty()}"
+          >
+            <div class="detail-row">
+              <span class="detail-label">
+                <i class="fas fa-comment-alt"></i>
+                Motivo
+              </span>
+              <span class="detail-value">
+                <span th:text="${alocacao.motivoFinalizacao}"></span>
+              </span>
+            </div>
+          </div>
+
+          <!-- Usuário de Finalização (se houver) -->
+          <div
+            class="alocacao-details"
+            th:if="${alocacao.usuarioFinalizacaoInfo != null and alocacao.usuarioFinalizacaoInfo != 'N/A'}"
+          >
+            <div class="detail-row">
+              <span class="detail-label">
+                <i class="fas fa-user"></i>
+                Finalizado por
+              </span>
+              <span class="detail-value">
+                <span th:text="${alocacao.usuarioFinalizacaoInfo}"></span>
               </span>
             </div>
           </div>
@@ -682,8 +951,11 @@
             </div>
           </div>
 
-          <!-- Actions -->
-          <div class="alocacao-actions">
+          <!-- Actions (apenas para alocações ativas) -->
+          <div
+            class="alocacao-actions"
+            th:if="${alocacao.status == null or alocacao.status.name() == 'ATIVA'}"
+          >
             <form
               th:action="@{/alocacoes/{id}/remover(id=${alocacao.id})}"
               method="post"
@@ -693,12 +965,43 @@
                 type="submit"
                 class="btn-action btn-remover"
                 style="width: 100%"
-                onclick="return confirm('Confirma a remoção desta alocação? A vaga ficará disponível novamente.')"
+                onclick="return confirm('Confirma a finalização desta alocação? A vaga ficará disponível novamente e o histórico será mantido.')"
               >
-                <i class="fas fa-times"></i>
-                Remover Alocação
+                <i class="fas fa-check"></i>
+                Finalizar
               </button>
             </form>
+            <form
+              th:action="@{/alocacoes/{id}/cancelar(id=${alocacao.id})}"
+              method="post"
+              style="flex: 1"
+            >
+              <input
+                type="hidden"
+                name="motivo"
+                value="Cancelamento via interface"
+              />
+              <button
+                type="submit"
+                class="btn-action btn-cancelar"
+                style="width: 100%"
+                onclick="return confirm('Confirma o cancelamento desta alocação? Esta ação pode ser desfeita.')"
+              >
+                <i class="fas fa-times"></i>
+                Cancelar
+              </button>
+            </form>
+          </div>
+
+          <!-- Action para visualizar histórico da moto -->
+          <div class="alocacao-actions" th:if="${alocacao.motoId != null}">
+            <a
+              th:href="@{/alocacoes/moto/{motoId}/historico(motoId=${alocacao.motoId})}"
+              class="btn-action btn-historico"
+            >
+              <i class="fas fa-history"></i>
+              Ver Histórico da Moto
+            </a>
           </div>
         </div>
       </div>
@@ -720,7 +1023,7 @@
           <span>Motos</span>
         </a>
         <a href="/alocacoes" class="nav-item active">
-          <i class="fas fa-car-side"></i>
+          <i class="fas fa-motorcycle"></i>
           <span>Alocações</span>
         </a>
       </div>

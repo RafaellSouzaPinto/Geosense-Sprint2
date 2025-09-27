@@ -1,7 +1,6 @@
 package geosense.Geosense.controller;
 
 import geosense.Geosense.dto.PatioDTO;
-import geosense.Geosense.entity.Patio;
 import geosense.Geosense.entity.StatusVaga;
 import geosense.Geosense.entity.Vaga;
 import geosense.Geosense.repository.PatioRepository;
@@ -110,6 +109,43 @@ public class PatioController {
             
             vagasDisponiveis.forEach(vaga -> {
                 System.out.println("Vaga " + vaga.getNumero() + " - Status: " + vaga.getStatus() + " - Moto: " + (vaga.getMoto() != null ? vaga.getMoto().getId() : "null"));
+            });
+            
+            return ResponseEntity.ok(vagasDisponiveis);
+        } catch (Exception e) {
+            System.err.println("Erro ao buscar vagas disponíveis: " + e.getMessage());
+            e.printStackTrace();
+            return ResponseEntity.ok(List.of());
+        }
+    }
+
+    // API endpoint para buscar vagas disponíveis por pátio incluindo vaga atual da moto
+    @GetMapping("/{patioId}/vagas-disponiveis/{motoId}")
+    @ResponseBody
+    public ResponseEntity<List<Vaga>> getVagasDisponiveisComVagaAtual(@PathVariable Long patioId, @PathVariable Long motoId) {
+        try {
+            List<Vaga> vagasDisponiveis = vagaRepository.findVagasDisponiveisByPatioId(patioId);
+            
+            // Buscar vaga atual da moto se ela estiver alocada
+            List<Vaga> todasVagas = vagaRepository.findByPatioIdOrderByNumeroAsc(patioId);
+            Vaga vagaAtualMoto = todasVagas.stream()
+                    .filter(v -> v.getMoto() != null && v.getMoto().getId().equals(motoId))
+                    .findFirst()
+                    .orElse(null);
+            
+            // Se a moto tem vaga atual e não está na lista de disponíveis, adicionar
+            if (vagaAtualMoto != null && !vagasDisponiveis.contains(vagaAtualMoto)) {
+                vagasDisponiveis.add(0, vagaAtualMoto); // Adicionar no início
+                System.out.println("✅ Vaga atual da moto adicionada: Vaga " + vagaAtualMoto.getNumero());
+            }
+            
+            System.out.println("=== VAGAS DISPONÍVEIS + VAGA ATUAL ===");
+            System.out.println("Pátio ID: " + patioId + ", Moto ID: " + motoId);
+            System.out.println("Total de vagas: " + vagasDisponiveis.size());
+            
+            vagasDisponiveis.forEach(vaga -> {
+                String status = vaga.getMoto() != null && vaga.getMoto().getId().equals(motoId) ? "ATUAL" : vaga.getStatus().toString();
+                System.out.println("Vaga " + vaga.getNumero() + " - Status: " + status + " - Moto: " + (vaga.getMoto() != null ? vaga.getMoto().getId() : "null"));
             });
             
             return ResponseEntity.ok(vagasDisponiveis);
