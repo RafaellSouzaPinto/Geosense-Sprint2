@@ -74,26 +74,21 @@ CREATE TABLE ALOCACAO_MOTO (
   CONSTRAINT FK_ALOCACAO_MECANICO FOREIGN KEY (MECANICO_RESPONSAVEL_ID) REFERENCES USUARIO(ID)
 );
 
--- Inserir dados de exemplo
 INSERT INTO USUARIO (NOME, EMAIL, SENHA, TIPO) VALUES ('Admin', 'admin@geosense.com', '$2a$10$D4CqT4GWL.NBIlrOxNwLIOY3X1xPTVLR5bKCkPjGtQjV1b.QsWyTu', 'ADMINISTRADOR');
 INSERT INTO USUARIO (NOME, EMAIL, SENHA, TIPO) VALUES ('Mecânico João', 'joao@geosense.com', '$2a$10$D4CqT4GWL.NBIlrOxNwLIOY3X1xPTVLR5bKCkPjGtQjV1b.QsWyTu', 'MECANICO');
 
--- Inserir pátios de exemplo
 INSERT INTO PATIO (LOCALIZACAO, LOCAL, NOME_UNIDADE, CAPACIDADE) VALUES ('Rua das Flores, 123', 'Setor A', 'Unidade Centro', 20);
 INSERT INTO PATIO (LOCALIZACAO, LOCAL, NOME_UNIDADE, CAPACIDADE) VALUES ('Av. Principal, 456', 'Galpão 2', 'Unidade Norte', 15);
 
--- Inserir vagas automaticamente para os pátios
 DECLARE
   v_patio_id NUMBER;
   v_capacidade NUMBER;
 BEGIN
-  -- Vagas para Pátio 1
   SELECT ID, CAPACIDADE INTO v_patio_id, v_capacidade FROM PATIO WHERE NOME_UNIDADE = 'Unidade Centro';
   FOR i IN 1..v_capacidade LOOP
     INSERT INTO VAGA (NUMERO, STATUS, PATIO_ID) VALUES (i, 'DISPONIVEL', v_patio_id);
   END LOOP;
   
-  -- Vagas para Pátio 2
   SELECT ID, CAPACIDADE INTO v_patio_id, v_capacidade FROM PATIO WHERE NOME_UNIDADE = 'Unidade Norte';
   FOR i IN 1..v_capacidade LOOP
     INSERT INTO VAGA (NUMERO, STATUS, PATIO_ID) VALUES (i, 'DISPONIVEL', v_patio_id);
@@ -101,7 +96,3 @@ BEGIN
 END;
 /
 
--- Inserir algumas motos de exemplo
-INSERT INTO MOTO (MODELO, PLACA, CHASSI, PROBLEMA_IDENTIFICADO) VALUES ('Mottu Sport', 'ABC-1234', null, 'reparos simples');
-INSERT INTO MOTO (MODELO, PLACA, CHASSI, PROBLEMA_IDENTIFICADO) VALUES ('Mottu E', 'DEF-5678', null, null);
-INSERT INTO MOTO (MODELO, PLACA, CHASSI, PROBLEMA_IDENTIFICADO) VALUES ('Mottu Pop', null, '9BD12345678901234', 'motor defeituoso');
