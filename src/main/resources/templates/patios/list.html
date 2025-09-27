@@ -2,145 +2,672 @@
 <html xmlns:th="http://www.thymeleaf.org">
   <head>
     <meta charset="UTF-8" />
-    <title>Pátios</title>
+    <title>Geosense - Pátios</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
     <style>
-      body {
-        font-family: Arial, sans-serif;
-        padding: 24px;
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
       }
-      .top {
+
+      :root {
+        --primary-dark: #020817;
+        --primary-cyan: #00cccf;
+        --text-secondary: #94a3b8;
+        --card-bg: rgba(255, 255, 255, 0.08);
+        --border-color: rgba(255, 255, 255, 0.1);
+        --success-color: #10b981;
+        --error-color: #ef4444;
+        --warning-color: #f59e0b;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(
+          135deg,
+          #020817 0%,
+          #0f172a 50%,
+          #1e293b 100%
+        );
+        min-height: 100vh;
+        color: white;
+        position: relative;
+        overflow-x: hidden;
+        padding-bottom: 80px;
+      }
+
+      /* Background decorative elements */
+      body::before {
+        content: "";
+        position: fixed;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(
+          circle,
+          rgba(0, 204, 207, 0.08) 0%,
+          transparent 70%
+        );
+        animation: pulse 8s ease-in-out infinite;
+        z-index: -1;
+      }
+
+      /* Header */
+      .header {
+        background: var(--card-bg);
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid var(--border-color);
+        padding: 20px;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        margin-bottom: 30px;
+      }
+
+      .header-content {
+        max-width: 1200px;
+        margin: 0 auto;
         display: flex;
         justify-content: space-between;
         align-items: center;
+      }
+
+      .page-title {
+        font-size: 28px;
+        font-weight: 700;
+        color: white;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+      }
+
+      .page-title i {
+        color: var(--primary-cyan);
+        font-size: 24px;
+      }
+
+      .header-actions {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+      }
+
+      .btn-primary {
+        background: linear-gradient(
+          135deg,
+          var(--primary-cyan) 0%,
+          #0891b2 100%
+        );
+        color: white;
+        padding: 12px 20px;
+        border-radius: 10px;
+        text-decoration: none;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        transition: all 0.3s ease;
+        border: none;
+        cursor: pointer;
+        font-size: 14px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(0, 204, 207, 0.4);
+        text-decoration: none;
+        color: white;
+      }
+
+      /* Main Content */
+      .main-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+
+      /* Alerts */
+      .alert {
+        padding: 16px 20px;
+        border-radius: 12px;
+        margin-bottom: 24px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-weight: 500;
+        backdrop-filter: blur(10px);
+        border: 1px solid;
+      }
+
+      .alert-success {
+        background: rgba(16, 185, 129, 0.1);
+        border-color: rgba(16, 185, 129, 0.3);
+        color: #86efac;
+      }
+
+      .alert-error {
+        background: rgba(239, 68, 68, 0.1);
+        border-color: rgba(239, 68, 68, 0.3);
+        color: #fca5a5;
+      }
+
+      /* Pátios Grid */
+      .patios-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+        gap: 24px;
+        margin-top: 20px;
+      }
+
+      .patio-card {
+        background: var(--card-bg);
+        backdrop-filter: blur(10px);
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        padding: 24px;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .patio-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, var(--primary-cyan), #0891b2);
+        opacity: 0.8;
+      }
+
+      .patio-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 20px 40px rgba(0, 204, 207, 0.2);
+        border-color: rgba(0, 204, 207, 0.3);
+      }
+
+      .patio-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
         margin-bottom: 16px;
       }
-      a.btn {
-        background: #2f3640;
-        color: #fff;
-        padding: 8px 12px;
+
+      .patio-info h3 {
+        font-size: 20px;
+        font-weight: 700;
+        color: white;
+        margin-bottom: 4px;
+      }
+
+      .patio-id {
+        font-size: 12px;
+        color: var(--text-secondary);
+        background: rgba(255, 255, 255, 0.1);
+        padding: 4px 8px;
         border-radius: 6px;
+        font-weight: 500;
+      }
+
+      .patio-location {
+        color: var(--text-secondary);
+        font-size: 14px;
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .patio-address {
+        color: var(--text-secondary);
+        font-size: 13px;
+        font-style: italic;
+      }
+
+      /* Status badges */
+      .status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .status-available {
+        background: rgba(16, 185, 129, 0.2);
+        color: #86efac;
+        border: 1px solid rgba(16, 185, 129, 0.3);
+      }
+
+      .status-full {
+        background: rgba(239, 68, 68, 0.2);
+        color: #fca5a5;
+        border: 1px solid rgba(239, 68, 68, 0.3);
+      }
+
+      .status-warning {
+        background: rgba(245, 158, 11, 0.2);
+        color: #fbbf24;
+        border: 1px solid rgba(245, 158, 11, 0.3);
+      }
+
+      /* Capacity info */
+      .capacity-info {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+        margin: 20px 0;
+        padding: 16px;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .capacity-item {
+        text-align: center;
+      }
+
+      .capacity-number {
+        font-size: 24px;
+        font-weight: 700;
+        margin-bottom: 4px;
+      }
+
+      .capacity-number.available {
+        color: var(--success-color);
+      }
+
+      .capacity-number.occupied {
+        color: var(--error-color);
+      }
+
+      .capacity-label {
+        font-size: 12px;
+        color: var(--text-secondary);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      /* Actions */
+      .patio-actions {
+        display: flex;
+        gap: 8px;
+        margin-top: 20px;
+        padding-top: 20px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .btn-action {
+        flex: 1;
+        padding: 10px 16px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 600;
+        text-align: center;
+        transition: all 0.3s ease;
+        border: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+      }
+
+      .btn-edit {
+        background: rgba(59, 130, 246, 0.2);
+        color: #93c5fd;
+        border: 1px solid rgba(59, 130, 246, 0.3);
+      }
+
+      .btn-edit:hover {
+        background: rgba(59, 130, 246, 0.3);
+        color: white;
         text-decoration: none;
       }
-      table {
-        width: 100%;
-        border-collapse: collapse;
+
+      .btn-delete {
+        background: rgba(239, 68, 68, 0.2);
+        color: #fca5a5;
+        border: 1px solid rgba(239, 68, 68, 0.3);
       }
-      th,
-      td {
-        border: 1px solid #eee;
-        padding: 8px;
-        text-align: left;
+
+      .btn-delete:hover {
+        background: rgba(239, 68, 68, 0.3);
+        color: white;
       }
-      th {
-        background: #f5f6fa;
+
+      /* Empty state */
+      .empty-state {
+        text-align: center;
+        padding: 60px 20px;
+        color: var(--text-secondary);
       }
-      form {
-        display: inline;
+
+      .empty-state i {
+        font-size: 64px;
+        color: var(--primary-cyan);
+        margin-bottom: 20px;
+        opacity: 0.6;
       }
-      .success {
-        color: #2ecc71;
-        margin-bottom: 12px;
+
+      .empty-state h3 {
+        font-size: 24px;
+        margin-bottom: 8px;
+        color: white;
       }
-      .error {
-        color: #c23616;
-        margin-bottom: 12px;
+
+      .empty-state p {
+        font-size: 16px;
+        margin-bottom: 30px;
       }
-      .status-disponivel {
-        color: #27ae60;
-        font-weight: bold;
+
+      /* Bottom Navigation (mobile) */
+      .bottom-nav {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: var(--card-bg);
+        backdrop-filter: blur(10px);
+        border-top: 1px solid var(--border-color);
+        padding: 12px 0;
+        z-index: 100;
       }
-      .status-ocupadas {
-        color: #e74c3c;
-        font-weight: bold;
+
+      .nav-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
       }
-      .status-info {
+
+      .nav-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+        text-decoration: none;
+        color: var(--text-secondary);
+        transition: all 0.3s ease;
+        padding: 8px 16px;
+        border-radius: 12px;
+        min-width: 60px;
+      }
+
+      .nav-item:hover,
+      .nav-item.active {
+        color: var(--primary-cyan);
+        background: rgba(0, 204, 207, 0.1);
+        text-decoration: none;
+      }
+
+      .nav-item i {
+        font-size: 20px;
+      }
+
+      .nav-item span {
         font-size: 12px;
-        color: #7f8c8d;
+        font-weight: 500;
+      }
+
+      /* Animations */
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 0.6;
+          transform: scale(1);
+        }
+        50% {
+          opacity: 1;
+          transform: scale(1.05);
+        }
+      }
+
+      /* Responsive Design */
+      @media (min-width: 768px) {
+        .bottom-nav {
+          display: none;
+        }
+
+        body {
+          padding-bottom: 0;
+        }
+
+        .patios-grid {
+          grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+        }
+      }
+
+      @media (max-width: 767px) {
+        .main-content {
+          padding: 0 15px;
+        }
+
+        .page-title {
+          font-size: 24px;
+        }
+
+        .header-content {
+          flex-direction: column;
+          gap: 16px;
+          align-items: stretch;
+        }
+
+        .header-actions {
+          justify-content: center;
+        }
+
+        .patios-grid {
+          grid-template-columns: 1fr;
+          gap: 16px;
+        }
+
+        .patio-card {
+          padding: 20px;
+        }
+
+        .capacity-info {
+          gap: 12px;
+        }
+
+        .desktop-nav {
+          display: none;
+        }
+      }
+
+      @media (min-width: 768px) {
+        .desktop-nav {
+          display: block;
+        }
       }
     </style>
   </head>
   <body>
-    <div th:replace="~{fragments :: navbar('GeoSense - Pátios')}"></div>
-    <div class="top">
-      <h1>Pátios</h1>
-      <a class="btn" th:href="@{/patios/novo}">Novo Pátio</a>
+    <!-- Desktop Navigation (hidden on mobile) -->
+    <div class="desktop-nav">
+      <div th:replace="~{fragments :: navbar('Geosense - Pátios')}"></div>
     </div>
 
-    <div class="success" th:if="${success}" th:text="${success}"></div>
-    <div class="error" th:if="${error}" th:text="${error}"></div>
+    <!-- Header -->
+    <header class="header">
+      <div class="header-content">
+        <h1 class="page-title">
+          <i class="fas fa-building"></i>
+          Pátios
+        </h1>
+        <div class="header-actions">
+          <a th:href="@{/patios/novo}" class="btn-primary">
+            <i class="fas fa-plus"></i>
+            Novo Pátio
+          </a>
+        </div>
+      </div>
+    </header>
 
-    <table>
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Unidade</th>
-          <th>Localização</th>
-          <th>Endereço Detalhado</th>
-          <th>Capacidade</th>
-          <th>Vagas</th>
-          <th>Status</th>
-          <th>Ações</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr th:each="p : ${patios}">
-          <td th:text="${p.id}"></td>
-          <td th:text="${p.nomeUnidade}"></td>
-          <td th:text="${p.localizacao}"></td>
-          <td th:text="${p.enderecoDetalhado ?: '-'}"></td>
-          <td th:text="${p.capacidade}"></td>
-          <td>
-            <div th:if="${p.vagasDisponiveis != null}">
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Success/Error Messages -->
+      <div class="alert alert-success" th:if="${success}">
+        <i class="fas fa-check-circle"></i>
+        <span th:text="${success}"></span>
+      </div>
+
+      <div class="alert alert-error" th:if="${error}">
+        <i class="fas fa-exclamation-triangle"></i>
+        <span th:text="${error}"></span>
+      </div>
+
+      <!-- Pátios Grid -->
+      <div class="patios-grid" th:if="${!#lists.isEmpty(patios)}">
+        <div class="patio-card" th:each="p : ${patios}">
+          <!-- Card Header -->
+          <div class="patio-header">
+            <div class="patio-info">
+              <h3 th:text="${p.nomeUnidade ?: 'Pátio ' + p.id}"></h3>
+              <div class="patio-location">
+                <i class="fas fa-map-marker-alt"></i>
+                <span th:text="${p.localizacao}"></span>
+              </div>
+              <div
+                class="patio-address"
+                th:if="${p.enderecoDetalhado}"
+                th:text="${p.enderecoDetalhado}"
+              ></div>
+            </div>
+            <div class="patio-id">ID: <span th:text="${p.id}"></span></div>
+          </div>
+
+          <!-- Status Badge -->
+          <div style="margin-bottom: 16px">
+            <span
+              class="status-badge"
+              th:classappend="${p.vagasDisponiveis != null and p.vagasDisponiveis > 0} ? 'status-available' : 
+                             (${p.vagasDisponiveis != null and p.vagasDisponiveis == 0} ? 'status-full' : 'status-warning')"
+            >
+              <i
+                class="fas"
+                th:classappend="${p.vagasDisponiveis != null and p.vagasDisponiveis > 0} ? 'fa-check-circle' : 
+                                (${p.vagasDisponiveis != null and p.vagasDisponiveis == 0} ? 'fa-times-circle' : 'fa-exclamation-circle')"
+              ></i>
               <span
-                class="status-disponivel"
-                th:text="${p.vagasDisponiveis}"
+                th:text="${p.vagasDisponiveis != null and p.vagasDisponiveis > 0} ? 'Disponível' : 
+                            (${p.vagasDisponiveis != null and p.vagasDisponiveis == 0} ? 'Lotado' : 'Indefinido')"
               ></span>
-              <span class="status-info">disponíveis</span><br />
-              <span class="status-ocupadas" th:text="${p.vagasOcupadas}"></span>
-              <span class="status-info">ocupadas</span>
+            </span>
+          </div>
+
+          <!-- Capacity Information -->
+          <div class="capacity-info" th:if="${p.vagasDisponiveis != null}">
+            <div class="capacity-item">
+              <div
+                class="capacity-number available"
+                th:text="${p.vagasDisponiveis}"
+              ></div>
+              <div class="capacity-label">Disponíveis</div>
             </div>
-            <div th:unless="${p.vagasDisponiveis != null}">
-              <span class="status-info">-</span>
+            <div class="capacity-item">
+              <div
+                class="capacity-number occupied"
+                th:text="${p.vagasOcupadas}"
+              ></div>
+              <div class="capacity-label">Ocupadas</div>
             </div>
-          </td>
-          <td>
-            <div
-              th:if="${p.vagasDisponiveis != null and p.vagasDisponiveis > 0}"
+          </div>
+
+          <!-- Capacity Display for undefined -->
+          <div class="capacity-info" th:unless="${p.vagasDisponiveis != null}">
+            <div class="capacity-item">
+              <div
+                class="capacity-number"
+                style="color: var(--text-secondary)"
+                th:text="${p.capacidade}"
+              ></div>
+              <div class="capacity-label">Capacidade Total</div>
+            </div>
+            <div class="capacity-item">
+              <div class="capacity-number" style="color: var(--text-secondary)">
+                --
+              </div>
+              <div class="capacity-label">Status</div>
+            </div>
+          </div>
+
+          <!-- Actions -->
+          <div class="patio-actions">
+            <a
+              th:href="@{'/patios/' + ${p.id} + '/editar'}"
+              class="btn-action btn-edit"
             >
-              <span class="status-disponivel">✓ Disponível</span>
-            </div>
-            <div
-              th:if="${p.vagasDisponiveis != null and p.vagasDisponiveis == 0}"
-            >
-              <span class="status-ocupadas">✗ Lotado</span>
-            </div>
-            <div th:unless="${p.vagasDisponiveis != null}">
-              <span class="status-info">-</span>
-            </div>
-          </td>
-          <td>
-            <a th:href="@{'/patios/' + ${p.id} + '/editar'}">Editar</a>
+              <i class="fas fa-edit"></i>
+              Editar
+            </a>
             <form
               th:action="@{'/patios/' + ${p.id} + '/excluir'}"
               method="post"
-              style="display: inline"
+              style="flex: 1"
             >
               <button
                 type="submit"
+                class="btn-action btn-delete"
+                style="width: 100%"
                 onclick="return confirm('Confirma excluir este pátio? Todas as vagas serão removidas.')"
               >
+                <i class="fas fa-trash"></i>
                 Excluir
               </button>
             </form>
-          </td>
-        </tr>
-        <tr th:if="${#lists.isEmpty(patios)}">
-          <td colspan="8" style="text-align: center; color: #7f8c8d">
-            Nenhum pátio cadastrado
-          </td>
-        </tr>
-      </tbody>
-    </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Empty State -->
+      <div class="empty-state" th:if="${#lists.isEmpty(patios)}">
+        <i class="fas fa-building"></i>
+        <h3>Nenhum pátio cadastrado</h3>
+        <p>Comece criando seu primeiro pátio para gerenciar vagas de motos</p>
+        <a th:href="@{/patios/novo}" class="btn-primary">
+          <i class="fas fa-plus"></i>
+          Criar Primeiro Pátio
+        </a>
+      </div>
+    </main>
+
+    <!-- Bottom Navigation (mobile only) -->
+    <nav class="bottom-nav">
+      <div class="nav-container">
+        <a th:href="@{/}" class="nav-item">
+          <i class="fas fa-th-large"></i>
+          <span>Dashboard</span>
+        </a>
+        <a href="#mapa" class="nav-item">
+          <i class="fas fa-map"></i>
+          <span>Mapa</span>
+        </a>
+        <a th:href="@{/patios}" class="nav-item active">
+          <i class="fas fa-building"></i>
+          <span>Pátios</span>
+        </a>
+        <a th:href="@{/motos}" class="nav-item">
+          <i class="fas fa-motorcycle"></i>
+          <span>Motos</span>
+        </a>
+      </div>
+    </nav>
   </body>
 </html>

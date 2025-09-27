@@ -2,108 +2,455 @@
 <html xmlns:th="http://www.thymeleaf.org">
   <head>
     <meta charset="UTF-8" />
-    <title>Cadastro</title>
+    <title>Geosense - Cadastro</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
     <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
       body {
-        font-family: Arial, sans-serif;
-        background: #f5f6fa;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(
+          135deg,
+          #020817 0%,
+          #0f172a 50%,
+          #1e293b 100%
+        );
+        min-height: 100vh;
         display: flex;
         align-items: center;
         justify-content: center;
-        height: 100vh;
+        position: relative;
+        overflow: hidden;
+        padding: 20px 0;
       }
-      .card {
-        background: #fff;
-        padding: 24px;
-        border-radius: 8px;
-        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
-        width: 400px;
+
+      /* Background decorative elements */
+      body::before {
+        content: "";
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(
+          circle,
+          rgba(0, 204, 207, 0.1) 0%,
+          transparent 70%
+        );
+        animation: pulse 4s ease-in-out infinite;
       }
-      h1 {
-        margin: 0 0 16px;
-        font-size: 20px;
+
+      body::after {
+        content: "";
+        position: absolute;
+        top: 20%;
+        right: 10%;
+        width: 300px;
+        height: 300px;
+        background: radial-gradient(
+          circle,
+          rgba(0, 204, 207, 0.05) 0%,
+          transparent 70%
+        );
+        border-radius: 50%;
+        animation: float 6s ease-in-out infinite;
       }
-      .field {
-        margin-bottom: 12px;
-      }
-      label {
-        display: block;
-        margin-bottom: 6px;
-        font-size: 14px;
-      }
-      input {
+
+      .register-container {
+        background: rgba(255, 255, 255, 0.08);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 24px;
+        padding: 40px;
         width: 100%;
-        padding: 10px;
-        border: 1px solid #dcdde1;
-        border-radius: 6px;
+        max-width: 480px;
+        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+        position: relative;
+        z-index: 1;
+        margin: 20px;
       }
-      button {
-        width: 100%;
-        padding: 10px;
-        background: #44bd32;
-        color: #fff;
-        border: none;
-        border-radius: 6px;
-        cursor: pointer;
-      }
-      .msg {
-        margin-top: 10px;
-        color: #c23616;
-        font-size: 13px;
-      }
-      .success {
-        color: #2ecc71;
-      }
-      .link {
-        display: block;
-        margin-top: 10px;
+
+      .logo-section {
         text-align: center;
+        margin-bottom: 35px;
+      }
+
+      .logo-icon {
+        width: 70px;
+        height: 70px;
+        background: linear-gradient(135deg, #00cccf 0%, #0891b2 100%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 16px;
+        box-shadow: 0 10px 30px rgba(0, 204, 207, 0.3);
+        position: relative;
+      }
+
+      .logo-icon::before {
+        content: "";
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, #00cccf 0%, #0891b2 100%);
+        border-radius: 50%;
+        opacity: 0.3;
+        transform: scale(1.2);
+        animation: pulse 2s ease-in-out infinite;
+      }
+
+      .logo-icon i {
+        font-size: 30px;
+        color: white;
+        position: relative;
+        z-index: 1;
+      }
+
+      .logo-text {
+        font-size: 28px;
+        font-weight: 700;
+        color: white;
+        margin-bottom: 6px;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+      }
+
+      .logo-subtitle {
+        color: #94a3b8;
+        font-size: 14px;
+        font-weight: 400;
+      }
+
+      .form-section h1 {
+        color: white;
+        font-size: 26px;
+        font-weight: 600;
+        margin-bottom: 30px;
+        text-align: center;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+      }
+
+      .field {
+        margin-bottom: 20px;
+        position: relative;
+      }
+
+      .field label {
+        display: block;
+        color: #94a3b8;
+        font-size: 13px;
+        font-weight: 500;
+        margin-bottom: 6px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .input-wrapper {
+        position: relative;
+      }
+
+      .input-wrapper i {
+        position: absolute;
+        left: 14px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #94a3b8;
+        font-size: 14px;
+        z-index: 1;
+      }
+
+      .field input {
+        width: 100%;
+        padding: 14px 14px 14px 44px;
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(148, 163, 184, 0.3);
+        border-radius: 10px;
+        color: white;
+        font-size: 15px;
+        outline: none;
+        transition: all 0.3s ease;
+        backdrop-filter: blur(5px);
+      }
+
+      .field input::placeholder {
+        color: #94a3b8;
+        opacity: 0.7;
+      }
+
+      .field input:focus {
+        border-color: #00cccf;
+        background: rgba(255, 255, 255, 0.15);
+        box-shadow: 0 0 0 3px rgba(0, 204, 207, 0.1);
+        transform: translateY(-1px);
+      }
+
+      .field input:focus + .input-wrapper i {
+        color: #00cccf;
+      }
+
+      .register-btn {
+        width: 100%;
+        padding: 16px;
+        background: linear-gradient(135deg, #00cccf 0%, #0891b2 100%);
+        color: white;
+        border: none;
+        border-radius: 12px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        position: relative;
+        overflow: hidden;
+        margin-top: 10px;
+        margin-bottom: 20px;
+      }
+
+      .register-btn::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.2),
+          transparent
+        );
+        transition: left 0.5s;
+      }
+
+      .register-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 30px rgba(0, 204, 207, 0.3);
+      }
+
+      .register-btn:hover::before {
+        left: 100%;
+      }
+
+      .register-btn:active {
+        transform: translateY(0);
+      }
+
+      .error-msg {
+        background: rgba(239, 68, 68, 0.1);
+        border: 1px solid rgba(239, 68, 68, 0.3);
+        color: #fca5a5;
+        padding: 10px 14px;
+        border-radius: 8px;
+        font-size: 13px;
+        margin-top: 8px;
+        backdrop-filter: blur(5px);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .success-msg {
+        background: rgba(16, 185, 129, 0.1);
+        border: 1px solid rgba(16, 185, 129, 0.3);
+        color: #86efac;
+        padding: 12px 16px;
+        border-radius: 8px;
+        font-size: 14px;
+        margin-bottom: 20px;
+        text-align: center;
+        backdrop-filter: blur(5px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+      }
+
+      .login-link {
+        text-align: center;
+        margin-top: 20px;
+      }
+
+      .login-link a {
+        color: #94a3b8;
+        text-decoration: none;
+        font-size: 14px;
+        transition: color 0.3s ease;
+        position: relative;
+      }
+
+      .login-link a:hover {
+        color: #00cccf;
+      }
+
+      .login-link a::after {
+        content: "";
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: #00cccf;
+        transition: width 0.3s ease;
+      }
+
+      .login-link a:hover::after {
+        width: 100%;
+      }
+
+      /* Animations */
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 0.6;
+          transform: scale(1);
+        }
+        50% {
+          opacity: 1;
+          transform: scale(1.05);
+        }
+      }
+
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0px);
+        }
+        50% {
+          transform: translateY(-20px);
+        }
+      }
+
+      /* Responsive Design */
+      @media (max-width: 480px) {
+        .register-container {
+          padding: 30px 20px;
+          margin: 10px;
+          border-radius: 16px;
+        }
+
+        .logo-icon {
+          width: 60px;
+          height: 60px;
+        }
+
+        .logo-icon i {
+          font-size: 26px;
+        }
+
+        .logo-text {
+          font-size: 24px;
+        }
+
+        .form-section h1 {
+          font-size: 22px;
+        }
       }
     </style>
   </head>
   <body>
-    <div class="card">
-      <h1>Criar conta</h1>
-      <form th:action="@{/register}" th:object="${usuario}" method="post">
-        <div class="field">
-          <label for="nome">Nome</label>
-          <input id="nome" th:field="*{nome}" type="text" required />
-          <div
-            class="msg"
-            th:if="${#fields.hasErrors('nome')}"
-            th:errors="*{nome}"
-          ></div>
+    <div class="register-container">
+      <!-- Logo Section -->
+      <div class="logo-section">
+        <div class="logo-icon">
+          <i class="fas fa-map-marker-alt"></i>
         </div>
-        <div class="field">
-          <label for="email">Email</label>
-          <input id="email" th:field="*{email}" type="email" required />
-          <div
-            class="msg"
-            th:if="${#fields.hasErrors('email')}"
-            th:errors="*{email}"
-          ></div>
+        <div class="logo-text">Geosense</div>
+        <div class="logo-subtitle">Sistema de Gestão Inteligente</div>
+      </div>
+
+      <!-- Form Section -->
+      <div class="form-section">
+        <h1>Criar Conta</h1>
+
+        <!-- Success Message -->
+        <div class="success-msg" th:if="${success}">
+          <i class="fas fa-check-circle"></i>
+          <span th:text="${success}"></span>
         </div>
-        <div class="field">
-          <label for="senha">Senha</label>
-          <input
-            id="senha"
-            th:field="*{senha}"
-            type="password"
-            minlength="6"
-            required
-          />
-          <div
-            class="msg"
-            th:if="${#fields.hasErrors('senha')}"
-            th:errors="*{senha}"
-          ></div>
+
+        <form th:action="@{/register}" th:object="${usuario}" method="post">
+          <div class="field">
+            <label for="nome">Nome Completo</label>
+            <div class="input-wrapper">
+              <i class="fas fa-user"></i>
+              <input
+                id="nome"
+                th:field="*{nome}"
+                type="text"
+                placeholder="Insira seu nome completo"
+                required
+              />
+            </div>
+            <div class="error-msg" th:if="${#fields.hasErrors('nome')}">
+              <i class="fas fa-exclamation-circle"></i>
+              <span th:errors="*{nome}"></span>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="email">Email</label>
+            <div class="input-wrapper">
+              <i class="fas fa-envelope"></i>
+              <input
+                id="email"
+                th:field="*{email}"
+                type="email"
+                placeholder="Insira seu email"
+                required
+              />
+            </div>
+            <div class="error-msg" th:if="${#fields.hasErrors('email')}">
+              <i class="fas fa-exclamation-circle"></i>
+              <span th:errors="*{email}"></span>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="senha">Senha</label>
+            <div class="input-wrapper">
+              <i class="fas fa-lock"></i>
+              <input
+                id="senha"
+                th:field="*{senha}"
+                type="password"
+                placeholder="Mínimo 6 caracteres"
+                minlength="6"
+                required
+              />
+            </div>
+            <div class="error-msg" th:if="${#fields.hasErrors('senha')}">
+              <i class="fas fa-exclamation-circle"></i>
+              <span th:errors="*{senha}"></span>
+            </div>
+          </div>
+
+          <button type="submit" class="register-btn">
+            <i class="fas fa-user-plus"></i> Cadastrar
+          </button>
+
+          <!-- General Error Message -->
+          <div class="error-msg" th:if="${error}">
+            <i class="fas fa-exclamation-triangle"></i>
+            <span th:text="${error}"></span>
+          </div>
+        </form>
+
+        <!-- Login Link -->
+        <div class="login-link">
+          <a th:href="@{/login}">
+            <i class="fas fa-sign-in-alt"></i> Já tem conta? Entrar
+          </a>
         </div>
-        <button type="submit">Cadastrar</button>
-        <div class="msg" th:if="${error}" th:text="${error}"></div>
-        <div class="msg success" th:if="${success}" th:text="${success}"></div>
-      </form>
-      <a class="link" th:href="@{/login}">Já tem conta? Entrar</a>
+      </div>
     </div>
   </body>
 </html>

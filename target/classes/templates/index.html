@@ -6,306 +6,768 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>GeoSense - Sistema de Gestão</title>
+    <title>Geosense - Dashboard</title>
     <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
-    <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
       rel="stylesheet"
     />
     <style>
-      :root {
-        --primary: #667eea;
-        --secondary: #764ba2;
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
       }
 
-      .hero-section {
+      :root {
+        --primary-dark: #020817;
+        --primary-cyan: #00cccf;
+        --text-secondary: #94a3b8;
+        --card-bg: rgba(255, 255, 255, 0.08);
+        --border-color: rgba(255, 255, 255, 0.1);
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
         background: linear-gradient(
           135deg,
-          var(--primary) 0%,
-          var(--secondary) 100%
+          #020817 0%,
+          #0f172a 50%,
+          #1e293b 100%
         );
+        min-height: 100vh;
         color: white;
-        padding: 4rem 0;
-        text-align: center;
+        position: relative;
+        overflow-x: hidden;
+        padding-bottom: 80px; /* Space for bottom navigation */
       }
 
-      .feature-card {
-        border: none;
-        border-radius: 15px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        transition: transform 0.3s ease;
-        height: 100%;
+      /* Background decorative elements */
+      body::before {
+        content: "";
+        position: fixed;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(
+          circle,
+          rgba(0, 204, 207, 0.08) 0%,
+          transparent 70%
+        );
+        animation: pulse 6s ease-in-out infinite;
+        z-index: -1;
       }
 
-      .feature-card:hover {
-        transform: translateY(-5px);
+      /* Header */
+      .header {
+        background: var(--card-bg);
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid var(--border-color);
+        padding: 20px;
+        position: sticky;
+        top: 0;
+        z-index: 100;
       }
 
-      .feature-icon {
-        width: 60px;
-        height: 60px;
-        border-radius: 12px;
+      .header-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .logo-section {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .logo-icon {
+        width: 50px;
+        height: 50px;
+        background: linear-gradient(
+          135deg,
+          var(--primary-cyan) 0%,
+          #0891b2 100%
+        );
+        border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 24px;
-        color: white;
-        margin: 0 auto 1rem;
+        box-shadow: 0 8px 25px rgba(0, 204, 207, 0.3);
+        position: relative;
       }
 
-      .stats-section {
-        background: #f8f9fa;
-        padding: 3rem 0;
-      }
-
-      .btn-primary-custom {
+      .logo-icon::before {
+        content: "";
+        position: absolute;
+        width: 100%;
+        height: 100%;
         background: linear-gradient(
           135deg,
-          var(--primary) 0%,
-          var(--secondary) 100%
+          var(--primary-cyan) 0%,
+          #0891b2 100%
         );
-        border: none;
-        padding: 12px 30px;
-        border-radius: 25px;
-        font-weight: 600;
+        border-radius: 50%;
+        opacity: 0.3;
+        transform: scale(1.2);
+        animation: pulse 3s ease-in-out infinite;
+      }
+
+      .logo-icon i {
+        font-size: 22px;
+        color: white;
+        position: relative;
+        z-index: 1;
+      }
+
+      .logo-text {
+        font-size: 24px;
+        font-weight: 700;
+        color: white;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+      }
+
+      .user-info {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: var(--text-secondary);
+        font-size: 14px;
+      }
+
+      .logout-btn {
+        background: rgba(239, 68, 68, 0.1);
+        border: 1px solid rgba(239, 68, 68, 0.3);
+        color: #fca5a5;
+        padding: 8px 12px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-size: 12px;
         transition: all 0.3s ease;
       }
 
-      .btn-primary-custom:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+      .logout-btn:hover {
+        background: rgba(239, 68, 68, 0.2);
+        color: white;
+        text-decoration: none;
       }
 
-      .welcome-back {
-        background: var(--primary);
+      /* Main Content */
+      .main-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      .page-title {
+        font-size: 28px;
+        font-weight: 700;
+        margin-bottom: 25px;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+      }
+
+      /* Metrics Grid */
+      .metrics-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+        margin-bottom: 30px;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .metric-card {
+        background: var(--card-bg);
+        backdrop-filter: blur(10px);
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        padding: 20px;
+        text-align: center;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .metric-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(90deg, var(--primary-cyan), #0891b2);
+        opacity: 0.7;
+      }
+
+      .metric-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 35px rgba(0, 204, 207, 0.2);
+      }
+
+      .metric-value {
+        font-size: 32px;
+        font-weight: 700;
+        color: var(--primary-cyan);
+        margin-bottom: 8px;
+        text-shadow: 0 2px 10px rgba(0, 204, 207, 0.3);
+      }
+
+      .metric-label {
+        font-size: 14px;
+        color: var(--text-secondary);
+        font-weight: 500;
+      }
+
+      /* Action Buttons */
+      .action-buttons {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 16px;
+        margin-bottom: 30px;
+      }
+
+      .action-btn {
+        background: linear-gradient(
+          135deg,
+          var(--primary-cyan) 0%,
+          #0891b2 100%
+        );
         color: white;
-        padding: 1rem;
-        border-radius: 10px;
-        margin-bottom: 2rem;
+        padding: 16px 24px;
+        border-radius: 12px;
+        text-decoration: none;
+        font-weight: 600;
+        text-align: center;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        border: none;
+        cursor: pointer;
+      }
+
+      .action-btn::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.2),
+          transparent
+        );
+        transition: left 0.5s;
+      }
+
+      .action-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 12px 30px rgba(0, 204, 207, 0.4);
+        color: white;
+        text-decoration: none;
+      }
+
+      .action-btn:hover::before {
+        left: 100%;
+      }
+
+      .action-btn.secondary {
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid var(--border-color);
+      }
+
+      .action-btn.secondary:hover {
+        background: rgba(255, 255, 255, 0.2);
+        box-shadow: 0 12px 30px rgba(255, 255, 255, 0.1);
+      }
+
+      /* Content Sections */
+      .content-sections {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 30px;
+      }
+
+      .section-card {
+        background: var(--card-bg);
+        backdrop-filter: blur(10px);
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        padding: 24px;
+      }
+
+      .section-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+
+      .section-title {
+        font-size: 20px;
+        font-weight: 600;
+        color: white;
+      }
+
+      .view-all-btn {
+        color: var(--primary-cyan);
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 500;
+        transition: color 0.3s ease;
+      }
+
+      .view-all-btn:hover {
+        color: white;
+      }
+
+      /* Recent Entries List */
+      .entries-list {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .entry-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 16px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        transition: all 0.3s ease;
+      }
+
+      .entry-item:hover {
+        background: rgba(255, 255, 255, 0.1);
+        transform: translateX(4px);
+      }
+
+      .entry-info {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+
+      .entry-title {
+        font-weight: 600;
+        color: white;
+        font-size: 15px;
+      }
+
+      .entry-subtitle {
+        color: var(--text-secondary);
+        font-size: 13px;
+      }
+
+      .entry-meta {
+        text-align: right;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+
+      .entry-time {
+        color: var(--text-secondary);
+        font-size: 12px;
+      }
+
+      .entry-status {
+        padding: 4px 8px;
+        border-radius: 12px;
+        font-size: 11px;
+        font-weight: 500;
+        text-transform: uppercase;
+      }
+
+      .status-active {
+        background: rgba(16, 185, 129, 0.2);
+        color: #86efac;
+        border: 1px solid rgba(16, 185, 129, 0.3);
+      }
+
+      .status-problem {
+        background: rgba(239, 68, 68, 0.2);
+        color: #fca5a5;
+        border: 1px solid rgba(239, 68, 68, 0.3);
+      }
+
+      .status-maintenance {
+        background: rgba(245, 158, 11, 0.2);
+        color: #fbbf24;
+        border: 1px solid rgba(245, 158, 11, 0.3);
+      }
+
+      /* Bottom Navigation */
+      .bottom-nav {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: var(--card-bg);
+        backdrop-filter: blur(10px);
+        border-top: 1px solid var(--border-color);
+        padding: 12px 0;
+        z-index: 100;
+      }
+
+      .nav-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+      }
+
+      .nav-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+        text-decoration: none;
+        color: var(--text-secondary);
+        transition: all 0.3s ease;
+        padding: 8px 16px;
+        border-radius: 12px;
+        min-width: 60px;
+      }
+
+      .nav-item:hover,
+      .nav-item.active {
+        color: var(--primary-cyan);
+        background: rgba(0, 204, 207, 0.1);
+        text-decoration: none;
+      }
+
+      .nav-item i {
+        font-size: 20px;
+      }
+
+      .nav-item span {
+        font-size: 12px;
+        font-weight: 500;
+      }
+
+      /* Animations */
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 0.6;
+          transform: scale(1);
+        }
+        50% {
+          opacity: 1;
+          transform: scale(1.05);
+        }
+      }
+
+      /* Responsive Design */
+      @media (min-width: 768px) {
+        .content-sections {
+          grid-template-columns: 1fr;
+        }
+
+        .metrics-grid {
+          grid-template-columns: repeat(2, 1fr);
+          max-width: 800px;
+        }
+
+        .action-buttons {
+          grid-template-columns: repeat(2, 1fr);
+          max-width: 600px;
+          margin-left: auto;
+          margin-right: auto;
+        }
+
+        .bottom-nav {
+          display: none; /* Hide on desktop, show regular navbar */
+        }
+
+        body {
+          padding-bottom: 0;
+        }
+      }
+
+      @media (max-width: 767px) {
+        .main-content {
+          padding: 15px;
+        }
+
+        .metrics-grid {
+          grid-template-columns: repeat(2, 1fr);
+          max-width: none;
+          margin-left: 0;
+          margin-right: 0;
+        }
+
+        .metric-card {
+          padding: 16px;
+        }
+
+        .metric-value {
+          font-size: 24px;
+        }
+
+        .page-title {
+          font-size: 24px;
+        }
+
+        .header-content {
+          padding: 0 5px;
+        }
+
+        .user-info {
+          font-size: 12px;
+        }
+
+        .logo-text {
+          font-size: 20px;
+        }
+
+        .action-buttons {
+          max-width: none;
+          margin-left: 0;
+          margin-right: 0;
+        }
+      }
+
+      /* Hide default navbar on mobile */
+      @media (max-width: 767px) {
+        .desktop-nav {
+          display: none;
+        }
+      }
+
+      @media (min-width: 768px) {
+        .desktop-nav {
+          display: block;
+        }
       }
     </style>
   </head>
   <body>
-    <div th:replace="~{fragments :: navbar('GeoSense - Home')}"></div>
+    <!-- Desktop Navigation (hidden on mobile) -->
+    <div class="desktop-nav">
+      <div th:replace="~{fragments :: navbar('GeoSense - Dashboard')}"></div>
+    </div>
 
-    <!-- Seção Hero -->
-    <div class="hero-section">
-      <div class="container">
-        <h1 class="display-4 fw-bold mb-4">
-          <i class="fas fa-motorcycle me-3"></i>
-          GeoSense
-        </h1>
-        <p class="lead mb-4">Sistema completo de gestão de motos e pátios</p>
-
-        <!-- Mostrar mensagem de boas-vindas se logado -->
-        <div sec:authorize="isAuthenticated()">
-          <div class="welcome-back">
-            <i class="fas fa-user-check me-2"></i>
-            Bem-vindo de volta, <span sec:authentication="name"></span>!
+    <!-- Header -->
+    <header class="header">
+      <div class="header-content">
+        <div class="logo-section">
+          <div class="logo-icon">
+            <i class="fas fa-map-marker-alt"></i>
           </div>
+          <div class="logo-text">Geosense</div>
         </div>
-
-        <!-- Botão para login se não estiver logado -->
-        <div sec:authorize="!isAuthenticated()">
-          <a th:href="@{/login}" class="btn btn-primary-custom btn-lg">
-            <i class="fas fa-sign-in-alt me-2"></i>
-            Fazer Login
+        <div class="user-info" sec:authorize="isAuthenticated()">
+          <i class="fas fa-user-circle"></i>
+          <span sec:authentication="name"></span>
+          <a th:href="@{/logout}" class="logout-btn">
+            <i class="fas fa-sign-out-alt"></i> Sair
           </a>
         </div>
       </div>
-    </div>
+    </header>
 
-    <!-- Seção de Funcionalidades -->
-    <div class="container my-5">
-      <div class="row text-center mb-5">
-        <div class="col-12">
-          <h2 class="fw-bold">O que você pode fazer</h2>
-          <p class="text-muted">
-            Gerencie todo seu sistema de forma simples e eficiente
-          </p>
+    <!-- Main Content -->
+    <main class="main-content">
+      <div class="page-title">Dashboard</div>
+
+      <!-- Metrics Grid -->
+      <div class="metrics-grid">
+        <div class="metric-card">
+          <div class="metric-value" id="vagasDisponiveis">--</div>
+          <div class="metric-label">Vagas Disponíveis</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-value" id="motosNoPatio">--</div>
+          <div class="metric-label">Motos no Pátio</div>
         </div>
       </div>
 
-      <div class="row">
-        <!-- Card Pátios -->
-        <div class="col-lg-3 col-md-6 mb-4">
-          <div class="card feature-card">
-            <div class="card-body text-center p-4">
-              <div class="feature-icon bg-success">
-                <i class="fas fa-building"></i>
-              </div>
-              <h5 class="card-title">Gerenciar Pátios</h5>
-              <p class="card-text">
-                Cadastre e controle todos os pátios do sistema
-              </p>
-              <a
-                th:href="@{/patios}"
-                class="btn btn-outline-success"
-                sec:authorize="hasAnyRole('ADMINISTRADOR','MECANICO')"
-              >
-                Acessar Pátios
-              </a>
-            </div>
-          </div>
-        </div>
+      <!-- Action Buttons -->
+      <div class="action-buttons">
+        <a
+          th:href="@{/motos}"
+          class="action-btn"
+          sec:authorize="hasAnyRole('ADMINISTRADOR','MECANICO')"
+        >
+          <i class="fas fa-motorcycle"></i>
+          Gerenciar Motos
+        </a>
+        <a
+          th:href="@{/patios}"
+          class="action-btn secondary"
+          sec:authorize="hasAnyRole('ADMINISTRADOR','MECANICO')"
+        >
+          <i class="fas fa-building"></i>
+          Gerenciar Pátios
+        </a>
+      </div>
 
-        <!-- Card Motos -->
-        <div class="col-lg-3 col-md-6 mb-4">
-          <div class="card feature-card">
-            <div class="card-body text-center p-4">
-              <div class="feature-icon bg-warning">
-                <i class="fas fa-motorcycle"></i>
-              </div>
-              <h5 class="card-title">Gerenciar Motos</h5>
-              <p class="card-text">Cadastre e monitore todas as motos</p>
-              <a
-                th:href="@{/motos}"
-                class="btn btn-outline-warning"
-                sec:authorize="hasAnyRole('ADMINISTRADOR','MECANICO')"
-              >
-                Acessar Motos
-              </a>
-            </div>
+      <!-- Content Sections -->
+      <div class="content-sections">
+        <!-- Latest Motorcycles -->
+        <div class="section-card">
+          <div class="section-header">
+            <h3 class="section-title">Últimas Motos Cadastradas</h3>
+            <a th:href="@{/motos}" class="view-all-btn">Ver todas</a>
           </div>
-        </div>
-
-        <!-- Card Alocações -->
-        <div class="col-lg-3 col-md-6 mb-4">
-          <div class="card feature-card">
-            <div class="card-body text-center p-4">
-              <div class="feature-icon bg-info">
-                <i class="fas fa-map-marker-alt"></i>
+          <div class="entries-list" id="latestMotos">
+            <!-- Motorcycles will be loaded dynamically -->
+            <div class="entry-item">
+              <div class="entry-info">
+                <div class="entry-title">Carregando motos...</div>
+                <div class="entry-subtitle">Aguarde...</div>
               </div>
-              <h5 class="card-title">Alocações</h5>
-              <p class="card-text">Aloque motos em vagas dos pátios</p>
-              <a
-                th:href="@{/alocacoes}"
-                class="btn btn-outline-info"
-                sec:authorize="hasAnyRole('ADMINISTRADOR','MECANICO')"
-              >
-                Ver Alocações
-              </a>
-            </div>
-          </div>
-        </div>
-
-        <!-- Card Admin -->
-        <div class="col-lg-3 col-md-6 mb-4">
-          <div class="card feature-card">
-            <div class="card-body text-center p-4">
-              <div class="feature-icon bg-primary">
-                <i class="fas fa-cogs"></i>
-              </div>
-              <h5 class="card-title">Administração</h5>
-              <p class="card-text">Painel completo de administração</p>
-              <a
-                th:href="@{/admin}"
-                class="btn btn-outline-primary"
-                sec:authorize="hasRole('ADMINISTRADOR')"
-              >
-                Painel Admin
-              </a>
-              <!-- Mensagem para não-admins -->
-              <div sec:authorize="!hasRole('ADMINISTRADOR')">
-                <small class="text-muted">Apenas administradores</small>
+              <div class="entry-meta">
+                <div class="entry-time">--</div>
+                <div class="entry-status status-active">--</div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </main>
 
-    <!-- Seção de Estatísticas (apenas para usuários logados) -->
-    <div class="stats-section" sec:authorize="isAuthenticated()">
-      <div class="container">
-        <div class="row text-center">
-          <div class="col-12 mb-4">
-            <h3 class="fw-bold">Estatísticas do Sistema</h3>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-lg-3 col-md-6 mb-3">
-            <div class="card border-0">
-              <div class="card-body text-center">
-                <i class="fas fa-users fa-2x text-primary mb-2"></i>
-                <h4 class="fw-bold" id="userCount">--</h4>
-                <p class="text-muted mb-0">Usuários</p>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-3 col-md-6 mb-3">
-            <div class="card border-0">
-              <div class="card-body text-center">
-                <i class="fas fa-building fa-2x text-success mb-2"></i>
-                <h4 class="fw-bold" id="patioCount">--</h4>
-                <p class="text-muted mb-0">Pátios</p>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-3 col-md-6 mb-3">
-            <div class="card border-0">
-              <div class="card-body text-center">
-                <i class="fas fa-motorcycle fa-2x text-warning mb-2"></i>
-                <h4 class="fw-bold" id="motoCount">--</h4>
-                <p class="text-muted mb-0">Motos</p>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-3 col-md-6 mb-3">
-            <div class="card border-0">
-              <div class="card-body text-center">
-                <i class="fas fa-map-marker-alt fa-2x text-info mb-2"></i>
-                <h4 class="fw-bold" id="alocacaoCount">--</h4>
-                <p class="text-muted mb-0">Alocações Ativas</p>
-              </div>
-            </div>
-          </div>
-        </div>
+    <!-- Bottom Navigation (mobile only) -->
+    <nav class="bottom-nav">
+      <div class="nav-container">
+        <a href="/" class="nav-item active">
+          <i class="fas fa-th-large"></i>
+          <span>Dashboard</span>
+        </a>
+        <a href="#mapa" class="nav-item">
+          <i class="fas fa-map"></i>
+          <span>Mapa</span>
+        </a>
+        <a
+          th:href="@{/motos}"
+          class="nav-item"
+          sec:authorize="hasAnyRole('ADMINISTRADOR','MECANICO')"
+        >
+          <i class="fas fa-motorcycle"></i>
+          <span>Motos</span>
+        </a>
+        <a href="#perfil" class="nav-item">
+          <i class="fas fa-user-circle"></i>
+          <span>Perfil</span>
+        </a>
       </div>
-    </div>
+    </nav>
 
-    <!-- Footer -->
-    <footer class="bg-dark text-white py-4 mt-5">
-      <div class="container text-center">
-        <p class="mb-0">
-          <i class="fas fa-motorcycle me-2"></i>
-          GeoSense &copy; 2025 - Sistema de Gestão de Motos e Pátios
-        </p>
-      </div>
-    </footer>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-      // Carregar estatísticas apenas se estiver logado
+      // Load dashboard data
       document.addEventListener("DOMContentLoaded", function () {
-        // Verificar se o usuário está logado (procurar por elementos que só aparecem quando logado)
-        const statsSection = document.querySelector(".stats-section");
-        if (statsSection) {
-          loadStats();
-        }
+        loadDashboardData();
+        loadLatestMotorcycles();
       });
 
-      async function loadStats() {
+      async function loadDashboardData() {
         try {
           const response = await fetch("/api/admin/dashboard-data");
           const data = await response.json();
 
-          document.getElementById("userCount").textContent =
-            data.totalUsuarios || 0;
-          document.getElementById("patioCount").textContent =
-            data.totalPatios || 0;
-          document.getElementById("motoCount").textContent =
-            (data.motosDisponiveis || 0) + (data.vagasOcupadas || 0);
-          document.getElementById("alocacaoCount").textContent =
-            data.vagasOcupadas || 0;
+          // Update metrics with real data from API
+          const vagasDisponiveis = data.vagasLivres || 0;
+          const motosNoPatio = data.vagasOcupadas || 0;
+
+          document.getElementById("vagasDisponiveis").textContent =
+            vagasDisponiveis;
+          document.getElementById("motosNoPatio").textContent = motosNoPatio;
         } catch (error) {
-          // Em caso de erro, manter os valores padrão (--) ou usar dados mockados
-          console.log("Erro ao carregar estatísticas:", error);
+          console.log("Error loading dashboard data:", error);
+          // Show error state
+          document.getElementById("vagasDisponiveis").textContent = "Erro";
+          document.getElementById("motosNoPatio").textContent = "Erro";
         }
       }
+
+      async function loadLatestMotorcycles() {
+        try {
+          // Fetch from the new motorcycles API endpoint
+          const response = await fetch("/api/admin/latest-motorcycles");
+          const motorcycles = await response.json();
+
+          const latestMotosContainer = document.getElementById("latestMotos");
+
+          // Clear loading message
+          latestMotosContainer.innerHTML = "";
+
+          // If we have motorcycle data, display it
+          if (motorcycles && motorcycles.length > 0) {
+            motorcycles.forEach((moto, index) => {
+              const entryItem = document.createElement("div");
+              entryItem.className = "entry-item";
+
+              const statusClass = moto.temVaga
+                ? "status-active"
+                : "status-maintenance";
+              const statusText = moto.status || "Disponível";
+              const vagaInfo = moto.temVaga ? ` - Vaga ${moto.vaga}` : "";
+
+              entryItem.innerHTML = `
+                <div class="entry-info">
+                  <div class="entry-title">${moto.modelo} - ID ${moto.id}</div>
+                  <div class="entry-subtitle">${moto.placa}${vagaInfo}</div>
+                </div>
+                <div class="entry-meta">
+                  <div class="entry-time">${
+                    index === 0 ? "Recente" : "Anterior"
+                  }</div>
+                  <div class="entry-status ${statusClass}">${statusText}</div>
+                </div>
+              `;
+              latestMotosContainer.appendChild(entryItem);
+            });
+          } else {
+            // No motorcycles found
+            latestMotosContainer.innerHTML = `
+              <div class="entry-item">
+                <div class="entry-info">
+                  <div class="entry-title">Nenhuma moto cadastrada</div>
+                  <div class="entry-subtitle">Clique em "Gerenciar Motos" para adicionar</div>
+                </div>
+                <div class="entry-meta">
+                  <div class="entry-time">--</div>
+                  <div class="entry-status status-maintenance">Vazio</div>
+                </div>
+              </div>
+            `;
+          }
+        } catch (error) {
+          console.log("Error loading motorcycles:", error);
+          const latestMotosContainer = document.getElementById("latestMotos");
+          latestMotosContainer.innerHTML = `
+            <div class="entry-item">
+              <div class="entry-info">
+                <div class="entry-title">Erro ao carregar motos</div>
+                <div class="entry-subtitle">Verifique sua conexão</div>
+              </div>
+              <div class="entry-meta">
+                <div class="entry-time">--</div>
+                <div class="entry-status status-problem">Erro</div>
+              </div>
+            </div>
+          `;
+        }
+      }
+
+      // Auto-refresh data every 30 seconds
+      setInterval(() => {
+        loadDashboardData();
+        loadLatestMotorcycles();
+      }, 30000);
     </script>
   </body>
 </html>

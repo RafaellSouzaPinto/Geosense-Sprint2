@@ -1,9 +1,11 @@
 package geosense.Geosense.controller;
 
 import geosense.Geosense.dto.AlocacaoMotoDTO;
+import geosense.Geosense.entity.AlocacaoMoto;
 import geosense.Geosense.entity.Moto;
 import geosense.Geosense.entity.TipoUsuario;
 import geosense.Geosense.entity.Usuario;
+import geosense.Geosense.repository.AlocacaoMotoRepository;
 import geosense.Geosense.repository.MotoRepository;
 import geosense.Geosense.repository.UsuarioRepository;
 import geosense.Geosense.service.AlocacaoMotoService;
@@ -30,6 +32,9 @@ public class AlocacaoMotoController {
     private AlocacaoMotoService alocacaoService;
     
     @Autowired
+    private AlocacaoMotoRepository alocacaoRepository;
+    
+    @Autowired
     private MotoRepository motoRepository;
     
     @Autowired
@@ -43,7 +48,15 @@ public class AlocacaoMotoController {
      */
     @GetMapping
     public String listar(Model model) {
-        model.addAttribute("alocacoes", alocacaoService.listarTodas());
+        List<AlocacaoMoto> alocacoes = alocacaoRepository.findAllWithDetails();
+        System.out.println("=== LISTANDO ALOCAÇÕES ===");
+        System.out.println("Total de alocações encontradas: " + alocacoes.size());
+        alocacoes.forEach(a -> {
+            System.out.println("- Alocação " + a.getId() + ": Moto " + a.getMoto().getModelo() + 
+                             " na Vaga " + a.getVaga().getNumero() + " do Pátio " + a.getVaga().getPatio().getNomeUnidade());
+        });
+        
+        model.addAttribute("alocacoes", alocacoes);
         return "alocacoes/list";
     }
 
@@ -99,6 +112,7 @@ public class AlocacaoMotoController {
             result.getAllErrors().forEach(error -> System.out.println("- " + error.getDefaultMessage()));
             
             // Recarregar dados para o formulário
+            model.addAttribute("alocacao", dto);  // ✅ Adicionar o objeto alocacao para o Thymeleaf
             carregarDadosFormulario(model);
             return "alocacoes/form";
         }
@@ -111,6 +125,7 @@ public class AlocacaoMotoController {
         } catch (Exception e) {
             System.err.println("Erro ao alocar: " + e.getMessage());
             model.addAttribute("error", e.getMessage());
+            model.addAttribute("alocacao", dto);  // ✅ Adicionar o objeto alocacao para o Thymeleaf
             carregarDadosFormulario(model);
             return "alocacoes/form";
         }

@@ -70,6 +70,7 @@ public class AlocacaoMotoService {
         alocacao.setVaga(vaga);
         alocacao.setMecanicoResponsavel(mecanico);
         alocacao.setDataHoraAlocacao(LocalDateTime.now());
+        alocacao.setObservacoes(dto.getObservacoes());
         
         // 4. Atualizar relacionamentos
         vaga.setStatus(StatusVaga.OCUPADA);
@@ -172,7 +173,7 @@ public class AlocacaoMotoService {
                 alocacao.getVaga().getPatio().getId(),
                 alocacao.getVaga().getId(),
                 alocacao.getMecanicoResponsavel() != null ? alocacao.getMecanicoResponsavel().getId() : null,
-                "Alocado em " + alocacao.getDataHoraAlocacao().toString()
+                alocacao.getObservacoes()
         );
     }
 }

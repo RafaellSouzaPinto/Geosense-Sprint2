@@ -7,6 +7,7 @@ import geosense.Geosense.repository.AlocacaoMotoRepository;
 import geosense.Geosense.repository.VagaRepository;
 import geosense.Geosense.entity.TipoUsuario;
 import geosense.Geosense.entity.AlocacaoMoto;
+import geosense.Geosense.entity.StatusVaga;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,7 +19,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 /**
  * Controller para APIs do painel administrativo
@@ -26,7 +26,7 @@ import java.time.format.DateTimeFormatter;
  */
 @RestController
 @RequestMapping("/api/admin")
-@PreAuthorize("hasRole('ADMINISTRADOR')")
+@PreAuthorize("hasAnyRole('ADMINISTRADOR','MECANICO')")
 public class AdminApiController {
 
     private final UsuarioRepository usuarioRepository;
@@ -54,10 +54,18 @@ public class AdminApiController {
     public ResponseEntity<Map<String, Object>> getDashboardData() {
         Map<String, Object> data = new HashMap<>();
 
-        // Contar vagas livres e ocupadas
+        // Contar vagas livres e ocupadas usando o status correto das vagas (mesmo método do PatioService)
         long totalVagas = vagaRepository.count();
-        long vagasOcupadas = alocacaoRepository.count();
-        long vagasLivres = totalVagas - vagasOcupadas;
+        
+        long vagasOcupadas = patioRepository.findAll().stream()
+            .flatMap(patio -> patio.getVagas().stream())
+            .mapToLong(vaga -> vaga.getStatus() == StatusVaga.OCUPADA ? 1 : 0)
+            .sum();
+        
+        long vagasLivres = patioRepository.findAll().stream()
+            .flatMap(patio -> patio.getVagas().stream())
+            .mapToLong(vaga -> vaga.getStatus() == StatusVaga.DISPONIVEL ? 1 : 0)
+            .sum();
 
         // Contar motos disponíveis (sem alocação)
         long totalMotos = motoRepository.count();
@@ -73,6 +81,7 @@ public class AdminApiController {
         data.put("taxaOcupacao", Math.round(taxaOcupacao));
         data.put("totalUsuarios", usuarioRepository.count());
         data.put("totalPatios", patioRepository.count());
+        data.put("totalVagas", totalVagas);
 
         return ResponseEntity.ok(data);
     }
@@ -198,6 +207,44 @@ public class AdminApiController {
         stats.put("patios", patioStats);
 
         return ResponseEntity.ok(stats);
+    }
+
+    /**
+     * Últimas motos cadastradas no sistema
+     */
+    @GetMapping("/latest-motorcycles")
+    public ResponseEntity<List<Map<String, Object>>> getLatestMotorcycles() {
+        List<Map<String, Object>> motorcycles = new ArrayList<>();
+
+        // Buscar todas as motos ordenadas por ID (proxy para data de cadastro)
+        List<geosense.Geosense.entity.Moto> allMotos = motoRepository.findAll();
+        
+        // Reverter lista para mostrar as mais recentes primeiro
+        java.util.Collections.reverse(allMotos);
+        
+        // Limitar a 4 motos mais recentes
+        int limit = Math.min(4, allMotos.size());
+        
+        for (int i = 0; i < limit; i++) {
+            geosense.Geosense.entity.Moto moto = allMotos.get(i);
+            Map<String, Object> motoInfo = new HashMap<>();
+            
+            motoInfo.put("id", moto.getId());
+            motoInfo.put("modelo", moto.getModelo() != null ? moto.getModelo() : "Modelo não informado");
+            motoInfo.put("placa", moto.getPlaca() != null ? moto.getPlaca() : "Placa não informada");
+            motoInfo.put("chassi", moto.getChassi() != null ? moto.getChassi() : "Chassi não informado");
+            motoInfo.put("temVaga", moto.getVaga() != null);
+            motoInfo.put("status", moto.getVaga() != null ? "Alocada" : "Disponível");
+            
+            if (moto.getVaga() != null) {
+                motoInfo.put("vaga", moto.getVaga().getNumero());
+                motoInfo.put("patio", moto.getVaga().getPatio().getNomeUnidade());
+            }
+            
+            motorcycles.add(motoInfo);
+        }
+
+        return ResponseEntity.ok(motorcycles);
     }
 
     // Métodos auxiliares

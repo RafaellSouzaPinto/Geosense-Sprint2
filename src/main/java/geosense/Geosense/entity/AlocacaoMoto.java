@@ -30,15 +30,19 @@ public class AlocacaoMoto {
     @Column(name = "DATA_HORA_ALOCACAO")
     private LocalDateTime dataHoraAlocacao;
 
+    @Column(name = "OBSERVACOES", length = 1000)
+    private String observacoes;
+
     public AlocacaoMoto() {
     }
 
-    public AlocacaoMoto(Long id, Moto moto, Vaga vaga, Usuario mecanicoResponsavel, LocalDateTime dataHoraAlocacao) {
+    public AlocacaoMoto(Long id, Moto moto, Vaga vaga, Usuario mecanicoResponsavel, LocalDateTime dataHoraAlocacao, String observacoes) {
         this.id = id;
         this.moto = moto;
         this.vaga = vaga;
         this.mecanicoResponsavel = mecanicoResponsavel;
         this.dataHoraAlocacao = dataHoraAlocacao;
+        this.observacoes = observacoes;
     }
 
     public Long getId() {
@@ -79,5 +83,13 @@ public class AlocacaoMoto {
 
     public void setDataHoraAlocacao(LocalDateTime dataHoraAlocacao) {
         this.dataHoraAlocacao = dataHoraAlocacao;
+    }
+
+    public String getObservacoes() {
+        return observacoes;
+    }
+
+    public void setObservacoes(String observacoes) {
+        this.observacoes = observacoes;
     }
 }

@@ -2,270 +2,863 @@
 <html xmlns:th="http://www.thymeleaf.org">
   <head>
     <meta charset="UTF-8" />
-    <title>Moto - Formulário</title>
+    <title>Geosense - Moto</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
     <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      :root {
+        --primary-dark: #020817;
+        --primary-cyan: #00cccf;
+        --text-secondary: #94a3b8;
+        --card-bg: rgba(255, 255, 255, 0.08);
+        --border-color: rgba(255, 255, 255, 0.1);
+        --success-color: #10b981;
+        --error-color: #ef4444;
+        --warning-color: #f59e0b;
+      }
+
       body {
-        font-family: Arial, sans-serif;
-        padding: 24px;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(
+          135deg,
+          #020817 0%,
+          #0f172a 50%,
+          #1e293b 100%
+        );
+        min-height: 100vh;
+        color: white;
+        position: relative;
+        overflow-x: hidden;
+        padding-bottom: 80px;
       }
-      .card {
-        max-width: 680px;
+
+      /* Background decorative elements */
+      body::before {
+        content: "";
+        position: fixed;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(
+          circle,
+          rgba(0, 204, 207, 0.08) 0%,
+          transparent 70%
+        );
+        animation: pulse 8s ease-in-out infinite;
+        z-index: -1;
+      }
+
+      /* Header */
+      .header {
+        background: var(--card-bg);
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid var(--border-color);
+        padding: 20px;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        margin-bottom: 30px;
+      }
+
+      .header-content {
+        max-width: 1200px;
         margin: 0 auto;
-        background: #fff;
-        padding: 16px;
-        border: 1px solid #eee;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .page-title {
+        font-size: 28px;
+        font-weight: 700;
+        color: white;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+      }
+
+      .page-title i {
+        color: var(--primary-cyan);
+        font-size: 24px;
+      }
+
+      .header-actions {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+      }
+
+      .btn-secondary {
+        background: rgba(255, 255, 255, 0.1);
+        color: var(--text-secondary);
+        padding: 10px 16px;
         border-radius: 8px;
-      }
-      .field {
-        margin-bottom: 12px;
-      }
-      label {
-        display: block;
-        margin-bottom: 6px;
+        text-decoration: none;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        transition: all 0.3s ease;
+        border: 1px solid var(--border-color);
         font-size: 14px;
       }
-      input,
-      select {
-        width: 100%;
-        padding: 10px;
-        border: 1px solid #dcdde1;
-        border-radius: 6px;
+
+      .btn-secondary:hover {
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+        text-decoration: none;
       }
-      button {
-        padding: 10px 16px;
-        background: #2f3640;
-        color: #fff;
-        border: none;
-        border-radius: 6px;
+
+      /* Main Content */
+      .main-content {
+        max-width: 750px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+
+      /* Form Container */
+      .form-container {
+        background: var(--card-bg);
+        backdrop-filter: blur(10px);
+        border: 1px solid var(--border-color);
+        border-radius: 20px;
+        padding: 40px;
+        position: relative;
+        overflow: hidden;
+        margin-bottom: 40px;
+      }
+
+      .form-container::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, var(--primary-cyan), #0891b2);
+        opacity: 0.8;
+      }
+
+      .form-title {
+        font-size: 24px;
+        font-weight: 700;
+        color: white;
+        margin-bottom: 30px;
+        text-align: center;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+      }
+
+      /* Alerts */
+      .alert {
+        padding: 16px 20px;
+        border-radius: 12px;
+        margin-bottom: 24px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-weight: 500;
+        backdrop-filter: blur(10px);
+        border: 1px solid;
+      }
+
+      .alert-success {
+        background: rgba(16, 185, 129, 0.1);
+        border-color: rgba(16, 185, 129, 0.3);
+        color: #86efac;
+      }
+
+      .alert-error {
+        background: rgba(239, 68, 68, 0.1);
+        border-color: rgba(239, 68, 68, 0.3);
+        color: #fca5a5;
+      }
+
+      /* Form Fields */
+      .field {
+        margin-bottom: 24px;
+        position: relative;
+      }
+
+      .field label {
+        display: block;
+        color: var(--text-secondary);
+        font-size: 14px;
+        font-weight: 500;
+        margin-bottom: 8px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .field label.required::after {
+        content: " *";
+        color: var(--error-color);
+      }
+
+      .input-wrapper {
+        position: relative;
+      }
+
+      .input-wrapper i {
+        position: absolute;
+        left: 16px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--text-secondary);
+        font-size: 16px;
+        z-index: 1;
+      }
+
+      .field input,
+      .field select {
+        width: 100%;
+        padding: 16px 16px 16px 48px;
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(148, 163, 184, 0.3);
+        border-radius: 12px;
+        color: white;
+        font-size: 16px;
+        outline: none;
+        transition: all 0.3s ease;
+        backdrop-filter: blur(5px);
+      }
+
+      .field input::placeholder {
+        color: var(--text-secondary);
+        opacity: 0.7;
+      }
+
+      .field input:focus,
+      .field select:focus {
+        border-color: var(--primary-cyan);
+        background: rgba(255, 255, 255, 0.15);
+        box-shadow: 0 0 0 3px rgba(0, 204, 207, 0.1);
+        transform: translateY(-2px);
+      }
+
+      .field select {
         cursor: pointer;
       }
-      .msg {
-        color: #c23616;
+
+      .field select option {
+        background: var(--primary-dark);
+        color: white;
+        padding: 8px;
+      }
+
+      .field input:focus ~ .input-wrapper i,
+      .field select:focus ~ .input-wrapper i {
+        color: var(--primary-cyan);
+      }
+
+      /* Info Messages */
+      .info-msg {
+        background: rgba(59, 130, 246, 0.1);
+        border: 1px solid rgba(59, 130, 246, 0.3);
+        color: #93c5fd;
+        padding: 10px 14px;
+        border-radius: 8px;
         font-size: 13px;
+        margin-top: 8px;
+        backdrop-filter: blur(5px);
+        display: flex;
+        align-items: center;
+        gap: 8px;
       }
-      .success {
-        color: #2ecc71;
-        margin-bottom: 12px;
+
+      /* Error Messages */
+      .error-msg {
+        background: rgba(239, 68, 68, 0.1);
+        border: 1px solid rgba(239, 68, 68, 0.3);
+        color: #fca5a5;
+        padding: 10px 14px;
+        border-radius: 8px;
+        font-size: 13px;
+        margin-top: 8px;
+        backdrop-filter: blur(5px);
+        display: flex;
+        align-items: center;
+        gap: 8px;
       }
-      .error {
-        color: #c23616;
-        margin-bottom: 12px;
+
+      /* Form Actions */
+      .form-actions {
+        display: flex;
+        gap: 16px;
+        margin-top: 40px;
+        padding-top: 30px;
+        border-top: 1px solid var(--border-color);
       }
-      .info {
+
+      .btn-primary {
+        background: linear-gradient(
+          135deg,
+          var(--primary-cyan) 0%,
+          #0891b2 100%
+        );
+        color: white;
+        padding: 16px 32px;
+        border-radius: 12px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        position: relative;
+        overflow: hidden;
+        border: none;
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+      }
+
+      .btn-primary::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.2),
+          transparent
+        );
+        transition: left 0.5s;
+      }
+
+      .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 30px rgba(0, 204, 207, 0.3);
+      }
+
+      .btn-primary:hover::before {
+        left: 100%;
+      }
+
+      .btn-cancel {
+        background: rgba(255, 255, 255, 0.1);
+        color: var(--text-secondary);
+        padding: 16px 32px;
+        border-radius: 12px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        border: 1px solid var(--border-color);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        flex: 1;
+      }
+
+      .btn-cancel:hover {
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+        text-decoration: none;
+        transform: translateY(-2px);
+      }
+
+      /* Bottom Navigation (mobile) */
+      .bottom-nav {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: var(--card-bg);
+        backdrop-filter: blur(10px);
+        border-top: 1px solid var(--border-color);
+        padding: 12px 0;
+        z-index: 100;
+      }
+
+      .nav-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+      }
+
+      .nav-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+        text-decoration: none;
+        color: var(--text-secondary);
+        transition: all 0.3s ease;
+        padding: 8px 16px;
+        border-radius: 12px;
+        min-width: 60px;
+      }
+
+      .nav-item:hover,
+      .nav-item.active {
+        color: var(--primary-cyan);
+        background: rgba(0, 204, 207, 0.1);
+        text-decoration: none;
+      }
+
+      .nav-item i {
+        font-size: 20px;
+      }
+
+      .nav-item span {
         font-size: 12px;
-        color: #7f8c8d;
-        margin-top: 4px;
+        font-weight: 500;
+      }
+
+      /* Field Groups */
+      .field-group {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+        margin-bottom: 24px;
+      }
+
+      /* Animations */
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 0.6;
+          transform: scale(1);
+        }
+        50% {
+          opacity: 1;
+          transform: scale(1.05);
+        }
+      }
+
+      /* Responsive Design */
+      @media (min-width: 768px) {
+        .bottom-nav {
+          display: none;
+        }
+
+        body {
+          padding-bottom: 0;
+        }
+
+        .form-actions {
+          flex-direction: row;
+        }
+      }
+
+      @media (max-width: 767px) {
+        .main-content {
+          padding: 0 15px;
+        }
+
+        .form-container {
+          padding: 30px 20px;
+          border-radius: 16px;
+        }
+
+        .page-title {
+          font-size: 24px;
+        }
+
+        .header-content {
+          flex-direction: column;
+          gap: 16px;
+          align-items: stretch;
+        }
+
+        .header-actions {
+          justify-content: center;
+        }
+
+        .form-actions {
+          flex-direction: column;
+        }
+
+        .field-group {
+          grid-template-columns: 1fr;
+          gap: 16px;
+        }
+
+        .desktop-nav {
+          display: none;
+        }
+      }
+
+      @media (min-width: 768px) {
+        .desktop-nav {
+          display: block;
+        }
       }
     </style>
   </head>
   <body>
-    <div th:replace="~{fragments::navbar('GeoSense - Moto')}"></div>
-    <div class="card">
-      <h2 th:text="${id} != null ? 'Editar moto' : 'Nova moto'"></h2>
-
-      <div class="success" th:if="${success}" th:text="${success}"></div>
-      <div class="error" th:if="${error}" th:text="${error}"></div>
-
-      <!-- Formulário de criação -->
-      <form
-        th:if="${id} == null"
-        th:action="@{/motos}"
-        th:object="${moto}"
-        method="post"
-      >
-        <div class="field">
-          <label for="modelo">Modelo *</label>
-          <input
-            id="modelo"
-            th:field="*{modelo}"
-            type="text"
-            required
-            placeholder="Ex: Honda CG 160"
-          />
-          <div
-            class="msg"
-            th:if="${#fields.hasErrors('modelo')}"
-            th:errors="*{modelo}"
-          ></div>
-        </div>
-
-        <div class="field">
-          <label for="placa">Placa</label>
-          <input
-            id="placa"
-            th:field="*{placa}"
-            type="text"
-            placeholder="Ex: ABC-1234"
-          />
-          <div class="info">Informe a placa ou chassi obrigatoriamente</div>
-          <div
-            class="msg"
-            th:if="${#fields.hasErrors('placa')}"
-            th:errors="*{placa}"
-          ></div>
-        </div>
-
-        <div class="field">
-          <label for="chassi">Chassi</label>
-          <input
-            id="chassi"
-            th:field="*{chassi}"
-            type="text"
-            placeholder="Ex: 1HGBH41JXMN109186"
-          />
-          <div class="info">Informe a placa ou chassi obrigatoriamente</div>
-          <div
-            class="msg"
-            th:if="${#fields.hasErrors('chassi')}"
-            th:errors="*{chassi}"
-          ></div>
-        </div>
-
-        <div class="field">
-          <label for="problemaIdentificado">Problema identificado</label>
-          <input
-            id="problemaIdentificado"
-            th:field="*{problemaIdentificado}"
-            type="text"
-            placeholder="Ex: reparos simples, motor defeituoso, danos estruturais"
-          />
-          <div class="info">
-            Campo opcional. Se informado, use: reparos simples, motor defeituoso
-            ou danos estruturais
-          </div>
-          <div
-            class="msg"
-            th:if="${#fields.hasErrors('problemaIdentificado')}"
-            th:errors="*{problemaIdentificado}"
-          ></div>
-        </div>
-
-        <div class="field">
-          <label for="patioId">Pátio</label>
-          <select
-            id="patioId"
-            name="patioId"
-            onchange="carregarVagasDisponiveis()"
-          >
-            <option value="">-- Selecione um pátio --</option>
-            <option
-              th:each="p : ${patios}"
-              th:value="${p.id}"
-              th:text="|${p.nomeUnidade} - ${p.localizacao}|"
-            ></option>
-          </select>
-        </div>
-
-        <div class="field">
-          <label for="vagaId">Vaga</label>
-          <select id="vagaId" th:field="*{vagaId}">
-            <option value="">-- Selecione primeiro um pátio --</option>
-          </select>
-          <div class="info">
-            Opcional. Selecione um pátio primeiro para ver vagas disponíveis
-          </div>
-        </div>
-
-        <button type="submit">Salvar</button>
-        <a th:href="@{/motos}" style="margin-left: 8px">Cancelar</a>
-      </form>
-
-      <!-- Formulário de edição -->
-      <form
-        th:if="${id} != null"
-        th:action="@{/motos/{id}(id=${id})}"
-        th:object="${moto}"
-        method="post"
-      >
-        <div class="field">
-          <label for="modelo">Modelo *</label>
-          <input id="modelo" th:field="*{modelo}" type="text" required />
-          <div
-            class="msg"
-            th:if="${#fields.hasErrors('modelo')}"
-            th:errors="*{modelo}"
-          ></div>
-        </div>
-
-        <div class="field">
-          <label for="placa">Placa</label>
-          <input id="placa" th:field="*{placa}" type="text" />
-          <div class="info">Informe a placa ou chassi obrigatoriamente</div>
-          <div
-            class="msg"
-            th:if="${#fields.hasErrors('placa')}"
-            th:errors="*{placa}"
-          ></div>
-        </div>
-
-        <div class="field">
-          <label for="chassi">Chassi</label>
-          <input id="chassi" th:field="*{chassi}" type="text" />
-          <div class="info">Informe a placa ou chassi obrigatoriamente</div>
-          <div
-            class="msg"
-            th:if="${#fields.hasErrors('chassi')}"
-            th:errors="*{chassi}"
-          ></div>
-        </div>
-
-        <div class="field">
-          <label for="problemaIdentificado">Problema identificado</label>
-          <input
-            id="problemaIdentificado"
-            th:field="*{problemaIdentificado}"
-            type="text"
-            placeholder="Ex: reparos simples, motor defeituoso, danos estruturais"
-          />
-          <div class="info">
-            Campo opcional. Se informado, use: reparos simples, motor defeituoso
-            ou danos estruturais
-          </div>
-          <div
-            class="msg"
-            th:if="${#fields.hasErrors('problemaIdentificado')}"
-            th:errors="*{problemaIdentificado}"
-          ></div>
-        </div>
-
-        <div class="field">
-          <label for="patioIdEdit">Pátio</label>
-          <select
-            id="patioIdEdit"
-            name="patioId"
-            th:value="${patioSelecionado}"
-            onchange="carregarVagasDisponiveisEdit()"
-          >
-            <option value="">-- Selecione um pátio --</option>
-            <option
-              th:each="p : ${patios}"
-              th:value="${p.id}"
-              th:text="|${p.nomeUnidade} - ${p.localizacao}|"
-              th:selected="${patioSelecionado != null and patioSelecionado == p.id}"
-            ></option>
-          </select>
-        </div>
-
-        <div class="field">
-          <label for="vagaId">Vaga</label>
-          <select id="vagaId" th:field="*{vagaId}">
-            <option value="">-- Sem vaga --</option>
-            <option
-              th:each="v : ${vagas}"
-              th:value="${v.id}"
-              th:text="|Vaga ${v.numero}|"
-            ></option>
-          </select>
-          <div class="info">
-            Opcional. Selecione um pátio primeiro para ver vagas disponíveis
-          </div>
-        </div>
-
-        <button type="submit">Salvar</button>
-        <a th:href="@{/motos}" style="margin-left: 8px">Cancelar</a>
-      </form>
+    <!-- Desktop Navigation (hidden on mobile) -->
+    <div class="desktop-nav">
+      <div th:replace="~{fragments::navbar('Geosense - Moto')}"></div>
     </div>
+
+    <!-- Header -->
+    <header class="header">
+      <div class="header-content">
+        <h1 class="page-title">
+          <i class="fas fa-motorcycle"></i>
+          <span th:text="${id} != null ? 'Editar Moto' : 'Nova Moto'"></span>
+        </h1>
+        <div class="header-actions">
+          <a th:href="@{/motos}" class="btn-secondary">
+            <i class="fas fa-arrow-left"></i>
+            Voltar
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <div class="form-container">
+        <h2
+          class="form-title"
+          th:text="${id} != null ? 'Editar Moto' : 'Cadastrar Nova Moto'"
+        ></h2>
+
+        <!-- Success/Error Messages -->
+        <div class="alert alert-success" th:if="${success}">
+          <i class="fas fa-check-circle"></i>
+          <span th:text="${success}"></span>
+        </div>
+
+        <div class="alert alert-error" th:if="${error}">
+          <i class="fas fa-exclamation-triangle"></i>
+          <span th:text="${error}"></span>
+        </div>
+
+        <!-- Formulário de criação -->
+        <form
+          th:if="${id} == null"
+          th:action="@{/motos}"
+          th:object="${moto}"
+          method="post"
+        >
+          <div class="field">
+            <label for="modelo" class="required">Modelo</label>
+            <div class="input-wrapper">
+              <i class="fas fa-motorcycle"></i>
+              <select id="modelo" th:field="*{modelo}" required>
+                <option value="">-- Selecione um modelo --</option>
+                <option value="Mottu Sport">Mottu Sport</option>
+                <option value="Mottu E">Mottu E</option>
+                <option value="Mottu Pop">Mottu Pop</option>
+              </select>
+            </div>
+            <div class="error-msg" th:if="${#fields.hasErrors('modelo')}">
+              <i class="fas fa-exclamation-circle"></i>
+              <span th:errors="*{modelo}"></span>
+            </div>
+          </div>
+
+          <div class="field-group">
+            <div class="field">
+              <label for="placa">Placa</label>
+              <div class="input-wrapper">
+                <i class="fas fa-id-card"></i>
+                <input
+                  id="placa"
+                  th:field="*{placa}"
+                  type="text"
+                  placeholder="Ex: ABC-1234"
+                />
+              </div>
+              <div class="info-msg">
+                <i class="fas fa-info-circle"></i>
+                Informe placa ou chassi obrigatoriamente
+              </div>
+              <div class="error-msg" th:if="${#fields.hasErrors('placa')}">
+                <i class="fas fa-exclamation-circle"></i>
+                <span th:errors="*{placa}"></span>
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="chassi">Chassi</label>
+              <div class="input-wrapper">
+                <i class="fas fa-hashtag"></i>
+                <input
+                  id="chassi"
+                  th:field="*{chassi}"
+                  type="text"
+                  placeholder="Ex: 1HGBH41JXMN109186"
+                />
+              </div>
+              <div class="info-msg">
+                <i class="fas fa-info-circle"></i>
+                Informe placa ou chassi obrigatoriamente
+              </div>
+              <div class="error-msg" th:if="${#fields.hasErrors('chassi')}">
+                <i class="fas fa-exclamation-circle"></i>
+                <span th:errors="*{chassi}"></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="problemaIdentificado">Problema identificado</label>
+            <div class="input-wrapper">
+              <i class="fas fa-exclamation-triangle"></i>
+              <select
+                id="problemaIdentificado"
+                th:field="*{problemaIdentificado}"
+              >
+                <option value="">-- Nenhum problema --</option>
+                <option value="reparos simples">Reparos simples</option>
+                <option value="motor defeituoso">Motor defeituoso</option>
+                <option value="danos estruturais">Danos estruturais</option>
+              </select>
+            </div>
+            <div class="info-msg">
+              <i class="fas fa-info-circle"></i>
+              Campo opcional. Selecione se há algum problema identificado
+            </div>
+            <div
+              class="error-msg"
+              th:if="${#fields.hasErrors('problemaIdentificado')}"
+            >
+              <i class="fas fa-exclamation-circle"></i>
+              <span th:errors="*{problemaIdentificado}"></span>
+            </div>
+          </div>
+
+          <div class="field-group">
+            <div class="field">
+              <label for="patioId">Pátio</label>
+              <div class="input-wrapper">
+                <i class="fas fa-building"></i>
+                <select
+                  id="patioId"
+                  name="patioId"
+                  onchange="carregarVagasDisponiveis()"
+                >
+                  <option value="">-- Selecione um pátio --</option>
+                  <option
+                    th:each="p : ${patios}"
+                    th:value="${p.id}"
+                    th:text="|${p.nomeUnidade} - ${p.localizacao}|"
+                  ></option>
+                </select>
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="vagaId">Vaga</label>
+              <div class="input-wrapper">
+                <i class="fas fa-map-marker-alt"></i>
+                <select id="vagaId" th:field="*{vagaId}">
+                  <option value="">-- Selecione primeiro um pátio --</option>
+                </select>
+              </div>
+              <div class="info-msg">
+                <i class="fas fa-info-circle"></i>
+                Opcional. Selecione um pátio primeiro para ver vagas disponíveis
+              </div>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn-primary">
+              <i class="fas fa-save"></i>
+              Cadastrar Moto
+            </button>
+            <a th:href="@{/motos}" class="btn-cancel">
+              <i class="fas fa-times"></i>
+              Cancelar
+            </a>
+          </div>
+        </form>
+
+        <!-- Formulário de edição -->
+        <form
+          th:if="${id} != null"
+          th:action="@{/motos/{id}(id=${id})}"
+          th:object="${moto}"
+          method="post"
+        >
+          <div class="field">
+            <label for="modelo" class="required">Modelo</label>
+            <div class="input-wrapper">
+              <i class="fas fa-motorcycle"></i>
+              <select id="modelo" th:field="*{modelo}" required>
+                <option value="">-- Selecione um modelo --</option>
+                <option value="Mottu Sport">Mottu Sport</option>
+                <option value="Mottu E">Mottu E</option>
+                <option value="Mottu Pop">Mottu Pop</option>
+              </select>
+            </div>
+            <div class="error-msg" th:if="${#fields.hasErrors('modelo')}">
+              <i class="fas fa-exclamation-circle"></i>
+              <span th:errors="*{modelo}"></span>
+            </div>
+          </div>
+
+          <div class="field-group">
+            <div class="field">
+              <label for="placa">Placa</label>
+              <div class="input-wrapper">
+                <i class="fas fa-id-card"></i>
+                <input
+                  id="placa"
+                  th:field="*{placa}"
+                  type="text"
+                  placeholder="Ex: ABC-1234"
+                />
+              </div>
+              <div class="info-msg">
+                <i class="fas fa-info-circle"></i>
+                Informe placa ou chassi obrigatoriamente
+              </div>
+              <div class="error-msg" th:if="${#fields.hasErrors('placa')}">
+                <i class="fas fa-exclamation-circle"></i>
+                <span th:errors="*{placa}"></span>
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="chassi">Chassi</label>
+              <div class="input-wrapper">
+                <i class="fas fa-hashtag"></i>
+                <input
+                  id="chassi"
+                  th:field="*{chassi}"
+                  type="text"
+                  placeholder="Ex: 1HGBH41JXMN109186"
+                />
+              </div>
+              <div class="info-msg">
+                <i class="fas fa-info-circle"></i>
+                Informe placa ou chassi obrigatoriamente
+              </div>
+              <div class="error-msg" th:if="${#fields.hasErrors('chassi')}">
+                <i class="fas fa-exclamation-circle"></i>
+                <span th:errors="*{chassi}"></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="problemaIdentificado">Problema identificado</label>
+            <div class="input-wrapper">
+              <i class="fas fa-exclamation-triangle"></i>
+              <select
+                id="problemaIdentificado"
+                th:field="*{problemaIdentificado}"
+              >
+                <option value="">-- Nenhum problema --</option>
+                <option value="reparos simples">Reparos simples</option>
+                <option value="motor defeituoso">Motor defeituoso</option>
+                <option value="danos estruturais">Danos estruturais</option>
+              </select>
+            </div>
+            <div class="info-msg">
+              <i class="fas fa-info-circle"></i>
+              Campo opcional. Selecione se há algum problema identificado
+            </div>
+            <div
+              class="error-msg"
+              th:if="${#fields.hasErrors('problemaIdentificado')}"
+            >
+              <i class="fas fa-exclamation-circle"></i>
+              <span th:errors="*{problemaIdentificado}"></span>
+            </div>
+          </div>
+
+          <div class="field-group">
+            <div class="field">
+              <label for="patioIdEdit">Pátio</label>
+              <div class="input-wrapper">
+                <i class="fas fa-building"></i>
+                <select
+                  id="patioIdEdit"
+                  name="patioId"
+                  th:value="${patioSelecionado}"
+                  onchange="carregarVagasDisponiveisEdit()"
+                >
+                  <option value="">-- Selecione um pátio --</option>
+                  <option
+                    th:each="p : ${patios}"
+                    th:value="${p.id}"
+                    th:text="|${p.nomeUnidade} - ${p.localizacao}|"
+                    th:selected="${patioSelecionado != null and patioSelecionado == p.id}"
+                  ></option>
+                </select>
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="vagaId">Vaga</label>
+              <div class="input-wrapper">
+                <i class="fas fa-map-marker-alt"></i>
+                <select id="vagaId" th:field="*{vagaId}">
+                  <option value="">-- Sem vaga --</option>
+                  <option
+                    th:each="v : ${vagas}"
+                    th:value="${v.id}"
+                    th:text="|Vaga ${v.numero}|"
+                  ></option>
+                </select>
+              </div>
+              <div class="info-msg">
+                <i class="fas fa-info-circle"></i>
+                Opcional. Selecione um pátio primeiro para ver vagas disponíveis
+              </div>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn-primary">
+              <i class="fas fa-save"></i>
+              Atualizar Moto
+            </button>
+            <a th:href="@{/motos}" class="btn-cancel">
+              <i class="fas fa-times"></i>
+              Cancelar
+            </a>
+          </div>
+        </form>
+      </div>
+    </main>
+
+    <!-- Bottom Navigation (mobile only) -->
+    <nav class="bottom-nav">
+      <div class="nav-container">
+        <a th:href="@{/}" class="nav-item">
+          <i class="fas fa-th-large"></i>
+          <span>Dashboard</span>
+        </a>
+        <a href="#mapa" class="nav-item">
+          <i class="fas fa-map"></i>
+          <span>Mapa</span>
+        </a>
+        <a th:href="@{/patios}" class="nav-item">
+          <i class="fas fa-building"></i>
+          <span>Pátios</span>
+        </a>
+        <a th:href="@{/motos}" class="nav-item active">
+          <i class="fas fa-motorcycle"></i>
+          <span>Motos</span>
+        </a>
+      </div>
+    </nav>
 
     <script>
       function carregarVagasDisponiveis() {

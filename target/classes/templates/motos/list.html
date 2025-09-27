@@ -2,106 +2,712 @@
 <html xmlns:th="http://www.thymeleaf.org">
   <head>
     <meta charset="UTF-8" />
-    <title>Motos</title>
+    <title>Geosense - Motos</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
     <style>
-      body {
-        font-family: Arial, sans-serif;
-        padding: 24px;
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
       }
-      .top {
+
+      :root {
+        --primary-dark: #020817;
+        --primary-cyan: #00cccf;
+        --text-secondary: #94a3b8;
+        --card-bg: rgba(255, 255, 255, 0.08);
+        --border-color: rgba(255, 255, 255, 0.1);
+        --success-color: #10b981;
+        --error-color: #ef4444;
+        --warning-color: #f59e0b;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(
+          135deg,
+          #020817 0%,
+          #0f172a 50%,
+          #1e293b 100%
+        );
+        min-height: 100vh;
+        color: white;
+        position: relative;
+        overflow-x: hidden;
+        padding-bottom: 80px;
+      }
+
+      /* Background decorative elements */
+      body::before {
+        content: "";
+        position: fixed;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(
+          circle,
+          rgba(0, 204, 207, 0.08) 0%,
+          transparent 70%
+        );
+        animation: pulse 8s ease-in-out infinite;
+        z-index: -1;
+      }
+
+      /* Header */
+      .header {
+        background: var(--card-bg);
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid var(--border-color);
+        padding: 20px;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        margin-bottom: 30px;
+      }
+
+      .header-content {
+        max-width: 1200px;
+        margin: 0 auto;
         display: flex;
         justify-content: space-between;
         align-items: center;
+      }
+
+      .page-title {
+        font-size: 28px;
+        font-weight: 700;
+        color: white;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+      }
+
+      .page-title i {
+        color: var(--primary-cyan);
+        font-size: 24px;
+      }
+
+      .header-actions {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+      }
+
+      .btn-primary {
+        background: linear-gradient(
+          135deg,
+          var(--primary-cyan) 0%,
+          #0891b2 100%
+        );
+        color: white;
+        padding: 12px 20px;
+        border-radius: 10px;
+        text-decoration: none;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        transition: all 0.3s ease;
+        border: none;
+        cursor: pointer;
+        font-size: 14px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(0, 204, 207, 0.4);
+        text-decoration: none;
+        color: white;
+      }
+
+      /* Main Content */
+      .main-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+
+      /* Alerts */
+      .alert {
+        padding: 16px 20px;
+        border-radius: 12px;
+        margin-bottom: 24px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-weight: 500;
+        backdrop-filter: blur(10px);
+        border: 1px solid;
+      }
+
+      .alert-success {
+        background: rgba(16, 185, 129, 0.1);
+        border-color: rgba(16, 185, 129, 0.3);
+        color: #86efac;
+      }
+
+      .alert-error {
+        background: rgba(239, 68, 68, 0.1);
+        border-color: rgba(239, 68, 68, 0.3);
+        color: #fca5a5;
+      }
+
+      /* Motos Grid */
+      .motos-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+        gap: 24px;
+        margin-top: 20px;
+      }
+
+      .moto-card {
+        background: var(--card-bg);
+        backdrop-filter: blur(10px);
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        padding: 24px;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .moto-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, var(--primary-cyan), #0891b2);
+        opacity: 0.8;
+      }
+
+      .moto-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 20px 40px rgba(0, 204, 207, 0.2);
+        border-color: rgba(0, 204, 207, 0.3);
+      }
+
+      .moto-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
         margin-bottom: 16px;
       }
-      a.btn {
-        background: #2f3640;
-        color: #fff;
-        padding: 8px 12px;
+
+      .moto-info h3 {
+        font-size: 20px;
+        font-weight: 700;
+        color: white;
+        margin-bottom: 4px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .moto-icon {
+        color: var(--primary-cyan);
+        font-size: 18px;
+      }
+
+      .moto-id {
+        font-size: 12px;
+        color: var(--text-secondary);
+        background: rgba(255, 255, 255, 0.1);
+        padding: 4px 8px;
         border-radius: 6px;
+        font-weight: 500;
+      }
+
+      .moto-details {
+        margin: 16px 0;
+      }
+
+      .detail-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 8px;
+        padding: 8px 0;
+      }
+
+      .detail-label {
+        color: var(--text-secondary);
+        font-size: 13px;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .detail-value {
+        color: white;
+        font-weight: 600;
+        font-size: 14px;
+      }
+
+      .detail-value.empty {
+        color: var(--text-secondary);
+        font-style: italic;
+      }
+
+      /* Status badges */
+      .status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 16px;
+      }
+
+      .status-allocated {
+        background: rgba(16, 185, 129, 0.2);
+        color: #86efac;
+        border: 1px solid rgba(16, 185, 129, 0.3);
+      }
+
+      .status-available {
+        background: rgba(59, 130, 246, 0.2);
+        color: #93c5fd;
+        border: 1px solid rgba(59, 130, 246, 0.3);
+      }
+
+      .status-problem {
+        background: rgba(239, 68, 68, 0.2);
+        color: #fca5a5;
+        border: 1px solid rgba(239, 68, 68, 0.3);
+      }
+
+      /* Allocation info */
+      .allocation-info {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 12px;
+        padding: 16px;
+        margin: 16px 0;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .allocation-info h4 {
+        color: var(--primary-cyan);
+        font-size: 14px;
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .allocation-details {
+        color: var(--text-secondary);
+        font-size: 13px;
+        line-height: 1.4;
+      }
+
+      .allocation-vaga {
+        color: white;
+        font-weight: 600;
+      }
+
+      /* Problem info */
+      .problem-info {
+        background: rgba(239, 68, 68, 0.1);
+        border: 1px solid rgba(239, 68, 68, 0.3);
+        border-radius: 12px;
+        padding: 12px 16px;
+        margin: 16px 0;
+      }
+
+      .problem-info .detail-label {
+        color: #fca5a5;
+      }
+
+      .problem-info .detail-value {
+        color: #fca5a5;
+        font-weight: 500;
+      }
+
+      /* Actions */
+      .moto-actions {
+        display: flex;
+        gap: 8px;
+        margin-top: 20px;
+        padding-top: 20px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .btn-action {
+        flex: 1;
+        padding: 10px 16px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 600;
+        text-align: center;
+        transition: all 0.3s ease;
+        border: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+      }
+
+      .btn-edit {
+        background: rgba(59, 130, 246, 0.2);
+        color: #93c5fd;
+        border: 1px solid rgba(59, 130, 246, 0.3);
+      }
+
+      .btn-edit:hover {
+        background: rgba(59, 130, 246, 0.3);
+        color: white;
         text-decoration: none;
       }
-      table {
-        width: 100%;
-        border-collapse: collapse;
+
+      .btn-delete {
+        background: rgba(239, 68, 68, 0.2);
+        color: #fca5a5;
+        border: 1px solid rgba(239, 68, 68, 0.3);
       }
-      th,
-      td {
-        border: 1px solid #eee;
-        padding: 8px;
-        text-align: left;
+
+      .btn-delete:hover {
+        background: rgba(239, 68, 68, 0.3);
+        color: white;
       }
-      th {
-        background: #f5f6fa;
+
+      /* Empty state */
+      .empty-state {
+        text-align: center;
+        padding: 60px 20px;
+        color: var(--text-secondary);
       }
-      form {
-        display: inline;
+
+      .empty-state i {
+        font-size: 64px;
+        color: var(--primary-cyan);
+        margin-bottom: 20px;
+        opacity: 0.6;
       }
-      .success {
-        color: #2ecc71;
-        margin-bottom: 12px;
+
+      .empty-state h3 {
+        font-size: 24px;
+        margin-bottom: 8px;
+        color: white;
       }
-      .error {
-        color: #c23616;
-        margin-bottom: 12px;
+
+      .empty-state p {
+        font-size: 16px;
+        margin-bottom: 30px;
+      }
+
+      /* Bottom Navigation (mobile) */
+      .bottom-nav {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: var(--card-bg);
+        backdrop-filter: blur(10px);
+        border-top: 1px solid var(--border-color);
+        padding: 12px 0;
+        z-index: 100;
+      }
+
+      .nav-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+      }
+
+      .nav-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+        text-decoration: none;
+        color: var(--text-secondary);
+        transition: all 0.3s ease;
+        padding: 8px 16px;
+        border-radius: 12px;
+        min-width: 60px;
+      }
+
+      .nav-item:hover,
+      .nav-item.active {
+        color: var(--primary-cyan);
+        background: rgba(0, 204, 207, 0.1);
+        text-decoration: none;
+      }
+
+      .nav-item i {
+        font-size: 20px;
+      }
+
+      .nav-item span {
+        font-size: 12px;
+        font-weight: 500;
+      }
+
+      /* Animations */
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 0.6;
+          transform: scale(1);
+        }
+        50% {
+          opacity: 1;
+          transform: scale(1.05);
+        }
+      }
+
+      /* Responsive Design */
+      @media (min-width: 768px) {
+        .bottom-nav {
+          display: none;
+        }
+
+        body {
+          padding-bottom: 0;
+        }
+
+        .motos-grid {
+          grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+        }
+      }
+
+      @media (max-width: 767px) {
+        .main-content {
+          padding: 0 15px;
+        }
+
+        .page-title {
+          font-size: 24px;
+        }
+
+        .header-content {
+          flex-direction: column;
+          gap: 16px;
+          align-items: stretch;
+        }
+
+        .header-actions {
+          justify-content: center;
+        }
+
+        .motos-grid {
+          grid-template-columns: 1fr;
+          gap: 16px;
+        }
+
+        .moto-card {
+          padding: 20px;
+        }
+
+        .desktop-nav {
+          display: none;
+        }
+      }
+
+      @media (min-width: 768px) {
+        .desktop-nav {
+          display: block;
+        }
       }
     </style>
   </head>
   <body>
-    <div th:replace="~{fragments :: navbar('GeoSense - Motos')}"></div>
-    <div class="top">
-      <h1>Motos</h1>
-      <a class="btn" th:href="@{/motos/novo}">Nova</a>
+    <!-- Desktop Navigation (hidden on mobile) -->
+    <div class="desktop-nav">
+      <div th:replace="~{fragments :: navbar('Geosense - Motos')}"></div>
     </div>
-    <div class="success" th:if="${success}" th:text="${success}"></div>
-    <div class="error" th:if="${error}" th:text="${error}"></div>
-    <table>
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Modelo</th>
-          <th>Placa</th>
-          <th>Chassi</th>
-          <th>Problema</th>
-          <th>Vaga/Pátio</th>
-          <th>Ações</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr th:each="m : ${motos}">
-          <td th:text="${m.id}"></td>
-          <td th:text="${m.modelo}"></td>
-          <td th:text="${m.placa}"></td>
-          <td th:text="${m.chassi}"></td>
-          <td th:text="${m.problemaIdentificado}"></td>
-          <td>
-            <div th:if="${m.vaga != null}">
-              <strong>Vaga:</strong> <span th:text="${m.vaga.numero}"></span
+
+    <!-- Header -->
+    <header class="header">
+      <div class="header-content">
+        <h1 class="page-title">
+          <i class="fas fa-motorcycle"></i>
+          Motos
+        </h1>
+        <div class="header-actions">
+          <a th:href="@{/motos/novo}" class="btn-primary">
+            <i class="fas fa-plus"></i>
+            Nova Moto
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Success/Error Messages -->
+      <div class="alert alert-success" th:if="${success}">
+        <i class="fas fa-check-circle"></i>
+        <span th:text="${success}"></span>
+      </div>
+
+      <div class="alert alert-error" th:if="${error}">
+        <i class="fas fa-exclamation-triangle"></i>
+        <span th:text="${error}"></span>
+      </div>
+
+      <!-- Motos Grid -->
+      <div class="motos-grid" th:if="${!#lists.isEmpty(motos)}">
+        <div class="moto-card" th:each="m : ${motos}">
+          <!-- Card Header -->
+          <div class="moto-header">
+            <div class="moto-info">
+              <h3>
+                <i class="fas fa-motorcycle moto-icon"></i>
+                <span th:text="${m.modelo ?: 'Modelo não informado'}"></span>
+              </h3>
+            </div>
+            <div class="moto-id">ID: <span th:text="${m.id}"></span></div>
+          </div>
+
+          <!-- Status Badge -->
+          <div>
+            <span
+              class="status-badge"
+              th:classappend="${m.vaga != null} ? 'status-allocated' : 
+                             (${m.problemaIdentificado != null and !m.problemaIdentificado.isEmpty()} ? 'status-problem' : 'status-available')"
+            >
+              <i
+                class="fas"
+                th:classappend="${m.vaga != null} ? 'fa-check-circle' : 
+                                (${m.problemaIdentificado != null and !m.problemaIdentificado.isEmpty()} ? 'fa-exclamation-triangle' : 'fa-clock')"
+              ></i>
+              <span
+                th:text="${m.vaga != null} ? 'Alocada' : 
+                            (${m.problemaIdentificado != null and !m.problemaIdentificado.isEmpty()} ? 'Com Problema' : 'Disponível')"
+              ></span>
+            </span>
+          </div>
+
+          <!-- Moto Details -->
+          <div class="moto-details">
+            <div class="detail-row">
+              <span class="detail-label">Placa</span>
+              <span
+                class="detail-value"
+                th:classappend="${m.placa == null or m.placa.isEmpty()} ? 'empty'"
+                th:text="${m.placa ?: 'Não informada'}"
+              ></span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Chassi</span>
+              <span
+                class="detail-value"
+                th:classappend="${m.chassi == null or m.chassi.isEmpty()} ? 'empty'"
+                th:text="${m.chassi ?: 'Não informado'}"
+              ></span>
+            </div>
+          </div>
+
+          <!-- Problem Information -->
+          <div
+            class="problem-info"
+            th:if="${m.problemaIdentificado != null and !m.problemaIdentificado.isEmpty()}"
+          >
+            <div class="detail-row">
+              <span class="detail-label"
+                ><i class="fas fa-exclamation-triangle"></i> Problema</span
+              >
+              <span
+                class="detail-value"
+                th:text="${m.problemaIdentificado}"
+              ></span>
+            </div>
+          </div>
+
+          <!-- Allocation Information -->
+          <div class="allocation-info" th:if="${m.vaga != null}">
+            <h4>
+              <i class="fas fa-map-marker-alt"></i>
+              Localização Atual
+            </h4>
+            <div class="allocation-details">
+              <span class="allocation-vaga"
+                >Vaga <span th:text="${m.vaga.numero}"></span></span
               ><br />
-              <small th:text="${m.vaga.patio.nomeUnidade}"></small>
+              <span th:text="${m.vaga.patio.nomeUnidade}"></span><br />
+              <small th:text="${m.vaga.patio.localizacao}"></small>
             </div>
-            <div th:unless="${m.vaga != null}">
-              <span style="color: #95a5a6">Sem vaga</span>
-            </div>
-          </td>
-          <td>
-            <a th:href="@{'/motos/' + ${m.id} + '/editar'}">Editar</a>
+          </div>
+
+          <!-- Actions -->
+          <div class="moto-actions">
+            <a
+              th:href="@{'/motos/' + ${m.id} + '/editar'}"
+              class="btn-action btn-edit"
+            >
+              <i class="fas fa-edit"></i>
+              Editar
+            </a>
             <form
               th:action="@{'/motos/' + ${m.id} + '/excluir'}"
               method="post"
-              style="display: inline"
+              style="flex: 1"
             >
               <button
                 type="submit"
-                onclick="return confirm('Confirma excluir?')"
+                class="btn-action btn-delete"
+                style="width: 100%"
+                onclick="return confirm('Confirma excluir esta moto?')"
               >
+                <i class="fas fa-trash"></i>
                 Excluir
               </button>
             </form>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Empty State -->
+      <div class="empty-state" th:if="${#lists.isEmpty(motos)}">
+        <i class="fas fa-motorcycle"></i>
+        <h3>Nenhuma moto cadastrada</h3>
+        <p>Comece cadastrando sua primeira moto no sistema</p>
+        <a th:href="@{/motos/novo}" class="btn-primary">
+          <i class="fas fa-plus"></i>
+          Cadastrar Primeira Moto
+        </a>
+      </div>
+    </main>
+
+    <!-- Bottom Navigation (mobile only) -->
+    <nav class="bottom-nav">
+      <div class="nav-container">
+        <a th:href="@{/}" class="nav-item">
+          <i class="fas fa-th-large"></i>
+          <span>Dashboard</span>
+        </a>
+        <a href="#mapa" class="nav-item">
+          <i class="fas fa-map"></i>
+          <span>Mapa</span>
+        </a>
+        <a th:href="@{/patios}" class="nav-item">
+          <i class="fas fa-building"></i>
+          <span>Pátios</span>
+        </a>
+        <a th:href="@{/motos}" class="nav-item active">
+          <i class="fas fa-motorcycle"></i>
+          <span>Motos</span>
+        </a>
+      </div>
+    </nav>
   </body>
 </html>

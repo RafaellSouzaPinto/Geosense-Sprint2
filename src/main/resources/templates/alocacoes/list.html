@@ -1,169 +1,729 @@
 <!DOCTYPE html>
-<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Alocações - Geosense</title>
+    <title>Geosense - Alocações</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
       rel="stylesheet"
     />
     <style>
-      .card-header {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      :root {
+        --primary-dark: #020817;
+        --primary-cyan: #00cccf;
+        --text-secondary: #94a3b8;
+        --card-bg: rgba(255, 255, 255, 0.08);
+        --border-color: rgba(255, 255, 255, 0.1);
+        --success-color: #10b981;
+        --error-color: #ef4444;
+        --warning-color: #f59e0b;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(
+          135deg,
+          #020817 0%,
+          #0f172a 50%,
+          #1e293b 100%
+        );
+        min-height: 100vh;
+        color: white;
+        position: relative;
+        overflow-x: hidden;
+        padding-bottom: 80px;
+      }
+
+      /* Background decorative elements */
+      body::before {
+        content: "";
+        position: fixed;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(
+          circle,
+          rgba(0, 204, 207, 0.08) 0%,
+          transparent 70%
+        );
+        animation: pulse 8s ease-in-out infinite;
+        z-index: -1;
+      }
+
+      /* Header */
+      .header {
+        background: var(--card-bg);
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid var(--border-color);
+        padding: 20px;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        margin-bottom: 30px;
+      }
+
+      .header-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .page-title {
+        font-size: 28px;
+        font-weight: 700;
+        color: white;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+      }
+
+      .page-title i {
+        color: var(--primary-cyan);
+        font-size: 24px;
+      }
+
+      .header-actions {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+      }
+
+      .btn-primary {
+        background: linear-gradient(
+          135deg,
+          var(--primary-cyan) 0%,
+          #0891b2 100%
+        );
+        color: white;
+        padding: 12px 20px;
+        border-radius: 10px;
+        text-decoration: none;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        transition: all 0.3s ease;
+        border: none;
+        cursor: pointer;
+        font-size: 14px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(0, 204, 207, 0.4);
+        text-decoration: none;
         color: white;
       }
-      .status-ativo {
-        color: #28a745;
-        font-weight: bold;
+
+      /* Main Content */
+      .main-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
       }
-      .btn-custom {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+
+      /* Alerts */
+      .alert {
+        padding: 16px 20px;
+        border-radius: 12px;
+        margin-bottom: 24px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-weight: 500;
+        backdrop-filter: blur(10px);
+        border: 1px solid;
+      }
+
+      .alert-success {
+        background: rgba(16, 185, 129, 0.1);
+        border-color: rgba(16, 185, 129, 0.3);
+        color: #86efac;
+      }
+
+      .alert-error {
+        background: rgba(239, 68, 68, 0.1);
+        border-color: rgba(239, 68, 68, 0.3);
+        color: #fca5a5;
+      }
+
+      /* Alocações Grid */
+      .alocacoes-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+        gap: 24px;
+        margin-top: 20px;
+      }
+
+      .alocacao-card {
+        background: var(--card-bg);
+        backdrop-filter: blur(10px);
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        padding: 24px;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .alocacao-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, var(--primary-cyan), #0891b2);
+        opacity: 0.8;
+      }
+
+      .alocacao-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 20px 40px rgba(0, 204, 207, 0.2);
+        border-color: rgba(0, 204, 207, 0.3);
+      }
+
+      .alocacao-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 16px;
+      }
+
+      .alocacao-info h3 {
+        font-size: 20px;
+        font-weight: 700;
+        color: white;
+        margin-bottom: 4px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .alocacao-icon {
+        color: var(--primary-cyan);
+        font-size: 18px;
+      }
+
+      .alocacao-id {
+        font-size: 12px;
+        color: var(--text-secondary);
+        background: rgba(255, 255, 255, 0.1);
+        padding: 4px 8px;
+        border-radius: 6px;
+        font-weight: 500;
+      }
+
+      .alocacao-details {
+        margin: 16px 0;
+      }
+
+      .detail-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 8px;
+        padding: 8px 0;
+      }
+
+      .detail-label {
+        color: var(--text-secondary);
+        font-size: 13px;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .detail-value {
+        color: white;
+        font-weight: 600;
+        font-size: 14px;
+      }
+
+      .detail-value.empty {
+        color: var(--text-secondary);
+        font-style: italic;
+      }
+
+      /* Status badges */
+      .status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 16px;
+      }
+
+      .status-ativo {
+        background: rgba(16, 185, 129, 0.2);
+        color: #86efac;
+        border: 1px solid rgba(16, 185, 129, 0.3);
+      }
+
+      /* Info destacada */
+      .info-highlight {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 12px;
+        padding: 16px;
+        margin: 16px 0;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .info-highlight h4 {
+        color: var(--primary-cyan);
+        font-size: 14px;
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .info-highlight .detail-value {
+        color: white;
+        font-weight: 500;
+        font-size: 13px;
+      }
+
+      /* Actions */
+      .alocacao-actions {
+        display: flex;
+        gap: 8px;
+        margin-top: 20px;
+        padding-top: 20px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .btn-action {
+        flex: 1;
+        padding: 10px 16px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 600;
+        text-align: center;
+        transition: all 0.3s ease;
         border: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+      }
+
+      .btn-remover {
+        background: rgba(239, 68, 68, 0.2);
+        color: #fca5a5;
+        border: 1px solid rgba(239, 68, 68, 0.3);
+      }
+
+      .btn-remover:hover {
+        background: rgba(239, 68, 68, 0.3);
+        color: white;
+      }
+
+      /* Empty state */
+      .empty-state {
+        text-align: center;
+        padding: 60px 20px;
+        color: var(--text-secondary);
+      }
+
+      .empty-state i {
+        font-size: 64px;
+        color: var(--primary-cyan);
+        margin-bottom: 20px;
+        opacity: 0.6;
+      }
+
+      .empty-state h3 {
+        font-size: 24px;
+        margin-bottom: 8px;
+        color: white;
+      }
+
+      .empty-state p {
+        font-size: 16px;
+        margin-bottom: 30px;
+      }
+
+      /* Bottom Navigation (mobile) */
+      .bottom-nav {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: var(--card-bg);
+        backdrop-filter: blur(10px);
+        border-top: 1px solid var(--border-color);
+        padding: 12px 0;
+        z-index: 100;
+      }
+
+      .nav-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+      }
+
+      .nav-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+        text-decoration: none;
+        color: var(--text-secondary);
+        transition: all 0.3s ease;
+        padding: 8px 16px;
+        border-radius: 12px;
+        min-width: 60px;
+      }
+
+      .nav-item:hover,
+      .nav-item.active {
+        color: var(--primary-cyan);
+        background: rgba(0, 204, 207, 0.1);
+        text-decoration: none;
+      }
+
+      .nav-item i {
+        font-size: 20px;
+      }
+
+      .nav-item span {
+        font-size: 12px;
+        font-weight: 500;
+      }
+
+      /* Animations */
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 0.6;
+          transform: scale(1);
+        }
+        50% {
+          opacity: 1;
+          transform: scale(1.05);
+        }
+      }
+
+      /* Responsive Design */
+      @media (min-width: 768px) {
+        .bottom-nav {
+          display: none;
+        }
+
+        body {
+          padding-bottom: 0;
+        }
+
+        .alocacoes-grid {
+          grid-template-columns: repeat(auto-fill, minmax(450px, 1fr));
+        }
+      }
+
+      @media (max-width: 767px) {
+        .main-content {
+          padding: 0 15px;
+        }
+
+        .page-title {
+          font-size: 24px;
+        }
+
+        .header-content {
+          flex-direction: column;
+          gap: 16px;
+          align-items: stretch;
+        }
+
+        .header-actions {
+          justify-content: center;
+        }
+
+        .alocacoes-grid {
+          grid-template-columns: 1fr;
+          gap: 16px;
+        }
+
+        .alocacao-card {
+          padding: 20px;
+        }
+
+        .desktop-nav {
+          display: none;
+        }
+      }
+
+      @media (min-width: 768px) {
+        .desktop-nav {
+          display: block;
+        }
       }
     </style>
   </head>
-  <body class="bg-light">
-    <div class="container mt-4">
-      <!-- Cabeçalho -->
-      <div class="card shadow">
-        <div
-          class="card-header d-flex justify-content-between align-items-center"
-        >
-          <div>
-            <h4 class="mb-0">📍 Alocações de Motos</h4>
-            <small>Gerenciar localização das motos nos pátios</small>
-          </div>
-          <a th:href="@{/alocacoes/novo}" class="btn btn-light">
-            📍 Alocar/Realocar Moto
+  <body>
+    <!-- Header -->
+    <header class="header">
+      <div class="header-content">
+        <h1 class="page-title">
+          <i class="fas fa-car-side"></i>
+          Alocações de Motos
+        </h1>
+        <div class="header-actions">
+          <a href="/alocacoes/novo" class="btn-primary">
+            <i class="fas fa-plus"></i>
+            Nova Alocação
           </a>
         </div>
+      </div>
+    </header>
 
-        <div class="card-body">
-          <!-- Mensagens -->
-          <div
-            th:if="${success}"
-            class="alert alert-success alert-dismissible fade show"
-          >
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Mensagens -->
+      <div th:if="${success}" class="alert alert-success">
+        <i class="fas fa-check-circle"></i>
+        <span th:text="${success}"></span>
+      </div>
+
+      <div th:if="${error}" class="alert alert-error">
+        <i class="fas fa-exclamation-triangle"></i>
+        <span th:text="${error}"></span>
+      </div>
+
+      <!-- Lista de Alocações -->
+      <div th:if="${#lists.isEmpty(alocacoes)}" class="empty-state">
+        <i class="fas fa-car-side"></i>
+        <h3>Nenhuma Alocação Registrada</h3>
+        <p>
+          Aloque motos em vagas dos pátios para começar a gerenciar sua
+          localização.
+        </p>
+        <a href="/alocacoes/novo" class="btn-primary">
+          <i class="fas fa-plus"></i>
+          Criar Primeira Alocação
+        </a>
+      </div>
+
+      <div th:unless="${#lists.isEmpty(alocacoes)}" class="alocacoes-grid">
+        <div th:each="alocacao : ${alocacoes}" class="alocacao-card">
+          <!-- Header do card -->
+          <div class="alocacao-header">
+            <div class="alocacao-info">
+              <h3>
+                <i class="fas fa-motorcycle alocacao-icon"></i>
+                Moto
+                <span
+                  th:text="${alocacao.moto != null ? alocacao.moto.modelo : 'N/A'}"
+                ></span>
+              </h3>
+            </div>
+            <div class="alocacao-id">
+              ID: <span th:text="${alocacao.id}"></span>
+            </div>
+          </div>
+
+          <!-- Status Badge -->
+          <div class="status-badge status-ativo">
             <i class="fas fa-check-circle"></i>
-            <span th:text="${success}"></span>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="alert"
-            ></button>
+            Alocada
           </div>
 
+          <!-- Detalhes da Moto -->
+          <div class="alocacao-details">
+            <div class="detail-row">
+              <span class="detail-label">
+                <i class="fas fa-motorcycle"></i>
+                Moto
+              </span>
+              <span class="detail-value">
+                #<span
+                  th:text="${alocacao.moto != null ? alocacao.moto.id : 'N/A'}"
+                ></span>
+                -
+                <span
+                  th:text="${alocacao.moto != null ? alocacao.moto.modelo : 'N/A'}"
+                ></span>
+              </span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">
+                <i class="fas fa-id-card"></i>
+                Placa/Chassi
+              </span>
+              <span class="detail-value" th:if="${alocacao.moto != null}">
+                <span
+                  th:text="${alocacao.moto.placa != null ? alocacao.moto.placa : alocacao.moto.chassi}"
+                ></span>
+              </span>
+              <span
+                class="detail-value empty"
+                th:unless="${alocacao.moto != null}"
+              >
+                Não informado
+              </span>
+            </div>
+          </div>
+
+          <!-- Informações de Localização -->
+          <div class="info-highlight">
+            <h4>
+              <i class="fas fa-map-marker-alt"></i>
+              Localização
+            </h4>
+            <div class="detail-row">
+              <span class="detail-label">
+                <i class="fas fa-building"></i>
+                Pátio
+              </span>
+              <span class="detail-value">
+                <span
+                  th:text="${alocacao.vaga != null ? alocacao.vaga.patio.nomeUnidade : 'N/A'}"
+                ></span>
+              </span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">
+                <i class="fas fa-map-pin"></i>
+                Endereço
+              </span>
+              <span class="detail-value">
+                <span
+                  th:text="${alocacao.vaga != null ? alocacao.vaga.patio.localizacao : 'N/A'}"
+                ></span>
+              </span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">
+                <i class="fas fa-parking"></i>
+                Vaga
+              </span>
+              <span class="detail-value">
+                Nº
+                <span
+                  th:text="${alocacao.vaga != null ? alocacao.vaga.numero : 'N/A'}"
+                ></span>
+                (<span
+                  th:text="${alocacao.vaga != null ? alocacao.vaga.tipo : 'N/A'}"
+                ></span
+                >)
+              </span>
+            </div>
+          </div>
+
+          <!-- Informações do Mecânico (se houver) -->
           <div
-            th:if="${error}"
-            class="alert alert-danger alert-dismissible fade show"
+            class="alocacao-details"
+            th:if="${alocacao.mecanicoResponsavel != null}"
           >
-            <i class="fas fa-exclamation-triangle"></i>
-            <span th:text="${error}"></span>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="alert"
-            ></button>
+            <div class="detail-row">
+              <span class="detail-label">
+                <i class="fas fa-user-cog"></i>
+                Mecânico
+              </span>
+              <span class="detail-value">
+                <span th:text="${alocacao.mecanicoResponsavel.nome}"></span>
+              </span>
+            </div>
           </div>
 
-          <!-- Lista de Alocações -->
-          <div th:if="${#lists.isEmpty(alocacoes)}" class="text-center py-5">
-            <h5 class="text-muted">📭 Nenhuma moto alocada</h5>
-            <p class="text-muted">
-              Aloque motos em vagas dos pátios para gerenciar sua localização.
-            </p>
-            <a
-              th:href="@{/alocacoes/novo}"
-              class="btn btn-custom btn-primary text-white"
+          <!-- Data de Alocação -->
+          <div class="alocacao-details">
+            <div class="detail-row">
+              <span class="detail-label">
+                <i class="fas fa-calendar"></i>
+                Data da Alocação
+              </span>
+              <span class="detail-value">
+                <span
+                  th:text="${#temporals.format(alocacao.dataHoraAlocacao, 'dd/MM/yyyy HH:mm')}"
+                ></span>
+              </span>
+            </div>
+          </div>
+
+          <!-- Observações (se houver) -->
+          <div
+            class="alocacao-details"
+            th:if="${alocacao.observacoes != null and !alocacao.observacoes.isEmpty()}"
+          >
+            <div class="detail-row">
+              <span class="detail-label">
+                <i class="fas fa-sticky-note"></i>
+                Observações
+              </span>
+              <span class="detail-value">
+                <span th:text="${alocacao.observacoes}"></span>
+              </span>
+            </div>
+          </div>
+
+          <!-- Actions -->
+          <div class="alocacao-actions">
+            <form
+              th:action="@{/alocacoes/{id}/remover(id=${alocacao.id})}"
+              method="post"
+              style="flex: 1"
             >
-              📍 Alocar Primeira Moto
-            </a>
-          </div>
-
-          <div
-            th:unless="${#lists.isEmpty(alocacoes)}"
-            class="table-responsive"
-          >
-            <table class="table table-hover">
-              <thead class="table-light">
-                <tr>
-                  <th>🏍️ Moto</th>
-                  <th>🏢 Pátio</th>
-                  <th>🅿️ Vaga</th>
-                  <th>👨‍🔧 Mecânico</th>
-                  <th>📅 Data</th>
-                  <th>⚙️ Ações</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr th:each="alocacao : ${alocacoes}">
-                  <td>
-                    <strong
-                      >🏍️ Moto #<span
-                        th:text="${alocacao.motoId}"
-                      ></span></strong
-                    ><br />
-                    <small class="text-muted"
-                      >Clique em "Remover" para tirar esta moto da vaga</small
-                    >
-                  </td>
-                  <td>
-                    <span class="badge bg-primary"
-                      >Pátio #<span th:text="${alocacao.patioId}"></span
-                    ></span>
-                  </td>
-                  <td>
-                    <span class="status-ativo"
-                      >🟢 Vaga #<span th:text="${alocacao.vagaId}"></span
-                    ></span>
-                  </td>
-                  <td>
-                    <span th:if="${alocacao.mecanicoId != null}">
-                      👨‍🔧 Mecânico #<span
-                        th:text="${alocacao.mecanicoId}"
-                      ></span>
-                    </span>
-                    <span
-                      th:unless="${alocacao.mecanicoId != null}"
-                      class="text-muted"
-                    >
-                      Sem mecânico
-                    </span>
-                  </td>
-                  <td>
-                    <small th:text="${alocacao.observacoes}"></small>
-                  </td>
-                  <td>
-                    <form
-                      th:action="@{/alocacoes/{id}/remover(id=${alocacao.id})}"
-                      method="post"
-                      style="display: inline"
-                      onsubmit="return confirm('Remover esta moto da vaga? A vaga ficará disponível.')"
-                    >
-                      <button
-                        type="submit"
-                        class="btn btn-outline-danger btn-sm"
-                      >
-                        🗑️ Remover da Vaga
-                      </button>
-                    </form>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+              <button
+                type="submit"
+                class="btn-action btn-remover"
+                style="width: 100%"
+                onclick="return confirm('Confirma a remoção desta alocação? A vaga ficará disponível novamente.')"
+              >
+                <i class="fas fa-times"></i>
+                Remover Alocação
+              </button>
+            </form>
           </div>
         </div>
       </div>
+    </main>
 
-      <!-- Links de navegação -->
-      <div class="mt-3 text-center">
-        <a th:href="@{/}" class="btn btn-outline-secondary">🏠 Início</a>
-        <a th:href="@{/patios}" class="btn btn-outline-info">🏢 Pátios</a>
-        <a th:href="@{/motos}" class="btn btn-outline-warning">🏍️ Motos</a>
+    <!-- Bottom Navigation (mobile) -->
+    <nav class="bottom-nav">
+      <div class="nav-container">
+        <a href="/" class="nav-item">
+          <i class="fas fa-home"></i>
+          <span>Início</span>
+        </a>
+        <a href="/patios" class="nav-item">
+          <i class="fas fa-building"></i>
+          <span>Pátios</span>
+        </a>
+        <a href="/motos" class="nav-item">
+          <i class="fas fa-motorcycle"></i>
+          <span>Motos</span>
+        </a>
+        <a href="/alocacoes" class="nav-item active">
+          <i class="fas fa-car-side"></i>
+          <span>Alocações</span>
+        </a>
       </div>
-    </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    </nav>
   </body>
 </html>

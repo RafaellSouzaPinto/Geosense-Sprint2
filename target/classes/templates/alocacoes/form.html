@@ -1,213 +1,669 @@
 <!DOCTYPE html>
-<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Nova Alocação - Geosense</title>
+    <title>Geosense - Nova Alocação</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
       rel="stylesheet"
     />
     <style>
-      .card-header {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      :root {
+        --primary-dark: #020817;
+        --primary-cyan: #00cccf;
+        --text-secondary: #94a3b8;
+        --card-bg: rgba(255, 255, 255, 0.08);
+        --border-color: rgba(255, 255, 255, 0.1);
+        --success-color: #10b981;
+        --error-color: #ef4444;
+        --warning-color: #f59e0b;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(
+          135deg,
+          #020817 0%,
+          #0f172a 50%,
+          #1e293b 100%
+        );
+        min-height: 100vh;
         color: white;
+        position: relative;
+        overflow-x: hidden;
+        padding-bottom: 80px;
       }
-      .form-section {
-        border-left: 4px solid #667eea;
-        padding-left: 15px;
-        margin-bottom: 20px;
+
+      /* Background decorative elements */
+      body::before {
+        content: "";
+        position: fixed;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(
+          circle,
+          rgba(0, 204, 207, 0.08) 0%,
+          transparent 70%
+        );
+        animation: pulse 8s ease-in-out infinite;
+        z-index: -1;
       }
-      .alert-custom {
+
+      /* Header */
+      .header {
+        background: var(--card-bg);
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid var(--border-color);
+        padding: 20px;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        margin-bottom: 30px;
+      }
+
+      .header-content {
+        max-width: 800px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .page-title {
+        font-size: 28px;
+        font-weight: 700;
+        color: white;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+      }
+
+      .page-title i {
+        color: var(--primary-cyan);
+        font-size: 24px;
+      }
+
+      .btn-secondary {
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+        padding: 10px 16px;
         border-radius: 8px;
+        text-decoration: none;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        transition: all 0.3s ease;
+        border: 1px solid rgba(255, 255, 255, 0.2);
       }
-      .btn-custom {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+
+      .btn-secondary:hover {
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+        text-decoration: none;
+      }
+
+      /* Main Content */
+      .main-content {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+
+      /* Form Container */
+      .form-container {
+        background: var(--card-bg);
+        backdrop-filter: blur(10px);
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        padding: 32px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .form-container::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, var(--primary-cyan), #0891b2);
+        opacity: 0.8;
+      }
+
+      /* Alerts */
+      .alert {
+        padding: 16px 20px;
+        border-radius: 12px;
+        margin-bottom: 24px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-weight: 500;
+        backdrop-filter: blur(10px);
+        border: 1px solid;
+      }
+
+      .alert-success {
+        background: rgba(16, 185, 129, 0.1);
+        border-color: rgba(16, 185, 129, 0.3);
+        color: #86efac;
+      }
+
+      .alert-error {
+        background: rgba(239, 68, 68, 0.1);
+        border-color: rgba(239, 68, 68, 0.3);
+        color: #fca5a5;
+      }
+
+      /* Form Sections */
+      .form-section {
+        margin-bottom: 32px;
+        padding: 24px;
+        background: rgba(255, 255, 255, 0.03);
+        border-radius: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .section-title {
+        color: var(--primary-cyan);
+        font-size: 16px;
+        font-weight: 700;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .section-title i {
+        font-size: 18px;
+      }
+
+      /* Form Fields */
+      .field {
+        margin-bottom: 24px;
+      }
+
+      .field-group {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 8px;
+        color: white;
+        font-weight: 600;
+        font-size: 14px;
+      }
+
+      label.required::after {
+        content: "*";
+        color: var(--error-color);
+        margin-left: 4px;
+      }
+
+      .input-wrapper {
+        position: relative;
+        display: flex;
+        align-items: center;
+      }
+
+      .input-wrapper i {
+        position: absolute;
+        left: 12px;
+        color: var(--text-secondary);
+        z-index: 1;
+        font-size: 16px;
+      }
+
+      select,
+      textarea {
+        width: 100%;
+        padding: 12px 12px 12px 40px;
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        color: white;
+        font-size: 14px;
+        transition: all 0.3s ease;
+        backdrop-filter: blur(10px);
+      }
+
+      select:focus,
+      textarea:focus {
+        outline: none;
+        border-color: var(--primary-cyan);
+        box-shadow: 0 0 0 3px rgba(0, 204, 207, 0.1);
+        background: rgba(255, 255, 255, 0.15);
+      }
+
+      select:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+
+      select option {
+        background: var(--primary-dark);
+        color: white;
+        padding: 8px;
+      }
+
+      textarea {
+        resize: vertical;
+        min-height: 80px;
+        padding-left: 40px;
+      }
+
+      /* Info messages */
+      .info-msg {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        margin-top: 6px;
+        font-size: 12px;
+        color: var(--text-secondary);
+      }
+
+      .info-msg i {
+        font-size: 12px;
+      }
+
+      .error-msg {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        margin-top: 6px;
+        font-size: 12px;
+        color: var(--error-color);
+      }
+
+      .error-msg i {
+        font-size: 12px;
+      }
+
+      /* Form Actions */
+      .form-actions {
+        display: flex;
+        gap: 12px;
+        margin-top: 32px;
+        padding-top: 24px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .btn-primary {
+        background: linear-gradient(
+          135deg,
+          var(--primary-cyan) 0%,
+          #0891b2 100%
+        );
+        color: white;
+        padding: 14px 24px;
+        border-radius: 10px;
         border: none;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        font-size: 14px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        flex: 1;
+        justify-content: center;
       }
-      .vaga-disponivel {
-        color: #28a745;
-        font-weight: bold;
+
+      .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(0, 204, 207, 0.4);
       }
-      .vaga-ocupada {
-        color: #dc3545;
-        font-weight: bold;
+
+      .btn-cancel {
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+        padding: 14px 24px;
+        border-radius: 10px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        font-size: 14px;
+        text-decoration: none;
+        justify-content: center;
+        min-width: 120px;
+      }
+
+      .btn-cancel:hover {
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+        text-decoration: none;
+      }
+
+      /* Bottom Navigation (mobile) */
+      .bottom-nav {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: var(--card-bg);
+        backdrop-filter: blur(10px);
+        border-top: 1px solid var(--border-color);
+        padding: 12px 0;
+        z-index: 100;
+      }
+
+      .nav-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+      }
+
+      .nav-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+        text-decoration: none;
+        color: var(--text-secondary);
+        transition: all 0.3s ease;
+        padding: 8px 16px;
+        border-radius: 12px;
+        min-width: 60px;
+      }
+
+      .nav-item:hover,
+      .nav-item.active {
+        color: var(--primary-cyan);
+        background: rgba(0, 204, 207, 0.1);
+        text-decoration: none;
+      }
+
+      .nav-item i {
+        font-size: 20px;
+      }
+
+      .nav-item span {
+        font-size: 12px;
+        font-weight: 500;
+      }
+
+      /* Animations */
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 0.6;
+          transform: scale(1);
+        }
+        50% {
+          opacity: 1;
+          transform: scale(1.05);
+        }
+      }
+
+      /* Responsive Design */
+      @media (min-width: 768px) {
+        .bottom-nav {
+          display: none;
+        }
+
+        body {
+          padding-bottom: 0;
+        }
+      }
+
+      @media (max-width: 767px) {
+        .main-content {
+          padding: 0 15px;
+        }
+
+        .page-title {
+          font-size: 24px;
+        }
+
+        .header-content {
+          flex-direction: column;
+          gap: 16px;
+          align-items: stretch;
+        }
+
+        .form-container {
+          padding: 24px;
+        }
+
+        .form-section {
+          padding: 20px;
+        }
+
+        .field-group {
+          grid-template-columns: 1fr;
+          gap: 20px;
+        }
+
+        .form-actions {
+          flex-direction: column;
+        }
       }
     </style>
   </head>
-  <body class="bg-light">
-    <div class="container mt-4">
-      <div class="row justify-content-center">
-        <div class="col-lg-8">
-          <!-- Cabeçalho -->
-          <div class="card shadow">
-            <div class="card-header">
-              <h4 class="mb-0">📍 Alocar/Realocar Moto</h4>
-              <small
-                >Mova uma moto para uma nova vaga ou aloque moto sem vaga</small
-              >
-            </div>
+  <body>
+    <!-- Header -->
+    <header class="header">
+      <div class="header-content">
+        <h1 class="page-title">
+          <i class="fas fa-car-side"></i>
+          Nova Alocação
+        </h1>
+        <a href="/alocacoes" class="btn-secondary">
+          <i class="fas fa-arrow-left"></i>
+          Voltar
+        </a>
+      </div>
+    </header>
 
-            <div class="card-body">
-              <!-- Mensagens de erro/sucesso -->
-              <div th:if="${error}" class="alert alert-danger alert-custom">
-                <i class="fas fa-exclamation-triangle"></i>
-                <span th:text="${error}"></span>
+    <!-- Main Content -->
+    <main class="main-content">
+      <div class="form-container">
+        <!-- Mensagens de erro/sucesso -->
+        <div th:if="${error}" class="alert alert-error">
+          <i class="fas fa-exclamation-triangle"></i>
+          <span th:text="${error}"></span>
+        </div>
+
+        <!-- Formulário -->
+        <form th:action="@{/alocacoes}" th:object="${alocacao}" method="post">
+          <!-- 1. Seleção da Moto -->
+          <div class="form-section">
+            <h3 class="section-title">
+              <i class="fas fa-motorcycle"></i>
+              Selecionar Moto
+            </h3>
+            <div class="field">
+              <label for="motoId" class="required">Moto</label>
+              <div class="input-wrapper">
+                <i class="fas fa-motorcycle"></i>
+                <select id="motoId" th:field="*{motoId}" required>
+                  <option value="">-- Selecione uma moto --</option>
+                  <option
+                    th:each="moto : ${motos}"
+                    th:value="${moto.id}"
+                    th:text="${moto.modelo + ' - ' + (moto.placa != null ? moto.placa : moto.chassi) + (moto.vaga != null ? ' (Atual: Vaga ' + moto.vaga.numero + ')' : ' (Sem vaga)')}"
+                  ></option>
+                </select>
               </div>
-
-              <!-- Formulário -->
-              <form
-                th:action="@{/alocacoes}"
-                th:object="${alocacao}"
-                method="post"
-              >
-                <!-- 1. Seleção da Moto -->
-                <div class="form-section">
-                  <h6 class="text-primary">🏍️ Selecionar Moto</h6>
-                  <div class="mb-3">
-                    <label for="motoId" class="form-label"
-                      >Moto <span class="text-danger">*</span></label
-                    >
-                    <select
-                      class="form-select"
-                      id="motoId"
-                      th:field="*{motoId}"
-                      required
-                    >
-                      <option value="">-- Selecione uma moto --</option>
-                      <option
-                        th:each="moto : ${motos}"
-                        th:value="${moto.id}"
-                        th:text="${moto.modelo + ' - ' + (moto.placa != null ? moto.placa : moto.chassi) + (moto.vaga != null ? ' (Atual: Vaga ' + moto.vaga.numero + ')' : ' (Sem vaga)')}"
-                      ></option>
-                    </select>
-                    <div class="form-text">
-                      Selecione qualquer moto para alocar/realocar em uma nova
-                      vaga
-                    </div>
-                    <div
-                      th:if="${#fields.hasErrors('motoId')}"
-                      class="text-danger"
-                      th:errors="*{motoId}"
-                    ></div>
-                  </div>
-                </div>
-
-                <!-- 2. Seleção do Pátio -->
-                <div class="form-section">
-                  <h6 class="text-primary">🏢 Selecionar Pátio</h6>
-                  <div class="mb-3">
-                    <label for="patioId" class="form-label"
-                      >Pátio <span class="text-danger">*</span></label
-                    >
-                    <select
-                      class="form-select"
-                      id="patioId"
-                      th:field="*{patioId}"
-                      onchange="carregarVagasDisponiveis()"
-                      required
-                    >
-                      <option value="">-- Selecione um pátio --</option>
-                      <option
-                        th:each="patio : ${patios}"
-                        th:value="${patio.id}"
-                        th:text="${patio.nomeUnidade + ' - ' + patio.localizacao + ' (' + patio.vagasDisponiveis + ' vagas disponíveis)'}"
-                      ></option>
-                    </select>
-                    <div
-                      th:if="${#fields.hasErrors('patioId')}"
-                      class="text-danger"
-                      th:errors="*{patioId}"
-                    ></div>
-                  </div>
-                </div>
-
-                <!-- 3. Seleção da Vaga -->
-                <div class="form-section">
-                  <h6 class="text-primary">🅿️ Selecionar Vaga</h6>
-                  <div class="mb-3">
-                    <label for="vagaId" class="form-label"
-                      >Vaga <span class="text-danger">*</span></label
-                    >
-                    <select
-                      class="form-select"
-                      id="vagaId"
-                      th:field="*{vagaId}"
-                      required
-                      disabled
-                    >
-                      <option value="">
-                        -- Primeiro selecione um pátio --
-                      </option>
-                    </select>
-                    <div class="form-text">
-                      As vagas disponíveis aparecerão após selecionar o pátio
-                    </div>
-                    <div
-                      th:if="${#fields.hasErrors('vagaId')}"
-                      class="text-danger"
-                      th:errors="*{vagaId}"
-                    ></div>
-                  </div>
-                </div>
-
-                <!-- 4. Mecânico Responsável (Opcional) -->
-                <div class="form-section">
-                  <h6 class="text-primary">👨‍🔧 Mecânico Responsável</h6>
-                  <div class="mb-3">
-                    <label for="mecanicoId" class="form-label"
-                      >Mecânico (Opcional)</label
-                    >
-                    <select
-                      class="form-select"
-                      id="mecanicoId"
-                      th:field="*{mecanicoId}"
-                    >
-                      <option value="">-- Nenhum mecânico --</option>
-                      <option
-                        th:each="mecanico : ${mecanicos}"
-                        th:value="${mecanico.id}"
-                        th:text="${mecanico.nome}"
-                      ></option>
-                    </select>
-                  </div>
-                </div>
-
-                <!-- 5. Observações -->
-                <div class="form-section">
-                  <h6 class="text-primary">📝 Observações</h6>
-                  <div class="mb-4">
-                    <label for="observacoes" class="form-label"
-                      >Observações (Opcional)</label
-                    >
-                    <textarea
-                      class="form-control"
-                      id="observacoes"
-                      th:field="*{observacoes}"
-                      rows="3"
-                      placeholder="Ex: Moto para revisão completa..."
-                    ></textarea>
-                  </div>
-                </div>
-
-                <!-- Botões -->
-                <div class="d-flex gap-2">
-                  <button
-                    type="submit"
-                    class="btn btn-custom btn-primary text-white"
-                  >
-                    📍 Alocar/Realocar Moto
-                  </button>
-                  <a th:href="@{/alocacoes}" class="btn btn-outline-secondary">
-                    ↩️ Cancelar
-                  </a>
-                </div>
-              </form>
+              <div class="info-msg">
+                <i class="fas fa-info-circle"></i>
+                Selecione qualquer moto para alocar/realocar em uma nova vaga
+              </div>
+              <div th:if="${#fields.hasErrors('motoId')}" class="error-msg">
+                <i class="fas fa-exclamation-triangle"></i>
+                <span th:errors="*{motoId}"></span>
+              </div>
             </div>
           </div>
-        </div>
+
+          <!-- 2. Seleção do Pátio -->
+          <div class="form-section">
+            <h3 class="section-title">
+              <i class="fas fa-building"></i>
+              Selecionar Pátio
+            </h3>
+            <div class="field">
+              <label for="patioId" class="required">Pátio</label>
+              <div class="input-wrapper">
+                <i class="fas fa-building"></i>
+                <select
+                  id="patioId"
+                  th:field="*{patioId}"
+                  onchange="carregarVagasDisponiveis()"
+                  required
+                >
+                  <option value="">-- Selecione um pátio --</option>
+                  <option
+                    th:each="patio : ${patios}"
+                    th:value="${patio.id}"
+                    th:text="${patio.nomeUnidade + ' - ' + patio.localizacao + ' (' + patio.vagasDisponiveis + ' vagas disponíveis)'}"
+                  ></option>
+                </select>
+              </div>
+              <div th:if="${#fields.hasErrors('patioId')}" class="error-msg">
+                <i class="fas fa-exclamation-triangle"></i>
+                <span th:errors="*{patioId}"></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 3. Seleção da Vaga -->
+          <div class="form-section">
+            <h3 class="section-title">
+              <i class="fas fa-parking"></i>
+              Selecionar Vaga
+            </h3>
+            <div class="field">
+              <label for="vagaId" class="required">Vaga</label>
+              <div class="input-wrapper">
+                <i class="fas fa-map-marker-alt"></i>
+                <select id="vagaId" th:field="*{vagaId}" required disabled>
+                  <option value="">-- Primeiro selecione um pátio --</option>
+                </select>
+              </div>
+              <div class="info-msg">
+                <i class="fas fa-info-circle"></i>
+                As vagas disponíveis aparecerão após selecionar o pátio
+              </div>
+              <div th:if="${#fields.hasErrors('vagaId')}" class="error-msg">
+                <i class="fas fa-exclamation-triangle"></i>
+                <span th:errors="*{vagaId}"></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 4. Mecânico Responsável (Opcional) -->
+          <div class="form-section">
+            <h3 class="section-title">
+              <i class="fas fa-user-cog"></i>
+              Mecânico Responsável
+            </h3>
+            <div class="field">
+              <label for="mecanicoId">Mecânico (Opcional)</label>
+              <div class="input-wrapper">
+                <i class="fas fa-user-cog"></i>
+                <select id="mecanicoId" th:field="*{mecanicoId}">
+                  <option value="">-- Nenhum mecânico --</option>
+                  <option
+                    th:each="mecanico : ${mecanicos}"
+                    th:value="${mecanico.id}"
+                    th:text="${mecanico.nome}"
+                  ></option>
+                </select>
+              </div>
+              <div class="info-msg">
+                <i class="fas fa-info-circle"></i>
+                Opcionalmente, você pode atribuir um mecânico responsável por
+                esta alocação
+              </div>
+            </div>
+          </div>
+
+          <!-- 5. Observações -->
+          <div class="form-section">
+            <h3 class="section-title">
+              <i class="fas fa-sticky-note"></i>
+              Observações
+            </h3>
+            <div class="field">
+              <label for="observacoes">Observações (Opcional)</label>
+              <div class="input-wrapper">
+                <i class="fas fa-sticky-note"></i>
+                <textarea
+                  id="observacoes"
+                  th:field="*{observacoes}"
+                  rows="3"
+                  placeholder="Ex: Moto para revisão completa, aguardando peças..."
+                ></textarea>
+              </div>
+              <div class="info-msg">
+                <i class="fas fa-info-circle"></i>
+                Adicione informações relevantes sobre esta alocação
+              </div>
+            </div>
+          </div>
+
+          <!-- Botões -->
+          <div class="form-actions">
+            <button type="submit" class="btn-primary">
+              <i class="fas fa-car-side"></i>
+              Alocar Moto
+            </button>
+            <a href="/alocacoes" class="btn-cancel">
+              <i class="fas fa-times"></i>
+              Cancelar
+            </a>
+          </div>
+        </form>
       </div>
-    </div>
+    </main>
+
+    <!-- Bottom Navigation (mobile) -->
+    <nav class="bottom-nav">
+      <div class="nav-container">
+        <a href="/" class="nav-item">
+          <i class="fas fa-home"></i>
+          <span>Início</span>
+        </a>
+        <a href="/patios" class="nav-item">
+          <i class="fas fa-building"></i>
+          <span>Pátios</span>
+        </a>
+        <a href="/motos" class="nav-item">
+          <i class="fas fa-motorcycle"></i>
+          <span>Motos</span>
+        </a>
+        <a href="/alocacoes" class="nav-item active">
+          <i class="fas fa-car-side"></i>
+          <span>Alocações</span>
+        </a>
+      </div>
+    </nav>
 
     <!-- JavaScript para carregar vagas -->
     <script>
@@ -266,7 +722,5 @@
           });
       }
     </script>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   </body>
 </html>
