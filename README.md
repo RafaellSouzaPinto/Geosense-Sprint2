@@ -666,30 +666,6 @@ SPRING_JPA_SHOW_SQL=false
 
 </div>
 
-### 👥 Contas Padrão
-
-#### 🌍 **Produção (Render)**
-
-<div align="center">
-
-|                                    👨‍💼 **Administrador**                                     |                                            👨‍🔧 **Mecânico**                                            |
-| :-----------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------: |
-| ![Admin Email](https://img.shields.io/badge/Email-mottu@gmail.com-blue?style=for-the-badge) | ![Mecanico Email](https://img.shields.io/badge/Email-mecanico@geosense.com-green?style=for-the-badge) |
-| ![Admin Password](https://img.shields.io/badge/Senha-Geosense@2025-red?style=for-the-badge) |      ![Mecanico Password](https://img.shields.io/badge/Senha-mec123-orange?style=for-the-badge)       |
-
-</div>
-
-#### 💻 **Desenvolvimento Local**
-
-<div align="center">
-
-|                                      👨‍💼 **Administrador**                                      |                                            👨‍🔧 **Mecânico**                                            |
-| :--------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------: |
-| ![Admin Email](https://img.shields.io/badge/Email-admin@geosense.com-blue?style=for-the-badge) | ![Mecanico Email](https://img.shields.io/badge/Email-mecanico@geosense.com-green?style=for-the-badge) |
-|     ![Admin Password](https://img.shields.io/badge/Senha-admin123-red?style=for-the-badge)     |      ![Mecanico Password](https://img.shields.io/badge/Senha-mec123-orange?style=for-the-badge)       |
-
-</div>
-
 <div align="center">
 
 > ⚠️ **IMPORTANTE**: As credenciais de produção são diferentes das de desenvolvimento local!
