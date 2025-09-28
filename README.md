@@ -782,16 +782,6 @@ logging.level.org.hibernate.SQL=DEBUG
 
 ---
 
-## 🤝 Contribuição
-
-### Como Contribuir
-
-1. **Fork** o projeto
-2. **Crie** uma branch para sua feature (`git checkout -b feature/AmazingFeature`)
-3. **Commit** suas mudanças (`git commit -m 'Add some AmazingFeature'`)
-4. **Push** para a branch (`git push origin feature/AmazingFeature`)
-5. **Abra** um Pull Request
-
 ### Padrões de Código
 
 - **Java**: Seguir convenções do Spring Boot
@@ -814,27 +804,6 @@ Para suporte técnico ou dúvidas sobre o projeto:
 - **Email**: geosense@fiap.com.br
 - **Documentação**: [Wiki do Projeto](wiki-url)
 - **Issues**: [GitHub Issues](issues-url)
-
----
-
-## 🎯 Roadmap
-
-### Próximas Funcionalidades
-
-- [ ] **API REST** completa
-- [ ] **Aplicativo Mobile** (React Native)
-- [ ] **Relatórios PDF** automatizados
-- [ ] **Integração IoT** com sensores
-- [ ] **Machine Learning** para previsão de demanda
-- [ ] **Notificações Push** em tempo real
-
-### Melhorias Planejadas
-
-- [ ] **Cache Redis** para performance
-- [ ] **Microserviços** para escalabilidade
-- [ ] **Docker** para containerização
-- [ ] **CI/CD** com GitHub Actions
-- [ ] **Monitoramento** com Prometheus
 
 ---
 
@@ -866,7 +835,7 @@ Para suporte técnico ou dúvidas sobre o projeto:
 
 <img src="https://img.shields.io/badge/Disciplina-Desenvolvimento%20Web%20com%20Spring%20Boot-blue?style=for-the-badge" alt="Disciplina"/>
 
-<img src="https://img.shields.io/badge/Ano-2024-green?style=for-the-badge" alt="Ano"/>
+<img src="https://img.shields.io/badge/Ano-2025-green?style=for-the-badge" alt="Ano"/>
 
 </div>
 
