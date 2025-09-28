@@ -890,18 +890,6 @@ Para suporte técnico ou dúvidas sobre o projeto:
 
 ---
 
-### 🚀 _Transformando a gestão de pátios através da tecnologia_
 
-![Status](https://img.shields.io/badge/Status-Projeto%20Concluído-success?style=for-the-badge)
-![Versão](https://img.shields.io/badge/Versão-1.0.0-blue?style=for-the-badge)
-![Licença](https://img.shields.io/badge/Licença-MIT-yellow?style=for-the-badge)
 
----
 
-### 📞 Contato e Suporte
-
-|     📧 **Email**     |                    📱 **GitHub**                    |                 📚 **Documentação**                 |
-| :------------------: | :-------------------------------------------------: | :-------------------------------------------------: |
-| geosense@fiap.com.br | [GitHub Issues](https://github.com/geosense/issues) | [Wiki do Projeto](https://github.com/geosense/wiki) |
-
----
