@@ -14,7 +14,6 @@
 > 🚀 **Sistema inteligente de gestão de pátios para oficinas mecânicas**  
 > Transforme seu espaço de trabalho em um ambiente organizado, eficiente e totalmente digital
 
-[![Deploy](https://img.shields.io/badge/Aplicação%20Online-https://geosense-sprint3-1.onrender.com-blue?style=for-the-badge&logo=globe)](https://geosense-sprint3-1.onrender.com)
 [![Documentação](https://img.shields.io/badge/Documentação-Completa-green?style=for-the-badge&logo=book)](README.md)
 [![Licença](https://img.shields.io/badge/Licença-MIT-yellow?style=for-the-badge&logo=scale)](LICENSE)
 
