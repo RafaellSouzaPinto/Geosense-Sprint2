@@ -9,7 +9,11 @@
 [![Oracle](https://img.shields.io/badge/Oracle-Database-red?style=for-the-badge&logo=oracle)](https://www.oracle.com/database/)
 [![Maven](https://img.shields.io/badge/Maven-3.x-blue?style=for-the-badge&logo=apache-maven)](https://maven.apache.org/)
 
-[![Deploy](https://img.shields.io/badge/Aplicação%20Online-https://geosense-sprint3-1.onrender.com-blue?style=for-the-badge&logo=globe)](https://geosense-sprint3-1.onrender.com)
+> 🚀 **Sistema inteligente de gestão de pátios para oficinas mecânicas**  
+> Transforme seu espaço de trabalho em um ambiente organizado, eficiente e totalmente digital
+
+[![Status](https://img.shields.io/badge/Status-Em%20Produção-success?style=for-the-badge)](https://geosense-sprint3-1.onrender.com)
+[![Versão](https://img.shields.io/badge/Versão-1.0.0-blue?style=for-the-badge)](https://github.com/geosense/geosense/releases)
 [![Documentação](https://img.shields.io/badge/Documentação-Completa-green?style=for-the-badge&logo=book)](README.md)
 [![Licença](https://img.shields.io/badge/Licença-MIT-yellow?style=for-the-badge&logo=scale)](LICENSE)
 
@@ -573,9 +577,9 @@ https://geosense-sprint3-1.onrender.com
 
 <div align="center">
 
-|                                    🏗️ **Build Command**                                    |                                       📦 **Start Command**                                       |                                 🌍 **Environment**                                 |
-| :----------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------: |
-| ![Build](https://img.shields.io/badge/Command-mvn clean package-success?style=flat-square) | ![Start](https://img.shields.io/badge/Command-java -jar target/\*.jar-success?style=flat-square) | ![Java](https://img.shields.io/badge/Environment-Java 17-orange?style=flat-square) |
+|                                    🏗️ **Build Command**                                    |                                        📦 **Start Command**                                         |                                 🌍 **Environment**                                 |
+| :----------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------: |
+| ![Build](https://img.shields.io/badge/Command-mvn clean package-success?style=flat-square) | ![Start](https://img.shields.io/badge/Command-java%20-jar%20target/*.jar-success?style=flat-square) | ![Java](https://img.shields.io/badge/Environment-Java 17-orange?style=flat-square) |
 
 </div>
 
@@ -633,9 +637,9 @@ SPRING_JPA_SHOW_SQL=false
 
 <div align="center">
 
-|                                            🌐 **Aplicação Online**                                             |                                   📊 **Status**                                   |                                      🏷️ **Versão**                                      |
-| :------------------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------: |
-| ![Live App](https://img.shields.io/badge/URL-https://geosense-sprint3-1.onrender.com-blue?style=for-the-badge) | ![Status](https://img.shields.io/badge/Status-Online-success?style=for-the-badge) | ![Versão](https://img.shields.io/badge/Versão-Produção-1.0.0-green?style=for-the-badge) |
+|                                         🌐 **Aplicação Online**                                          |                                   📊 **Status**                                   |                                      🏷️ **Versão**                                      |
+| :------------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------: |
+| ![Live App](https://img.shields.io/badge/URL-geosense--sprint3--1.onrender.com-blue?style=for-the-badge) | ![Status](https://img.shields.io/badge/Status-Online-success?style=for-the-badge) | ![Versão](https://img.shields.io/badge/Versão-Produção-1.0.0-green?style=for-the-badge) |
 
 </div>
 
@@ -645,10 +649,10 @@ SPRING_JPA_SHOW_SQL=false
 
 <div align="center">
 
-|                                             🏠 **Página Inicial**                                              |                                                   🔐 **Login**                                                   |                                                     📝 **Registro**                                                     |                                                   ⚙️ **Admin**                                                    |
-| :------------------------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------: |
-| ![Dashboard](https://img.shields.io/badge/URL-https://geosense-sprint3-1.onrender.com/-blue?style=flat-square) | ![Login](https://img.shields.io/badge/URL-https://geosense-sprint3-1.onrender.com/login-green?style=flat-square) | ![Registro](https://img.shields.io/badge/URL-https://geosense-sprint3-1.onrender.com/register-orange?style=flat-square) | ![Admin](https://img.shields.io/badge/URL-https://geosense-sprint3-1.onrender.com/admin-purple?style=flat-square) |
-|                                              Dashboard principal                                               |                                              Página de autenticação                                              |                                                  Cadastro de usuários                                                   |                                               Painel administrativo                                               |
+|                                          🏠 **Página Inicial**                                          |                                                🔐 **Login**                                                |                                                  📝 **Registro**                                                  |                                                ⚙️ **Admin**                                                 |
+| :-----------------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------: |
+| ![Dashboard](https://img.shields.io/badge/URL-geosense--sprint3--1.onrender.com-blue?style=flat-square) | ![Login](https://img.shields.io/badge/URL-geosense--sprint3--1.onrender.com/login-green?style=flat-square) | ![Registro](https://img.shields.io/badge/URL-geosense--sprint3--1.onrender.com/register-orange?style=flat-square) | ![Admin](https://img.shields.io/badge/URL-geosense--sprint3--1.onrender.com/admin-purple?style=flat-square) |
+|                                           Dashboard principal                                           |                                           Página de autenticação                                           |                                               Cadastro de usuários                                                |                                            Painel administrativo                                            |
 
 </div>
 
@@ -656,10 +660,10 @@ SPRING_JPA_SHOW_SQL=false
 
 <div align="center">
 
-|                                    🏠 **Página Inicial**                                     |                                          🔐 **Login**                                          |                                            📝 **Registro**                                            |                                          ⚙️ **Admin**                                           |
-| :------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------: |
-| ![Dashboard](https://img.shields.io/badge/URL-http://localhost:8081/-blue?style=flat-square) | ![Login](https://img.shields.io/badge/URL-http://localhost:8081/login-green?style=flat-square) | ![Registro](https://img.shields.io/badge/URL-http://localhost:8081/register-orange?style=flat-square) | ![Admin](https://img.shields.io/badge/URL-http://localhost:8081/admin-purple?style=flat-square) |
-|                                     Dashboard principal                                      |                                     Página de autenticação                                     |                                         Cadastro de usuários                                          |                                      Painel administrativo                                      |
+|                                🏠 **Página Inicial**                                 |                                      🔐 **Login**                                       |                                        📝 **Registro**                                         |                                       ⚙️ **Admin**                                       |
+| :----------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------: |
+| ![Dashboard](https://img.shields.io/badge/URL-localhost:8081-blue?style=flat-square) | ![Login](https://img.shields.io/badge/URL-localhost:8081/login-green?style=flat-square) | ![Registro](https://img.shields.io/badge/URL-localhost:8081/register-orange?style=flat-square) | ![Admin](https://img.shields.io/badge/URL-localhost:8081/admin-purple?style=flat-square) |
+|                                 Dashboard principal                                  |                                 Página de autenticação                                  |                                      Cadastro de usuários                                      |                                  Painel administrativo                                   |
 
 </div>
 
