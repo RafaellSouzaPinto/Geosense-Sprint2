@@ -1,0 +1,40 @@
+# Ignore target directory
+target/
+
+# Ignore IDE files
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+
+# Ignore OS files
+.DS_Store
+Thumbs.db
+
+# Ignore Git files
+.git/
+.gitignore
+
+# Ignore Maven wrapper jar (we copy the script)
+.mvn/wrapper/maven-wrapper.jar
+
+# Ignore logs
+*.log
+
+# Ignore temporary files
+*.tmp
+*.temp
+
+# Ignore documentation
+README.md
+HELP.md
+*.md
+
+# Ignore test files (optional, since we skip tests)
+src/test/
+
+# Ignore other build artifacts
+*.war
+*.ear
+*.sar

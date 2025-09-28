@@ -4,9 +4,9 @@ FROM openjdk:17-jdk-slim
 # Define o diretório de trabalho
 WORKDIR /app
 
-# Instala Maven
+# Instala Maven e outras dependências necessárias
 RUN apt-get update && \
-    apt-get install -y maven && \
+    apt-get install -y maven curl && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
@@ -15,14 +15,20 @@ COPY pom.xml .
 COPY mvnw .
 COPY .mvn .mvn
 
+# Torna o mvnw executável
+RUN chmod +x mvnw
+
 # Baixa as dependências (isso será cacheado se o pom.xml não mudar)
-RUN mvn dependency:go-offline -B
+RUN ./mvnw dependency:go-offline -B
 
 # Copia o código fonte
 COPY src ./src
 
 # Compila a aplicação
-RUN mvn clean package -DskipTests
+RUN ./mvnw clean package -DskipTests -Dmaven.test.skip=true
+
+# Verifica se o JAR foi criado
+RUN ls -la target/
 
 # Expõe a porta 8081 (conforme configurado no application.properties)
 EXPOSE 8081

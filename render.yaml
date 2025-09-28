@@ -1,0 +1,27 @@
+services:
+  - type: web
+    name: geosense
+    env: docker
+    dockerfilePath: ./Dockerfile
+    envVars:
+      - key: SPRING_DATASOURCE_URL
+        fromDatabase:
+          name: geosense-db
+          property: connectionString
+      - key: SPRING_DATASOURCE_USERNAME
+        fromDatabase:
+          name: geosense-db
+          property: user
+      - key: SPRING_DATASOURCE_PASSWORD
+        fromDatabase:
+          name: geosense-db
+          property: password
+      - key: SPRING_PROFILES_ACTIVE
+        value: production
+      - key: SERVER_PORT
+        value: 8081
+
+databases:
+  - name: geosense-db
+    databaseName: geosense
+    user: geosense_user
