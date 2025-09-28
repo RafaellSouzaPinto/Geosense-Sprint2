@@ -9,9 +9,9 @@
 [![Oracle](https://img.shields.io/badge/Oracle-Database-red?style=for-the-badge&logo=oracle)](https://www.oracle.com/database/)
 [![Maven](https://img.shields.io/badge/Maven-3.x-blue?style=for-the-badge&logo=apache-maven)](https://maven.apache.org/)
 
-[![Status](https://img.shields.io/badge/Status-Em%20Produção-success?style=for-the-badge)](https://geosense-sprint3-1.onrender.com)
-[![Versão](https://img.shields.io/badge/Versão-1.0.0-blue?style=for-the-badge)](https://github.com/geosense/geosense/releases)
-[![Licença](https://img.shields.io/badge/Licença-MIT-yellow?style=for-the-badge)](LICENSE)
+[![Deploy](https://img.shields.io/badge/Aplicação%20Online-https://geosense-sprint3-1.onrender.com-blue?style=for-the-badge&logo=globe)](https://geosense-sprint3-1.onrender.com)
+[![Documentação](https://img.shields.io/badge/Documentação-Completa-green?style=for-the-badge&logo=book)](README.md)
+[![Licença](https://img.shields.io/badge/Licença-MIT-yellow?style=for-the-badge&logo=scale)](LICENSE)
 
 ---
 
@@ -33,8 +33,8 @@
 
 ### 🎯 Objetivos Principais
 
-| 🎯 **Gestão Inteligente** | 🔒 **Segurança** | ⚡ **Eficiência** | 📊 **Rastreabilidade** |
-|:-------------------------:|:----------------:|:----------------:|:----------------------:|
+|               🎯 **Gestão Inteligente**               |               🔒 **Segurança**                |              ⚡ **Eficiência**              |            📊 **Rastreabilidade**             |
+| :---------------------------------------------------: | :-------------------------------------------: | :-----------------------------------------: | :-------------------------------------------: |
 | Controle automatizado de vagas e alocação de veículos | Sistema de autenticação e autorização robusto | Otimização do fluxo de trabalho em oficinas | Histórico completo de alocações e manutenções |
 
 ---
@@ -43,9 +43,9 @@
 
 <div align="center">
 
-| **Rafael de Souza Pinto** | **Luis Paulo Freitas Fernandes** | **Enzo Marsola** |
-|:-------------------------:|:--------------------------------:|:----------------:|
-| RM 555130 | RM 555497 | RM 556310 |
+|                                **Rafael de Souza Pinto**                                |                             **Luis Paulo Freitas Fernandes**                              |                                      **Enzo Marsola**                                       |
+| :-------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------: |
+|                                        RM 555130                                        |                                         RM 555497                                         |                                          RM 556310                                          |
 | ![Java](https://img.shields.io/badge/Backend-Java%20Developer-orange?style=flat-square) | ![Frontend](https://img.shields.io/badge/Frontend-UI%20Developer-green?style=flat-square) | ![Database](https://img.shields.io/badge/Database-Oracle%20Developer-red?style=flat-square) |
 
 </div>
@@ -58,12 +58,12 @@
 
 <div align="center">
 
-| **Backend** | **Frontend** | **Database** | **Tools** |
-|:-----------:|:------------:|:------------:|:---------:|
-| ![Java](https://img.shields.io/badge/Java-17-orange?style=flat-square&logo=java) | ![Thymeleaf](https://img.shields.io/badge/Thymeleaf-3.x-green?style=flat-square&logo=thymeleaf) | ![Oracle](https://img.shields.io/badge/Oracle-19c+-red?style=flat-square&logo=oracle) | ![Maven](https://img.shields.io/badge/Maven-3.x-blue?style=flat-square&logo=apache-maven) |
-| ![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.5.6-brightgreen?style=flat-square&logo=spring-boot) | ![Bootstrap](https://img.shields.io/badge/Bootstrap-5.x-purple?style=flat-square&logo=bootstrap) | ![Flyway](https://img.shields.io/badge/Flyway-9.x-lightblue?style=flat-square&logo=flyway) | ![Font Awesome](https://img.shields.io/badge/Font%20Awesome-6.x-yellow?style=flat-square&logo=font-awesome) |
-| ![Spring Security](https://img.shields.io/badge/Spring%20Security-6.x-brightgreen?style=flat-square&logo=spring-security) | ![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-yellow?style=flat-square&logo=javascript) | | ![CSS3](https://img.shields.io/badge/CSS3-3.x-blue?style=flat-square&logo=css3) |
-| ![Spring Data JPA](https://img.shields.io/badge/Spring%20Data%20JPA-3.x-brightgreen?style=flat-square&logo=spring) | | | |
+|                                                        **Backend**                                                        |                                             **Frontend**                                             |                                        **Database**                                        |                                                  **Tools**                                                  |
+| :-----------------------------------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------: |
+|                     ![Java](https://img.shields.io/badge/Java-17-orange?style=flat-square&logo=java)                      |   ![Thymeleaf](https://img.shields.io/badge/Thymeleaf-3.x-green?style=flat-square&logo=thymeleaf)    |   ![Oracle](https://img.shields.io/badge/Oracle-19c+-red?style=flat-square&logo=oracle)    |          ![Maven](https://img.shields.io/badge/Maven-3.x-blue?style=flat-square&logo=apache-maven)          |
+|      ![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.5.6-brightgreen?style=flat-square&logo=spring-boot)      |   ![Bootstrap](https://img.shields.io/badge/Bootstrap-5.x-purple?style=flat-square&logo=bootstrap)   | ![Flyway](https://img.shields.io/badge/Flyway-9.x-lightblue?style=flat-square&logo=flyway) | ![Font Awesome](https://img.shields.io/badge/Font%20Awesome-6.x-yellow?style=flat-square&logo=font-awesome) |
+| ![Spring Security](https://img.shields.io/badge/Spring%20Security-6.x-brightgreen?style=flat-square&logo=spring-security) | ![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-yellow?style=flat-square&logo=javascript) |                                                                                            |               ![CSS3](https://img.shields.io/badge/CSS3-3.x-blue?style=flat-square&logo=css3)               |
+|    ![Spring Data JPA](https://img.shields.io/badge/Spring%20Data%20JPA-3.x-brightgreen?style=flat-square&logo=spring)     |                                                                                                      |                                                                                            |                                                                                                             |
 
 </div>
 
@@ -71,8 +71,8 @@
 
 <div align="center">
 
-| 🎨 **MVC** | 🗃️ **Repository** | 📦 **DTO** | ⚙️ **Service Layer** |
-|:----------:|:-----------------:|:----------:|:--------------------:|
+|              🎨 **MVC**              |           🗃️ **Repository**           |                 📦 **DTO**                  |      ⚙️ **Service Layer**      |
+| :----------------------------------: | :-----------------------------------: | :-----------------------------------------: | :----------------------------: |
 | Separação clara de responsabilidades | Abstração da camada de acesso a dados | Transferência segura de dados entre camadas | Lógica de negócio centralizada |
 
 </div>
@@ -336,9 +336,9 @@ erDiagram
 
 <div align="center">
 
-| 🛡️ **Login Seguro** | 📝 **Registro** | 🔑 **Controle de Acesso** | ⏰ **Sessões Seguras** |
-|:-------------------:|:---------------:|:-------------------------:|:---------------------:|
-| Spring Security integrado | Validação completa de dados | Por tipo de usuário | Timeout automático |
+|    🛡️ **Login Seguro**    |       📝 **Registro**       | 🔑 **Controle de Acesso** | ⏰ **Sessões Seguras** |
+| :-----------------------: | :-------------------------: | :-----------------------: | :--------------------: |
+| Spring Security integrado | Validação completa de dados |    Por tipo de usuário    |   Timeout automático   |
 
 </div>
 
@@ -346,9 +346,9 @@ erDiagram
 
 <div align="center">
 
-| 📋 **CRUD Completo** | 👥 **Tipos de Usuário** | ✅ **Validação** | 🔒 **Criptografia** |
-|:--------------------:|:----------------------:|:----------------:|:------------------:|
-| Create, Read, Update, Delete | Administrador e Mecânico | Bean Validation | BCrypt para senhas |
+|     📋 **CRUD Completo**     | 👥 **Tipos de Usuário**  | ✅ **Validação** | 🔒 **Criptografia** |
+| :--------------------------: | :----------------------: | :--------------: | :-----------------: |
+| Create, Read, Update, Delete | Administrador e Mecânico | Bean Validation  | BCrypt para senhas  |
 
 </div>
 
@@ -356,8 +356,8 @@ erDiagram
 
 <div align="center">
 
-| 🏗️ **Cadastro** | 📊 **Capacidade** | 🤖 **Auto-Geração** | 📱 **Tempo Real** |
-|:----------------:|:-----------------:|:------------------:|:-----------------:|
+|    🏗️ **Cadastro**     |   📊 **Capacidade**   |     🤖 **Auto-Geração**      |  📱 **Tempo Real**   |
+| :--------------------: | :-------------------: | :--------------------------: | :------------------: |
 | Informações detalhadas | Configuração flexível | Vagas baseadas na capacidade | Status em tempo real |
 
 </div>
@@ -366,8 +366,8 @@ erDiagram
 
 <div align="center">
 
-| 📝 **Cadastro** | ⚠️ **Problemas** | 📚 **Histórico** | 🔍 **Busca** |
-|:---------------:|:----------------:|:----------------:|:-------------:|
+|      📝 **Cadastro**       |      ⚠️ **Problemas**      |    📚 **Histórico**     |   🔍 **Busca**    |
+| :------------------------: | :------------------------: | :---------------------: | :---------------: |
 | Dados completos do veículo | Identificação de problemas | Manutenções e alocações | Filtros avançados |
 
 </div>
@@ -376,9 +376,9 @@ erDiagram
 
 <div align="center">
 
-| 🤖 **Automática** | 📊 **Status** | 📈 **Histórico** | 🔔 **Notificações** |
-|:-----------------:|:-------------:|:----------------:|:-------------------:|
-| Vagas disponíveis | Controle em tempo real | Movimentações completas | Mudanças de status |
+| 🤖 **Automática** |     📊 **Status**      |    📈 **Histórico**     | 🔔 **Notificações** |
+| :---------------: | :--------------------: | :---------------------: | :-----------------: |
+| Vagas disponíveis | Controle em tempo real | Movimentações completas | Mudanças de status  |
 
 </div>
 
@@ -386,9 +386,9 @@ erDiagram
 
 <div align="center">
 
-| 📊 **Métricas** | 📈 **Gráficos** | 📋 **Relatórios** | 🚨 **Alertas** |
-|:---------------:|:---------------:|:-----------------:|:---------------:|
-| Tempo real | Ocupação por pátio | Produtividade por mecânico | Vagas ocupadas há muito tempo |
+| 📊 **Métricas** |  📈 **Gráficos**   |     📋 **Relatórios**      |        🚨 **Alertas**         |
+| :-------------: | :----------------: | :------------------------: | :---------------------------: |
+|   Tempo real    | Ocupação por pátio | Produtividade por mecânico | Vagas ocupadas há muito tempo |
 
 </div>
 
@@ -400,8 +400,8 @@ erDiagram
 
 <div align="center">
 
-| ☕ **Java** | 🔧 **Maven** | 🗄️ **Oracle DB** | 💻 **IDE** |
-|:----------:|:------------:|:----------------:|:----------:|
+|                                    ☕ **Java**                                    |                                        🔧 **Maven**                                        |                                   🗄️ **Oracle DB**                                    |                                                     💻 **IDE**                                                      |
+| :-------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------------------------------: |
 | ![Java](https://img.shields.io/badge/Java-17+-orange?style=flat-square&logo=java) | ![Maven](https://img.shields.io/badge/Maven-3.6+-blue?style=flat-square&logo=apache-maven) | ![Oracle](https://img.shields.io/badge/Oracle-19c+-red?style=flat-square&logo=oracle) | ![IDE](https://img.shields.io/badge/IDE-IntelliJ%20IDEA%20%7C%20Eclipse%20%7C%20VS%20Code-purple?style=flat-square) |
 
 </div>
@@ -465,8 +465,8 @@ server.port=8081
 
 <div align="center">
 
-| 🔧 **Maven** | 💻 **IDE** | 📦 **JAR** | ⚡ **Script** |
-|:------------:|:----------:|:----------:|:-------------:|
+|     🔧 **Maven**     |           💻 **IDE**            |      📦 **JAR**       | ⚡ **Script** |
+| :------------------: | :-----------------------------: | :-------------------: | :-----------: |
 | Via linha de comando | IntelliJ IDEA, Eclipse, VS Code | Executável standalone | Windows Batch |
 
 </div>
@@ -573,9 +573,9 @@ https://geosense-sprint3-1.onrender.com
 
 <div align="center">
 
-| 🏗️ **Build Command** | 📦 **Start Command** | 🌍 **Environment** |
-|:--------------------:|:--------------------:|:------------------:|
-| ![Build](https://img.shields.io/badge/Command-mvn clean package-success?style=flat-square) | ![Start](https://img.shields.io/badge/Command-java -jar target/*.jar-success?style=flat-square) | ![Java](https://img.shields.io/badge/Environment-Java 17-orange?style=flat-square) |
+|                                    🏗️ **Build Command**                                    |                                       📦 **Start Command**                                       |                                 🌍 **Environment**                                 |
+| :----------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------: |
+| ![Build](https://img.shields.io/badge/Command-mvn clean package-success?style=flat-square) | ![Start](https://img.shields.io/badge/Command-java -jar target/\*.jar-success?style=flat-square) | ![Java](https://img.shields.io/badge/Environment-Java 17-orange?style=flat-square) |
 
 </div>
 
@@ -633,8 +633,8 @@ SPRING_JPA_SHOW_SQL=false
 
 <div align="center">
 
-| 🌐 **Aplicação Online** | 📊 **Status** | 🏷️ **Versão** |
-|:----------------------:|:-------------:|:--------------:|
+|                                            🌐 **Aplicação Online**                                             |                                   📊 **Status**                                   |                                      🏷️ **Versão**                                      |
+| :------------------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------: |
 | ![Live App](https://img.shields.io/badge/URL-https://geosense-sprint3-1.onrender.com-blue?style=for-the-badge) | ![Status](https://img.shields.io/badge/Status-Online-success?style=for-the-badge) | ![Versão](https://img.shields.io/badge/Versão-Produção-1.0.0-green?style=for-the-badge) |
 
 </div>
@@ -645,10 +645,10 @@ SPRING_JPA_SHOW_SQL=false
 
 <div align="center">
 
-| 🏠 **Página Inicial** | 🔐 **Login** | 📝 **Registro** | ⚙️ **Admin** |
-|:--------------------:|:------------:|:---------------:|:------------:|
+|                                             🏠 **Página Inicial**                                              |                                                   🔐 **Login**                                                   |                                                     📝 **Registro**                                                     |                                                   ⚙️ **Admin**                                                    |
+| :------------------------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------: |
 | ![Dashboard](https://img.shields.io/badge/URL-https://geosense-sprint3-1.onrender.com/-blue?style=flat-square) | ![Login](https://img.shields.io/badge/URL-https://geosense-sprint3-1.onrender.com/login-green?style=flat-square) | ![Registro](https://img.shields.io/badge/URL-https://geosense-sprint3-1.onrender.com/register-orange?style=flat-square) | ![Admin](https://img.shields.io/badge/URL-https://geosense-sprint3-1.onrender.com/admin-purple?style=flat-square) |
-| Dashboard principal | Página de autenticação | Cadastro de usuários | Painel administrativo |
+|                                              Dashboard principal                                               |                                              Página de autenticação                                              |                                                  Cadastro de usuários                                                   |                                               Painel administrativo                                               |
 
 </div>
 
@@ -656,10 +656,10 @@ SPRING_JPA_SHOW_SQL=false
 
 <div align="center">
 
-| 🏠 **Página Inicial** | 🔐 **Login** | 📝 **Registro** | ⚙️ **Admin** |
-|:--------------------:|:------------:|:---------------:|:------------:|
+|                                    🏠 **Página Inicial**                                     |                                          🔐 **Login**                                          |                                            📝 **Registro**                                            |                                          ⚙️ **Admin**                                           |
+| :------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------: |
 | ![Dashboard](https://img.shields.io/badge/URL-http://localhost:8081/-blue?style=flat-square) | ![Login](https://img.shields.io/badge/URL-http://localhost:8081/login-green?style=flat-square) | ![Registro](https://img.shields.io/badge/URL-http://localhost:8081/register-orange?style=flat-square) | ![Admin](https://img.shields.io/badge/URL-http://localhost:8081/admin-purple?style=flat-square) |
-| Dashboard principal | Página de autenticação | Cadastro de usuários | Painel administrativo |
+|                                     Dashboard principal                                      |                                     Página de autenticação                                     |                                         Cadastro de usuários                                          |                                      Painel administrativo                                      |
 
 </div>
 
@@ -669,10 +669,10 @@ SPRING_JPA_SHOW_SQL=false
 
 <div align="center">
 
-| 👨‍💼 **Administrador** | 👨‍🔧 **Mecânico** |
-|:---------------------:|:-----------------:|
+|                                    👨‍💼 **Administrador**                                     |                                            👨‍🔧 **Mecânico**                                            |
+| :-----------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------: |
 | ![Admin Email](https://img.shields.io/badge/Email-mottu@gmail.com-blue?style=for-the-badge) | ![Mecanico Email](https://img.shields.io/badge/Email-mecanico@geosense.com-green?style=for-the-badge) |
-| ![Admin Password](https://img.shields.io/badge/Senha-Geosense@2025-red?style=for-the-badge) | ![Mecanico Password](https://img.shields.io/badge/Senha-mec123-orange?style=for-the-badge) |
+| ![Admin Password](https://img.shields.io/badge/Senha-Geosense@2025-red?style=for-the-badge) |      ![Mecanico Password](https://img.shields.io/badge/Senha-mec123-orange?style=for-the-badge)       |
 
 </div>
 
@@ -680,10 +680,10 @@ SPRING_JPA_SHOW_SQL=false
 
 <div align="center">
 
-| 👨‍💼 **Administrador** | 👨‍🔧 **Mecânico** |
-|:---------------------:|:-----------------:|
+|                                      👨‍💼 **Administrador**                                      |                                            👨‍🔧 **Mecânico**                                            |
+| :--------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------: |
 | ![Admin Email](https://img.shields.io/badge/Email-admin@geosense.com-blue?style=for-the-badge) | ![Mecanico Email](https://img.shields.io/badge/Email-mecanico@geosense.com-green?style=for-the-badge) |
-| ![Admin Password](https://img.shields.io/badge/Senha-admin123-red?style=for-the-badge) | ![Mecanico Password](https://img.shields.io/badge/Senha-mec123-orange?style=for-the-badge) |
+|     ![Admin Password](https://img.shields.io/badge/Senha-admin123-red?style=for-the-badge)     |      ![Mecanico Password](https://img.shields.io/badge/Senha-mec123-orange?style=for-the-badge)       |
 
 </div>
 
@@ -880,8 +880,8 @@ Para suporte técnico ou dúvidas sobre o projeto:
 ## 🏆 Desenvolvido pela equipe GeoSense
 
 | **Rafael de Souza Pinto** | **Luis Paulo Freitas Fernandes** | **Enzo Marsola** |
-|:-------------------------:|:--------------------------------:|:----------------:|
-| RM 555130 | RM 555497 | RM 556310 |
+| :-----------------------: | :------------------------------: | :--------------: |
+|         RM 555130         |            RM 555497             |    RM 556310     |
 
 ### 🎓 FIAP - Faculdade de Informática e Administração Paulista
 
@@ -901,8 +901,8 @@ Para suporte técnico ou dúvidas sobre o projeto:
 
 ### 📞 Contato e Suporte
 
-| 📧 **Email** | 📱 **GitHub** | 📚 **Documentação** |
-|:------------:|:-------------:|:-------------------:|
+|     📧 **Email**     |                    📱 **GitHub**                    |                 📚 **Documentação**                 |
+| :------------------: | :-------------------------------------------------: | :-------------------------------------------------: |
 | geosense@fiap.com.br | [GitHub Issues](https://github.com/geosense/issues) | [Wiki do Projeto](https://github.com/geosense/wiki) |
 
-</div>
+---
