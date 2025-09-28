@@ -4,6 +4,12 @@
 
 **Transforme seu pátio em um espaço inteligente, seguro e eficiente**
 
+<div align="center">
+
+[![🌐 Acesse a Aplicação Online](https://img.shields.io/badge/🌐_Acesse_a_Aplicação_Online-https://geosense-sprint3-1.onrender.com-00b4d8?style=for-the-badge&logo=render)](https://geosense-sprint3-1.onrender.com)
+
+</div>
+
 [![Java](https://img.shields.io/badge/Java-17-orange?style=for-the-badge&logo=java)](https://www.oracle.com/java/)
 [![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.5.6-brightgreen?style=for-the-badge&logo=spring-boot)](https://spring.io/projects/spring-boot)
 [![Oracle](https://img.shields.io/badge/Oracle-Database-red?style=for-the-badge&logo=oracle)](https://www.oracle.com/database/)
@@ -558,9 +564,102 @@ pause > nul
 
 ---
 
+## 🚀 Deploy e Configuração
+
+### ☁️ Deploy no Render
+
+O GeoSense está deployado no [Render](https://render.com) e está disponível em produção:
+
+#### 🔗 **URL da Aplicação**
+
+```
+https://geosense-sprint3-1.onrender.com
+```
+
+#### ⚙️ **Configurações do Deploy**
+
+<div align="center">
+
+|                                           🏗️ **Build Command**                                            |                                              📦 **Start Command**                                              |                                        🌍 **Environment**                                         |
+| :-------------------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------------: |
+| <img src="https://img.shields.io/badge/Command-mvn clean package-success?style=flat-square" alt="Build"/> | <img src="https://img.shields.io/badge/Command-java -jar target/*.jar-success?style=flat-square" alt="Start"/> | <img src="https://img.shields.io/badge/Environment-Java 17-orange?style=flat-square" alt="Java"/> |
+
+</div>
+
+#### 📋 **Variáveis de Ambiente (Produção)**
+
+```properties
+# 🗄️ Configurações do Banco de Dados (Render)
+DATABASE_URL=jdbc:oracle:thin:@[host]:[port]/[service]
+DB_USERNAME=[usuario_producao]
+DB_PASSWORD=[senha_producao]
+
+# 🌐 Configurações do Servidor
+SERVER_PORT=10000
+SPRING_PROFILES_ACTIVE=production
+
+# 🔧 Configurações JPA
+SPRING_JPA_HIBERNATE_DDL_AUTO=none
+SPRING_JPA_SHOW_SQL=false
+```
+
+#### 🔄 **Processo de Deploy Automático**
+
+1. **Push para repositório** → Trigger automático
+2. **Build** → Maven package
+3. **Deploy** → Render automaticamente faz o deploy
+4. **Health Check** → Verificação de saúde da aplicação
+
+#### 📊 **Monitoramento**
+
+- **Uptime**: Monitorado 24/7
+- **Logs**: Disponíveis no dashboard do Render
+- **Métricas**: CPU, memória e rede
+- **Scaling**: Automático baseado na demanda
+
+### 🛠️ Configuração Local vs Produção
+
+<div align="center">
+
+| Aspecto     | 💻 Local                | 🌍 Produção                               |
+| ----------- | ----------------------- | ----------------------------------------- |
+| **URL**     | `http://localhost:8081` | `https://geosense-sprint3-1.onrender.com` |
+| **Banco**   | Oracle Local/Cloud      | Oracle Cloud                              |
+| **Porta**   | 8081                    | 10000 (Render)                            |
+| **Profile** | `default`               | `production`                              |
+| **SSL**     | ❌ HTTP                 | ✅ HTTPS                                  |
+| **Domain**  | localhost               | onrender.com                              |
+
+</div>
+
+---
+
 ## 🌐 Acesso à Aplicação
 
-### 🔗 URLs Principais
+### 🚀 Deploy em Produção
+
+<div align="center">
+
+|                                                    🌐 **Aplicação Online**                                                    |                                          📊 **Status**                                           |                                             🏷️ **Versão**                                              |
+| :---------------------------------------------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------------------: |
+| <img src="https://img.shields.io/badge/URL-https://geosense-sprint3-1.onrender.com-blue?style=for-the-badge" alt="Live App"/> | <img src="https://img.shields.io/badge/Status-Online-success?style=for-the-badge" alt="Status"/> | <img src="https://img.shields.io/badge/Versão-Produção-1.0.0-green?style=for-the-badge" alt="Versão"/> |
+
+</div>
+
+### 🔗 URLs de Acesso
+
+#### 🌍 **Produção (Render)**
+
+<div align="center">
+
+|                                                     🏠 **Página Inicial**                                                     |                                                          🔐 **Login**                                                           |                                                            📝 **Registro**                                                             |                                                           ⚙️ **Admin**                                                           |
+| :---------------------------------------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------------------------------------------: |
+| <img src="https://img.shields.io/badge/URL-https://geosense-sprint3-1.onrender.com/-blue?style=flat-square" alt="Dashboard"/> | <img src="https://img.shields.io/badge/URL-https://geosense-sprint3-1.onrender.com/login-green?style=flat-square" alt="Login"/> | <img src="https://img.shields.io/badge/URL-https://geosense-sprint3-1.onrender.com/register-orange?style=flat-square" alt="Registro"/> | <img src="https://img.shields.io/badge/URL-https://geosense-sprint3-1.onrender.com/admin-purple?style=flat-square" alt="Admin"/> |
+|                                                      Dashboard principal                                                      |                                                     Página de autenticação                                                      |                                                          Cadastro de usuários                                                          |                                                      Painel administrativo                                                       |
+
+</div>
+
+#### 💻 **Desenvolvimento Local**
 
 <div align="center">
 
@@ -573,6 +672,19 @@ pause > nul
 
 ### 👥 Contas Padrão
 
+#### 🌍 **Produção (Render)**
+
+<div align="center">
+
+|                                            👨‍💼 **Administrador**                                            |                                                   👨‍🔧 **Mecânico**                                                    |
+| :--------------------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------------------------------: |
+| <img src="https://img.shields.io/badge/Email-mottu@gmail.com-blue?style=for-the-badge" alt="Admin Email"/> | <img src="https://img.shields.io/badge/Email-mecanico@geosense.com-green?style=for-the-badge" alt="Mecanico Email"/> |
+| <img src="https://img.shields.io/badge/Senha-Geosense@2025-red?style=for-the-badge" alt="Admin Password"/> |      <img src="https://img.shields.io/badge/Senha-mec123-orange?style=for-the-badge" alt="Mecanico Password"/>       |
+
+</div>
+
+#### 💻 **Desenvolvimento Local**
+
 <div align="center">
 
 |                                             👨‍💼 **Administrador**                                              |                                                   👨‍🔧 **Mecânico**                                                    |
@@ -584,7 +696,7 @@ pause > nul
 
 <div align="center">
 
-> ⚠️ **IMPORTANTE**: Altere as senhas padrão em produção!
+> ⚠️ **IMPORTANTE**: As credenciais de produção são diferentes das de desenvolvimento local!
 
 </div>
 
