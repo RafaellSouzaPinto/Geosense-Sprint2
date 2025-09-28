@@ -4,12 +4,6 @@
 
 **Transforme seu pátio em um espaço inteligente, seguro e eficiente**
 
-<div align="center">
-
-[![🌐 Acesse a Aplicação Online](https://img.shields.io/badge/🌐_Acesse_a_Aplicação_Online-https://geosense-sprint3-1.onrender.com-00b4d8?style=for-the-badge&logo=render)](https://geosense-sprint3-1.onrender.com)
-
-</div>
-
 [![Java](https://img.shields.io/badge/Java-17-orange?style=for-the-badge&logo=java)](https://www.oracle.com/java/)
 [![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.5.6-brightgreen?style=for-the-badge&logo=spring-boot)](https://spring.io/projects/spring-boot)
 [![Oracle](https://img.shields.io/badge/Oracle-Database-red?style=for-the-badge&logo=oracle)](https://www.oracle.com/database/)
