@@ -844,16 +844,6 @@ Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para ma
 
 ---
 
-## 📞 Suporte
-
-Para suporte técnico ou dúvidas sobre o projeto:
-
-- **Email**: geosense@fiap.com.br
-- **Documentação**: [Wiki do Projeto](wiki-url)
-- **Issues**: [GitHub Issues](issues-url)
-
----
-
 <div align="center">
 
 ## 🏆 Desenvolvido pela equipe GeoSense
