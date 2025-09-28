@@ -1,9 +1,11 @@
 package geosense.Geosense.service;
 
 import geosense.Geosense.dto.PatioDTO;
+import geosense.Geosense.entity.Moto;
 import geosense.Geosense.entity.Patio;
 import geosense.Geosense.entity.StatusVaga;
 import geosense.Geosense.entity.Vaga;
+import geosense.Geosense.repository.MotoRepository;
 import geosense.Geosense.repository.PatioRepository;
 import geosense.Geosense.repository.VagaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +24,9 @@ public class PatioService {
 
     @Autowired
     private VagaRepository vagaRepository;
+
+    @Autowired
+    private MotoRepository motoRepository;
 
     public PatioDTO criarPatio(PatioDTO dto) {
         Patio patio = new Patio();
@@ -107,11 +112,31 @@ public class PatioService {
     }
 
     public void deletar(Long id) {
-        Patio patio = patioRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Pátio não encontrado"));
+        // Verifica se o pátio existe
+        if (!patioRepository.existsById(id)) {
+            throw new RuntimeException("Pátio não encontrado");
+        }
         
-
+        // Buscar todas as vagas do pátio
+        List<Vaga> vagasDoPatio = vagaRepository.findByPatioIdOrderByNumeroAsc(id);
         
+        // Liberar todas as motos que estão alocadas nas vagas deste pátio
+        for (Vaga vaga : vagasDoPatio) {
+            if (vaga.getMoto() != null) {
+                Moto moto = vaga.getMoto();
+                moto.setVaga(null); // Remove a vaga da moto (volta para "sem pátio")
+                motoRepository.save(moto);
+                
+                // Limpa a relação na vaga também
+                vaga.setMoto(null);
+                vaga.setStatus(StatusVaga.DISPONIVEL);
+            }
+        }
+        
+        // Salva as vagas com as relações limpas
+        vagaRepository.saveAll(vagasDoPatio);
+        
+        // Agora pode deletar o pátio (as vagas serão deletadas em cascata devido ao orphanRemoval = true)
         patioRepository.deleteById(id);
     }
 

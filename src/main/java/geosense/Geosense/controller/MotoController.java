@@ -249,6 +249,17 @@ public class MotoController {
             
             System.out.println("=== EXCLUINDO MOTO " + moto.getModelo() + " ===");
             
+            // Primeiro, liberar a vaga se a moto estiver diretamente alocada em uma vaga
+            if (moto.getVaga() != null) {
+                Vaga vagaDireta = moto.getVaga();
+                vagaDireta.setMoto(null);
+                vagaDireta.setStatus(StatusVaga.DISPONIVEL);
+                vagaRepository.save(vagaDireta);
+                moto.setVaga(null); // Remove a relação na moto também
+                motoRepository.save(moto);
+                System.out.println("Vaga " + vagaDireta.getNumero() + " liberada (alocação direta)");
+            }
+            
             List<AlocacaoMoto> todasAlocacoes = alocacaoRepository.findHistoricoByMoto(moto);
             System.out.println("Encontradas " + todasAlocacoes.size() + " alocações para a moto");
             
@@ -267,13 +278,14 @@ public class MotoController {
                     vaga.setMoto(null);
                     vaga.setStatus(StatusVaga.DISPONIVEL);
                     vagaRepository.save(vaga);
-                    System.out.println("Vaga " + vaga.getNumero() + " liberada");
+                    System.out.println("Vaga " + vaga.getNumero() + " liberada (alocação)");
                 }
             }
             
             System.out.println("Excluindo " + todasAlocacoes.size() + " alocações da moto...");
             alocacaoRepository.deleteAll(todasAlocacoes);
             
+            // Agora pode deletar a moto com segurança
             motoRepository.delete(moto);
             System.out.println("Moto excluída com sucesso: " + moto.getModelo());
             redirectAttributes.addFlashAttribute("success", "Moto excluída com sucesso. " + 
