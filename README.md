@@ -21,7 +21,7 @@
 
 ## 📋 Índice
 
-[🎯 Sobre o Projeto](#-sobre-o-projeto) • [🏗️ Arquitetura](#️-arquitetura-do-sistema) • [⚙️ Funcionalidades](#️-funcionalidades) • [🚀 Instalação](#-instalação-e-execução) • [🌐 Deploy](#-deploy-e-configuração) • [📱 Acesso](#-acesso-à-aplicação) • [🧪 Testes](#-testes) • [📞 Suporte](#-suporte)
+[🎯 Sobre o Projeto](#-sobre-o-projeto) • [🏗️ Arquitetura](#️-arquitetura-do-sistema) • [⚙️ Funcionalidades](#️-funcionalidades) • [🚀 Instalação](#-instalação-e-execução) • [🌐 Deploy](#-deploy-e-configuração) • [📱 Acesso](#-acesso-à-aplicação) • [🧪 Testes](#-testes)
 
 ---
 
@@ -47,10 +47,9 @@
 
 <div align="center">
 
-|                                **Rafael de Souza Pinto**                                |                             **Luis Paulo Freitas Fernandes**                              |                                      **Enzo Marsola**                                       |
-| :-------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------: |
-|                                        RM 555130                                        |                                         RM 555497                                         |                                          RM 556310                                          |
-| ![Java](https://img.shields.io/badge/Backend-Java%20Developer-orange?style=flat-square) | ![Frontend](https://img.shields.io/badge/Frontend-UI%20Developer-green?style=flat-square) | ![Database](https://img.shields.io/badge/Database-Oracle%20Developer-red?style=flat-square) |
+| **Rafael de Souza Pinto** | **Luis Paulo Freitas Fernandes** | **Enzo Marsola** |
+| :-----------------------: | :------------------------------: | :--------------: |
+|         RM 555130         |            RM 555497             |    RM 556310     |
 
 </div>
 
@@ -892,21 +891,5 @@ Para suporte técnico ou dúvidas sobre o projeto:
 ![Curso](https://img.shields.io/badge/Curso-Análise%20e%20Desenvolvimento%20de%20Sistemas-red?style=for-the-badge)
 ![Disciplina](https://img.shields.io/badge/Disciplina-Desenvolvimento%20Web%20com%20Spring%20Boot-blue?style=for-the-badge)
 ![Ano](https://img.shields.io/badge/Ano-2025-green?style=for-the-badge)
-
----
-
-### 🚀 _Transformando a gestão de pátios através da tecnologia_
-
-![Status](https://img.shields.io/badge/Status-Projeto%20Concluído-success?style=for-the-badge)
-![Versão](https://img.shields.io/badge/Versão-1.0.0-blue?style=for-the-badge)
-![Licença](https://img.shields.io/badge/Licença-MIT-yellow?style=for-the-badge)
-
----
-
-### 📞 Contato e Suporte
-
-|     📧 **Email**     |                    📱 **GitHub**                    |                 📚 **Documentação**                 |
-| :------------------: | :-------------------------------------------------: | :-------------------------------------------------: |
-| geosense@fiap.com.br | [GitHub Issues](https://github.com/geosense/issues) | [Wiki do Projeto](https://github.com/geosense/wiki) |
 
 ---
