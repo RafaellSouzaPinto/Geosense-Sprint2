@@ -2,100 +2,68 @@
 
 # 🏍️ GeoSense
 
-<div align="center">
-  <img src="https://img.shields.io/badge/Status-Em%20Produção-success?style=for-the-badge&logo=rocket" alt="Status"/>
-  <img src="https://img.shields.io/badge/Versão-1.0.0-blue?style=for-the-badge&logo=tag" alt="Versão"/>
-  <img src="https://img.shields.io/badge/Java-17-orange?style=for-the-badge&logo=java" alt="Java"/>
-  <img src="https://img.shields.io/badge/Spring%20Boot-3.5.6-brightgreen?style=for-the-badge&logo=spring-boot" alt="Spring Boot"/>
-</div>
+**Transforme seu pátio em um espaço inteligente, seguro e eficiente**
 
-<br>
+[![Java](https://img.shields.io/badge/Java-17-orange?style=for-the-badge&logo=java)](https://www.oracle.com/java/)
+[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.5.6-brightgreen?style=for-the-badge&logo=spring-boot)](https://spring.io/projects/spring-boot)
+[![Oracle](https://img.shields.io/badge/Oracle-Database-red?style=for-the-badge&logo=oracle)](https://www.oracle.com/database/)
+[![Maven](https://img.shields.io/badge/Maven-3.x-blue?style=for-the-badge&logo=apache-maven)](https://maven.apache.org/)
 
-> 🚀 **Sistema inteligente de gestão de pátios para oficinas mecânicas**  
-> Transforme seu espaço de trabalho em um ambiente organizado, eficiente e totalmente digital
-
-[![Deploy](https://img.shields.io/badge/Aplicação%20Online-https://geosense-sprint3-1.onrender.com-blue?style=for-the-badge&logo=globe)](https://geosense-sprint3-1.onrender.com)
-[![Documentação](https://img.shields.io/badge/Documentação-Completa-green?style=for-the-badge&logo=book)](README.md)
-[![Licença](https://img.shields.io/badge/Licença-MIT-yellow?style=for-the-badge&logo=scale)](LICENSE)
+[![Status](https://img.shields.io/badge/Status-Em%20Produção-success?style=for-the-badge)](https://geosense-sprint3-1.onrender.com)
+[![Versão](https://img.shields.io/badge/Versão-1.0.0-blue?style=for-the-badge)](https://github.com/geosense/geosense/releases)
+[![Licença](https://img.shields.io/badge/Licença-MIT-yellow?style=for-the-badge)](LICENSE)
 
 ---
 
 ## 📋 Índice
 
-- [🎯 Sobre o Projeto](#-sobre-o-projeto)
-- [👥 Equipe](#-equipe)
-- [🛠️ Tecnologias](#️-tecnologias)
-- [🏗️ Arquitetura](#️-arquitetura)
-- [🚀 Instalação](#-instalação)
-- [🌐 Acesso](#-acesso)
-- [📱 Funcionalidades](#-funcionalidades)
-- [🗄️ Banco de Dados](#️-banco-de-dados)
-- [🧪 Testes](#-testes)
-- [📞 Suporte](#-suporte)
+[🎯 Sobre o Projeto](#-sobre-o-projeto) • [🏗️ Arquitetura](#️-arquitetura-do-sistema) • [⚙️ Funcionalidades](#️-funcionalidades) • [🚀 Instalação](#-instalação-e-execução) • [🌐 Deploy](#-deploy-e-configuração) • [📱 Acesso](#-acesso-à-aplicação) • [🧪 Testes](#-testes) • [📞 Suporte](#-suporte)
 
 ---
+
+</div>
 
 ## 🎯 Sobre o Projeto
 
-### 💡 Visão Geral
-
-O **GeoSense** é uma aplicação web moderna desenvolvida em **Spring Boot** que revoluciona a gestão de pátios em oficinas mecânicas. O sistema oferece controle inteligente de vagas, alocação automatizada de motocicletas, gestão completa de usuários e rastreamento detalhado do histórico de serviços.
-
-### 🎯 Objetivos
-
 <div align="center">
+
+> 🚀 **GeoSense** é uma aplicação web desenvolvida em Spring Boot que **revoluciona a gestão de pátios** para oficinas mecânicas. O sistema oferece controle inteligente de vagas, alocação de motocicletas, gestão de usuários e rastreamento completo do histórico de serviços.
+
+</div>
+
+### 🎯 Objetivos Principais
 
 | 🎯 **Gestão Inteligente** | 🔒 **Segurança** | ⚡ **Eficiência** | 📊 **Rastreabilidade** |
 |:-------------------------:|:----------------:|:----------------:|:----------------------:|
-| Controle automatizado de vagas e alocação de veículos | Sistema robusto de autenticação e autorização | Otimização completa do fluxo de trabalho | Histórico detalhado de alocações e manutenções |
-
-</div>
-
-### ✨ Principais Características
-
-- 🏍️ **Gestão Completa de Motocicletas**: Cadastro, alocação e histórico
-- 🅿️ **Sistema Inteligente de Vagas**: Controle automático de ocupação
-- 👥 **Gestão de Usuários**: Administradores e mecânicos com permissões específicas
-- 📊 **Dashboard Administrativo**: Métricas em tempo real
-- 🔒 **Segurança Avançada**: Autenticação e autorização robustas
-- 📱 **Interface Responsiva**: Design moderno e intuitivo
+| Controle automatizado de vagas e alocação de veículos | Sistema de autenticação e autorização robusto | Otimização do fluxo de trabalho em oficinas | Histórico completo de alocações e manutenções |
 
 ---
 
-## 👥 Equipe
+## 👥 Equipe de Desenvolvimento
 
 <div align="center">
 
-<table>
-  <tr>
-    <td align="center">
-      <img src="https://img.shields.io/badge/Rafael%20de%20Souza%20Pinto-RM%20555130-blue?style=for-the-badge&logo=github" alt="Rafael"/>
-    </td>
-    <td align="center">
-      <img src="https://img.shields.io/badge/Luis%20Paulo%20Freitas%20Fernandes-RM%20555497-green?style=for-the-badge&logo=github" alt="Luis Paulo"/>
-    </td>
-    <td align="center">
-      <img src="https://img.shields.io/badge/Enzo%20Marsola-RM%20556310-purple?style=for-the-badge&logo=github" alt="Enzo"/>
-    </td>
-  </tr>
-</table>
+| **Rafael de Souza Pinto** | **Luis Paulo Freitas Fernandes** | **Enzo Marsola** |
+|:-------------------------:|:--------------------------------:|:----------------:|
+| RM 555130 | RM 555497 | RM 556310 |
+| ![Java](https://img.shields.io/badge/Backend-Java%20Developer-orange?style=flat-square) | ![Frontend](https://img.shields.io/badge/Frontend-UI%20Developer-green?style=flat-square) | ![Database](https://img.shields.io/badge/Database-Oracle%20Developer-red?style=flat-square) |
 
 </div>
 
 ---
 
-## 🛠️ Tecnologias
+## 🏗️ Arquitetura do Sistema
 
-### 🔧 Stack Principal
+### 🛠️ Stack Tecnológico
 
 <div align="center">
 
 | **Backend** | **Frontend** | **Database** | **Tools** |
 |:-----------:|:------------:|:------------:|:---------:|
-| <img src="https://img.shields.io/badge/Java-17-orange?style=flat-square&logo=java" alt="Java"/> | <img src="https://img.shields.io/badge/Thymeleaf-3.x-green?style=flat-square&logo=thymeleaf" alt="Thymeleaf"/> | <img src="https://img.shields.io/badge/Oracle-19c+-red?style=flat-square&logo=oracle" alt="Oracle"/> | <img src="https://img.shields.io/badge/Maven-3.x-blue?style=flat-square&logo=apache-maven" alt="Maven"/> |
-| <img src="https://img.shields.io/badge/Spring%20Boot-3.5.6-brightgreen?style=flat-square&logo=spring-boot" alt="Spring Boot"/> | <img src="https://img.shields.io/badge/Bootstrap-5.x-purple?style=flat-square&logo=bootstrap" alt="Bootstrap"/> | <img src="https://img.shields.io/badge/Flyway-9.x-lightblue?style=flat-square&logo=flyway" alt="Flyway"/> | <img src="https://img.shields.io/badge/Font%20Awesome-6.x-yellow?style=flat-square&logo=font-awesome" alt="Font Awesome"/> |
-| <img src="https://img.shields.io/badge/Spring%20Security-6.x-brightgreen?style=flat-square&logo=spring-security" alt="Spring Security"/> | <img src="https://img.shields.io/badge/JavaScript-ES6+-yellow?style=flat-square&logo=javascript" alt="JavaScript"/> | | <img src="https://img.shields.io/badge/CSS3-3.x-blue?style=flat-square&logo=css3" alt="CSS3"/> |
-| <img src="https://img.shields.io/badge/Spring%20Data%20JPA-3.x-brightgreen?style=flat-square&logo=spring" alt="Spring Data JPA"/> | | | |
+| ![Java](https://img.shields.io/badge/Java-17-orange?style=flat-square&logo=java) | ![Thymeleaf](https://img.shields.io/badge/Thymeleaf-3.x-green?style=flat-square&logo=thymeleaf) | ![Oracle](https://img.shields.io/badge/Oracle-19c+-red?style=flat-square&logo=oracle) | ![Maven](https://img.shields.io/badge/Maven-3.x-blue?style=flat-square&logo=apache-maven) |
+| ![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.5.6-brightgreen?style=flat-square&logo=spring-boot) | ![Bootstrap](https://img.shields.io/badge/Bootstrap-5.x-purple?style=flat-square&logo=bootstrap) | ![Flyway](https://img.shields.io/badge/Flyway-9.x-lightblue?style=flat-square&logo=flyway) | ![Font Awesome](https://img.shields.io/badge/Font%20Awesome-6.x-yellow?style=flat-square&logo=font-awesome) |
+| ![Spring Security](https://img.shields.io/badge/Spring%20Security-6.x-brightgreen?style=flat-square&logo=spring-security) | ![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-yellow?style=flat-square&logo=javascript) | | ![CSS3](https://img.shields.io/badge/CSS3-3.x-blue?style=flat-square&logo=css3) |
+| ![Spring Data JPA](https://img.shields.io/badge/Spring%20Data%20JPA-3.x-brightgreen?style=flat-square&logo=spring) | | | |
 
 </div>
 
@@ -104,14 +72,10 @@ O **GeoSense** é uma aplicação web moderna desenvolvida em **Spring Boot** qu
 <div align="center">
 
 | 🎨 **MVC** | 🗃️ **Repository** | 📦 **DTO** | ⚙️ **Service Layer** |
-|:----------:|:-----------------:|:----------:|:-------------------:|
+|:----------:|:-----------------:|:----------:|:--------------------:|
 | Separação clara de responsabilidades | Abstração da camada de acesso a dados | Transferência segura de dados entre camadas | Lógica de negócio centralizada |
 
 </div>
-
----
-
-## 🏗️ Arquitetura
 
 ### 📁 Estrutura do Projeto
 
@@ -170,7 +134,7 @@ graph TD
 ```
 
 <details>
-<summary><strong>📋 Ver estrutura completa</strong></summary>
+<summary>📋 <strong>Ver estrutura completa do projeto</strong></summary>
 
 ```
 src/main/java/geosense/Geosense/
@@ -226,295 +190,7 @@ src/main/java/geosense/Geosense/
 
 ---
 
-## 🚀 Instalação
-
-### 📋 Pré-requisitos
-
-<div align="center">
-
-| ☕ **Java** | 🔧 **Maven** | 🗄️ **Oracle DB** | 💻 **IDE** |
-|:----------:|:------------:|:----------------:|:----------:|
-| <img src="https://img.shields.io/badge/Java-17+-orange?style=flat-square&logo=java" alt="Java 17+"/> | <img src="https://img.shields.io/badge/Maven-3.6+-blue?style=flat-square&logo=apache-maven" alt="Maven 3.6+"/> | <img src="https://img.shields.io/badge/Oracle-19c+-red?style=flat-square&logo=oracle" alt="Oracle 19c+"/> | <img src="https://img.shields.io/badge/IDE-IntelliJ%20IDEA%20%7C%20Eclipse%20%7C%20VS%20Code-purple?style=flat-square" alt="IDE"/> |
-
-</div>
-
-### 1️⃣ Clone o Repositório
-
-```bash
-# Clone o repositório
-git clone <url-do-repositorio>
-cd Geosense
-
-# Verifique se está na pasta correta
-ls -la
-```
-
-### 2️⃣ Configuração do Banco de Dados
-
-<details>
-<summary><strong>🗄️ Oracle Database - Configuração</strong></summary>
-
-```sql
--- Criar usuário (se necessário)
-CREATE USER RM555130 IDENTIFIED BY 040506;
-
--- Conceder permissões
-GRANT CONNECT, RESOURCE TO RM555130;
-GRANT CREATE SESSION TO RM555130;
-GRANT CREATE TABLE TO RM555130;
-GRANT CREATE SEQUENCE TO RM555130;
-
--- Verificar conexão
-SELECT USER FROM DUAL;
-```
-
-</details>
-
-<details>
-<summary><strong>⚙️ Configuração da Aplicação</strong></summary>
-
-Edite o arquivo `src/main/resources/application.properties`:
-
-```properties
-# 🗄️ Configurações do Oracle Database
-spring.datasource.url=jdbc:oracle:thin:@seu-host:1521/seu-servico
-spring.datasource.username=SEU_USUARIO
-spring.datasource.password=SUA_SENHA
-spring.datasource.driver-class-name=oracle.jdbc.OracleDriver
-
-# 🔧 Configurações JPA/Hibernate
-spring.jpa.database-platform=org.hibernate.dialect.OracleDialect
-spring.jpa.hibernate.ddl-auto=none
-spring.jpa.show-sql=false
-
-# 🌐 Configurações do servidor
-server.port=8081
-```
-
-</details>
-
-### 3️⃣ Execução da Aplicação
-
-<div align="center">
-
-| 🔧 **Maven** | 💻 **IDE** | 📦 **JAR** | ⚡ **Script** |
-|:------------:|:----------:|:----------:|:------------:|
-| Via linha de comando | IntelliJ IDEA, Eclipse, VS Code | Executável standalone | Windows Batch |
-
-</div>
-
-<details>
-<summary><strong>🔧 Opção 1: Maven - Linha de Comando</strong></summary>
-
-```bash
-# 🧹 Limpar e compilar o projeto
-mvn clean compile
-
-# 🚀 Executar a aplicação
-mvn spring-boot:run
-
-# 📊 Ver logs em tempo real
-mvn spring-boot:run -Dspring-boot.run.arguments="--debug"
-```
-
-</details>
-
-<details>
-<summary><strong>💻 Opção 2: IDE - Ambiente de Desenvolvimento</strong></summary>
-
-### IntelliJ IDEA
-1. **File** → **Open** → Selecione a pasta do projeto
-2. Aguarde o Maven importar as dependências
-3. Navegue até `src/main/java/geosense/Geosense/GeosenseApplication.java`
-4. Clique com botão direito → **Run 'GeosenseApplication'**
-
-### Eclipse
-1. **File** → **Import** → **Existing Maven Projects**
-2. Selecione a pasta do projeto
-3. Aguarde o import
-4. Clique com botão direito na classe → **Run As** → **Java Application**
-
-### VS Code
-1. Abra a pasta do projeto
-2. Instale a extensão **Extension Pack for Java**
-3. Pressione `Ctrl+Shift+P` → **Java: Run**
-
-</details>
-
-<details>
-<summary><strong>📦 Opção 3: JAR - Executável Standalone</strong></summary>
-
-```bash
-# 📦 Gerar JAR executável
-mvn clean package -DskipTests
-
-# 🚀 Executar JAR
-java -jar target/Geosense-0.0.1-SNAPSHOT.jar
-
-# 🔧 Com parâmetros customizados
-java -jar target/Geosense-0.0.1-SNAPSHOT.jar --server.port=8082
-```
-
-</details>
-
-<details>
-<summary><strong>⚡ Opção 4: Script Windows - Execução Rápida</strong></summary>
-
-Execute o arquivo `run.bat` para inicialização automática:
-
-```batch
-@echo off
-title GeoSense - Sistema de Gestao de Patios
-color 0A
-
-echo.
-echo  ================================================
-echo  🏍️  GeoSense - Sistema de Gestao de Patios
-echo  ================================================
-echo.
-echo  ⚡ Iniciando aplicacao...
-echo.
-
-mvn spring-boot:run
-
-echo.
-echo  ⏸️  Pressione qualquer tecla para sair...
-pause > nul
-```
-
-</details>
-
----
-
-## 🌐 Acesso
-
-### 🚀 Aplicação Online
-
-<div align="center">
-
-[![Deploy](https://img.shields.io/badge/Aplicação%20Online-https://geosense-sprint3-1.onrender.com-blue?style=for-the-badge&logo=globe)](https://geosense-sprint3-1.onrender.com)
-
-</div>
-
-### 🔗 URLs de Acesso
-
-#### 🌍 **Produção (Render)**
-
-<div align="center">
-
-| 🏠 **Dashboard** | 🔐 **Login** | 📝 **Registro** | ⚙️ **Admin** |
-|:---------------:|:------------:|:---------------:|:------------:|
-| <img src="https://img.shields.io/badge/URL-https://geosense-sprint3-1.onrender.com/-blue?style=flat-square" alt="Dashboard"/> | <img src="https://img.shields.io/badge/URL-https://geosense-sprint3-1.onrender.com/login-green?style=flat-square" alt="Login"/> | <img src="https://img.shields.io/badge/URL-https://geosense-sprint3-1.onrender.com/register-orange?style=flat-square" alt="Registro"/> | <img src="https://img.shields.io/badge/URL-https://geosense-sprint3-1.onrender.com/admin-purple?style=flat-square" alt="Admin"/> |
-
-</div>
-
-#### 💻 **Desenvolvimento Local**
-
-<div align="center">
-
-| 🏠 **Dashboard** | 🔐 **Login** | 📝 **Registro** | ⚙️ **Admin** |
-|:---------------:|:------------:|:---------------:|:------------:|
-| <img src="https://img.shields.io/badge/URL-http://localhost:8081/-blue?style=flat-square" alt="Dashboard"/> | <img src="https://img.shields.io/badge/URL-http://localhost:8081/login-green?style=flat-square" alt="Login"/> | <img src="https://img.shields.io/badge/URL-http://localhost:8081/register-orange?style=flat-square" alt="Registro"/> | <img src="https://img.shields.io/badge/URL-http://localhost:8081/admin-purple?style=flat-square" alt="Admin"/> |
-
-</div>
-
-### 👥 Contas Padrão
-
-#### 🌍 **Produção (Render)**
-
-<div align="center">
-
-| 👨‍💼 **Administrador** | 👨‍🔧 **Mecânico** |
-|:---------------------:|:------------------:|
-| <img src="https://img.shields.io/badge/Email-mottu@gmail.com-blue?style=for-the-badge" alt="Admin Email"/> | <img src="https://img.shields.io/badge/Email-mecanico@geosense.com-green?style=for-the-badge" alt="Mecanico Email"/> |
-| <img src="https://img.shields.io/badge/Senha-Geosense@2025-red?style=for-the-badge" alt="Admin Password"/> | <img src="https://img.shields.io/badge/Senha-mec123-orange?style=for-the-badge" alt="Mecanico Password"/> |
-
-</div>
-
-#### 💻 **Desenvolvimento Local**
-
-<div align="center">
-
-| 👨‍💼 **Administrador** | 👨‍🔧 **Mecânico** |
-|:---------------------:|:------------------:|
-| <img src="https://img.shields.io/badge/Email-admin@geosense.com-blue?style=for-the-badge" alt="Admin Email"/> | <img src="https://img.shields.io/badge/Email-mecanico@geosense.com-green?style=for-the-badge" alt="Mecanico Email"/> |
-| <img src="https://img.shields.io/badge/Senha-admin123-red?style=for-the-badge" alt="Admin Password"/> | <img src="https://img.shields.io/badge/Senha-mec123-orange?style=for-the-badge" alt="Mecanico Password"/> |
-
-</div>
-
-<div align="center">
-
-> ⚠️ **IMPORTANTE**: As credenciais de produção são diferentes das de desenvolvimento local!
-
-</div>
-
----
-
-## 📱 Funcionalidades
-
-### 🔐 Sistema de Autenticação
-
-<div align="center">
-
-| 🛡️ **Login Seguro** | 📝 **Registro** | 🔑 **Controle de Acesso** | ⏰ **Sessões Seguras** |
-|:-------------------:|:---------------:|:-------------------------:|:----------------------:|
-| Spring Security integrado | Validação completa de dados | Por tipo de usuário | Timeout automático |
-
-</div>
-
-### 👥 Gestão de Usuários
-
-<div align="center">
-
-| 📋 **CRUD Completo** | 👥 **Tipos de Usuário** | ✅ **Validação** | 🔒 **Criptografia** |
-|:--------------------:|:----------------------:|:----------------:|:-------------------:|
-| Create, Read, Update, Delete | Administrador e Mecânico | Bean Validation | BCrypt para senhas |
-
-</div>
-
-### 🏢 Gestão de Pátios
-
-<div align="center">
-
-| 🏗️ **Cadastro** | 📊 **Capacidade** | 🤖 **Auto-Geração** | 📱 **Tempo Real** |
-|:---------------:|:----------------:|:------------------:|:-----------------:|
-| Informações detalhadas | Configuração flexível | Vagas baseadas na capacidade | Status em tempo real |
-
-</div>
-
-### 🏍️ Gestão de Motocicletas
-
-<div align="center">
-
-| 📝 **Cadastro** | ⚠️ **Problemas** | 📚 **Histórico** | 🔍 **Busca** |
-|:---------------:|:----------------:|:----------------:|:------------:|
-| Dados completos do veículo | Identificação de problemas | Manutenções e alocações | Filtros avançados |
-
-</div>
-
-### 🅿️ Sistema de Alocação
-
-<div align="center">
-
-| 🤖 **Automática** | 📊 **Status** | 📈 **Histórico** | 🔔 **Notificações** |
-|:----------------:|:-------------:|:----------------:|:------------------:|
-| Vagas disponíveis | Controle em tempo real | Movimentações completas | Mudanças de status |
-
-</div>
-
-### 📊 Dashboard Administrativo
-
-<div align="center">
-
-| 📊 **Métricas** | 📈 **Gráficos** | 📋 **Relatórios** | 🚨 **Alertas** |
-|:---------------:|:---------------:|:----------------:|:--------------:|
-| Tempo real | Ocupação por pátio | Produtividade por mecânico | Vagas ocupadas há muito tempo |
-
-</div>
-
----
-
-## 🗄️ Banco de Dados
+## 🗄️ Modelo de Dados
 
 ### 🏗️ Diagrama ER
 
@@ -583,10 +259,10 @@ erDiagram
 ### 📊 Entidades Principais
 
 <details>
-<summary><strong>👤 Usuario - Sistema de Autenticação</strong></summary>
+<summary>👤 <strong>Usuario</strong> - Sistema de Autenticação</summary>
 
 | Campo   | Tipo           | Descrição                         |
-|---------|---------------|-----------------------------------|
+| ------- | -------------- | --------------------------------- |
 | `ID`    | `BIGINT`       | 🔑 Identificador único (PK)       |
 | `NOME`  | `VARCHAR(100)` | 👤 Nome completo do usuário       |
 | `EMAIL` | `VARCHAR(255)` | 📧 Email único para login (UK)    |
@@ -596,11 +272,11 @@ erDiagram
 </details>
 
 <details>
-<summary><strong>🏢 Patio - Gestão de Locais</strong></summary>
+<summary>🏢 <strong>Patio</strong> - Gestão de Locais</summary>
 
 | Campo                | Tipo           | Descrição                     |
-|---------------------|---------------|-------------------------------|
-| `ID`                | `BIGINT`       | 🔑 Identificador único (PK)   |
+| -------------------- | -------------- | ----------------------------- |
+| `ID`                 | `BIGINT`       | 🔑 Identificador único (PK)   |
 | `LOCALIZACAO`        | `VARCHAR(255)` | 📍 Localização do pátio       |
 | `ENDERECO_DETALHADO` | `VARCHAR(255)` | 🏠 Endereço completo          |
 | `NOME_UNIDADE`       | `VARCHAR(255)` | 🏢 Nome da unidade            |
@@ -609,10 +285,10 @@ erDiagram
 </details>
 
 <details>
-<summary><strong>🏍️ Moto - Gestão de Veículos</strong></summary>
+<summary>🏍️ <strong>Moto</strong> - Gestão de Veículos</summary>
 
 | Campo                   | Tipo           | Descrição                      |
-|------------------------|---------------|--------------------------------|
+| ----------------------- | -------------- | ------------------------------ |
 | `ID`                    | `BIGINT`       | 🔑 Identificador único (PK)    |
 | `MODELO`                | `VARCHAR(50)`  | 🏍️ Modelo da motocicleta       |
 | `PLACA`                 | `VARCHAR(10)`  | 🚗 Placa única do veículo (UK) |
@@ -623,10 +299,10 @@ erDiagram
 </details>
 
 <details>
-<summary><strong>🅿️ Vaga - Controle de Espaços</strong></summary>
+<summary>🅿️ <strong>Vaga</strong> - Controle de Espaços</summary>
 
 | Campo      | Tipo      | Descrição                              |
-|------------|-----------|----------------------------------------|
+| ---------- | --------- | -------------------------------------- |
 | `ID`       | `BIGINT`  | 🔑 Identificador único (PK)            |
 | `NUMERO`   | `INTEGER` | 🔢 Número da vaga                      |
 | `STATUS`   | `ENUM`    | 🟢 LIVRE, 🔴 OCUPADA, 🟡 MANUTENCAO    |
@@ -636,10 +312,10 @@ erDiagram
 </details>
 
 <details>
-<summary><strong>📋 AlocacaoMoto - Controle de Alocações</strong></summary>
+<summary>📋 <strong>AlocacaoMoto</strong> - Controle de Alocações</summary>
 
 | Campo                     | Tipo            | Descrição                                           |
-|---------------------------|----------------|-----------------------------------------------------|
+| ------------------------- | --------------- | --------------------------------------------------- |
 | `ID`                      | `BIGINT`        | 🔑 Identificador único (PK)                         |
 | `MOTO_ID`                 | `BIGINT`        | 🏍️ Motocicleta alocada (FK)                         |
 | `VAGA_ID`                 | `BIGINT`        | 🅿️ Vaga ocupada (FK)                                |
@@ -654,34 +330,230 @@ erDiagram
 
 ---
 
-## 🧪 Testes
+## ⚙️ Funcionalidades
 
-### 📊 Estrutura de Testes
+### 🔐 Sistema de Autenticação
 
-```
-src/test/java/geosense/Geosense/
-└── GeosenseApplicationTests.java
-```
+<div align="center">
 
-### 🚀 Execução de Testes
+| 🛡️ **Login Seguro** | 📝 **Registro** | 🔑 **Controle de Acesso** | ⏰ **Sessões Seguras** |
+|:-------------------:|:---------------:|:-------------------------:|:---------------------:|
+| Spring Security integrado | Validação completa de dados | Por tipo de usuário | Timeout automático |
+
+</div>
+
+### 👥 Gestão de Usuários
+
+<div align="center">
+
+| 📋 **CRUD Completo** | 👥 **Tipos de Usuário** | ✅ **Validação** | 🔒 **Criptografia** |
+|:--------------------:|:----------------------:|:----------------:|:------------------:|
+| Create, Read, Update, Delete | Administrador e Mecânico | Bean Validation | BCrypt para senhas |
+
+</div>
+
+### 🏢 Gestão de Pátios
+
+<div align="center">
+
+| 🏗️ **Cadastro** | 📊 **Capacidade** | 🤖 **Auto-Geração** | 📱 **Tempo Real** |
+|:----------------:|:-----------------:|:------------------:|:-----------------:|
+| Informações detalhadas | Configuração flexível | Vagas baseadas na capacidade | Status em tempo real |
+
+</div>
+
+### 🏍️ Gestão de Motocicletas
+
+<div align="center">
+
+| 📝 **Cadastro** | ⚠️ **Problemas** | 📚 **Histórico** | 🔍 **Busca** |
+|:---------------:|:----------------:|:----------------:|:-------------:|
+| Dados completos do veículo | Identificação de problemas | Manutenções e alocações | Filtros avançados |
+
+</div>
+
+### 🅿️ Sistema de Alocação
+
+<div align="center">
+
+| 🤖 **Automática** | 📊 **Status** | 📈 **Histórico** | 🔔 **Notificações** |
+|:-----------------:|:-------------:|:----------------:|:-------------------:|
+| Vagas disponíveis | Controle em tempo real | Movimentações completas | Mudanças de status |
+
+</div>
+
+### 📊 Dashboard Administrativo
+
+<div align="center">
+
+| 📊 **Métricas** | 📈 **Gráficos** | 📋 **Relatórios** | 🚨 **Alertas** |
+|:---------------:|:---------------:|:-----------------:|:---------------:|
+| Tempo real | Ocupação por pátio | Produtividade por mecânico | Vagas ocupadas há muito tempo |
+
+</div>
+
+---
+
+## 🚀 Instalação e Execução
+
+### 📋 Pré-requisitos
+
+<div align="center">
+
+| ☕ **Java** | 🔧 **Maven** | 🗄️ **Oracle DB** | 💻 **IDE** |
+|:----------:|:------------:|:----------------:|:----------:|
+| ![Java](https://img.shields.io/badge/Java-17+-orange?style=flat-square&logo=java) | ![Maven](https://img.shields.io/badge/Maven-3.6+-blue?style=flat-square&logo=apache-maven) | ![Oracle](https://img.shields.io/badge/Oracle-19c+-red?style=flat-square&logo=oracle) | ![IDE](https://img.shields.io/badge/IDE-IntelliJ%20IDEA%20%7C%20Eclipse%20%7C%20VS%20Code-purple?style=flat-square) |
+
+</div>
+
+### 1️⃣ Clone o Repositório
 
 ```bash
-# Executar todos os testes
-mvn test
+# Clone o repositório
+git clone <url-do-repositorio>
+cd Geosense
 
-# Executar testes com relatório
-mvn test jacoco:report
-
-# Executar testes específicos
-mvn test -Dtest=NomeDoTeste
+# Verifique se está na pasta correta
+ls -la
 ```
 
-### 📈 Cobertura de Testes
+### 2️⃣ Configuração do Banco de Dados
 
-- **Testes Unitários**: Validação de lógica de negócio
-- **Testes de Integração**: Validação de endpoints
-- **Testes de Segurança**: Validação de autenticação
-- **Testes de Interface**: Validação de templates
+<details>
+<summary>🗄️ <strong>Oracle Database</strong> - Configuração do Banco</summary>
+
+```sql
+-- Criar usuário (se necessário)
+CREATE USER RM555130 IDENTIFIED BY 040506;
+
+-- Conceder permissões
+GRANT CONNECT, RESOURCE TO RM555130;
+GRANT CREATE SESSION TO RM555130;
+GRANT CREATE TABLE TO RM555130;
+GRANT CREATE SEQUENCE TO RM555130;
+
+-- Verificar conexão
+SELECT USER FROM DUAL;
+```
+
+</details>
+
+<details>
+<summary>⚙️ <strong>Configuração da Aplicação</strong> - application.properties</summary>
+
+Edite o arquivo `src/main/resources/application.properties`:
+
+```properties
+# 🗄️ Configurações do Oracle Database
+spring.datasource.url=jdbc:oracle:thin:@seu-host:1521/seu-servico
+spring.datasource.username=SEU_USUARIO
+spring.datasource.password=SUA_SENHA
+spring.datasource.driver-class-name=oracle.jdbc.OracleDriver
+
+# 🔧 Configurações JPA/Hibernate
+spring.jpa.database-platform=org.hibernate.dialect.OracleDialect
+spring.jpa.hibernate.ddl-auto=none
+spring.jpa.show-sql=false
+
+# 🌐 Configurações do servidor
+server.port=8081
+```
+
+</details>
+
+### 3️⃣ Execução da Aplicação
+
+<div align="center">
+
+| 🔧 **Maven** | 💻 **IDE** | 📦 **JAR** | ⚡ **Script** |
+|:------------:|:----------:|:----------:|:-------------:|
+| Via linha de comando | IntelliJ IDEA, Eclipse, VS Code | Executável standalone | Windows Batch |
+
+</div>
+
+<details>
+<summary>🔧 <strong>Opção 1: Maven</strong> - Linha de Comando</summary>
+
+```bash
+# 🧹 Limpar e compilar o projeto
+mvn clean compile
+
+# 🚀 Executar a aplicação
+mvn spring-boot:run
+
+# 📊 Ver logs em tempo real
+mvn spring-boot:run -Dspring-boot.run.arguments="--debug"
+```
+
+</details>
+
+<details>
+<summary>💻 <strong>Opção 2: IDE</strong> - Ambiente de Desenvolvimento</summary>
+
+### IntelliJ IDEA
+
+1. **File** → **Open** → Selecione a pasta do projeto
+2. Aguarde o Maven importar as dependências
+3. Navegue até `src/main/java/geosense/Geosense/GeosenseApplication.java`
+4. Clique com botão direito → **Run 'GeosenseApplication'**
+
+### Eclipse
+
+1. **File** → **Import** → **Existing Maven Projects**
+2. Selecione a pasta do projeto
+3. Aguarde o import
+4. Clique com botão direito na classe → **Run As** → **Java Application**
+
+### VS Code
+
+1. Abra a pasta do projeto
+2. Instale a extensão **Extension Pack for Java**
+3. Pressione `Ctrl+Shift+P` → **Java: Run**
+
+</details>
+
+<details>
+<summary>📦 <strong>Opção 3: JAR</strong> - Executável Standalone</summary>
+
+```bash
+# 📦 Gerar JAR executável
+mvn clean package -DskipTests
+
+# 🚀 Executar JAR
+java -jar target/Geosense-0.0.1-SNAPSHOT.jar
+
+# 🔧 Com parâmetros customizados
+java -jar target/Geosense-0.0.1-SNAPSHOT.jar --server.port=8082
+```
+
+</details>
+
+<details>
+<summary>⚡ <strong>Opção 4: Script Windows</strong> - Execução Rápida</summary>
+
+Execute o arquivo `run.bat` para inicialização automática:
+
+```batch
+@echo off
+title GeoSense - Sistema de Gestao de Patios
+color 0A
+
+echo.
+echo  ================================================
+echo  🏍️  GeoSense - Sistema de Gestao de Patios
+echo  ================================================
+echo.
+echo  ⚡ Iniciando aplicacao...
+echo.
+
+mvn spring-boot:run
+
+echo.
+echo  ⏸️  Pressione qualquer tecla para sair...
+pause > nul
+```
+
+</details>
 
 ---
 
@@ -703,7 +575,7 @@ https://geosense-sprint3-1.onrender.com
 
 | 🏗️ **Build Command** | 📦 **Start Command** | 🌍 **Environment** |
 |:--------------------:|:--------------------:|:------------------:|
-| <img src="https://img.shields.io/badge/Command-mvn clean package-success?style=flat-square" alt="Build"/> | <img src="https://img.shields.io/badge/Command-java -jar target/*.jar-success?style=flat-square" alt="Start"/> | <img src="https://img.shields.io/badge/Environment-Java 17-orange?style=flat-square" alt="Java"/> |
+| ![Build](https://img.shields.io/badge/Command-mvn clean package-success?style=flat-square) | ![Start](https://img.shields.io/badge/Command-java -jar target/*.jar-success?style=flat-square) | ![Java](https://img.shields.io/badge/Environment-Java 17-orange?style=flat-square) |
 
 </div>
 
@@ -743,7 +615,7 @@ SPRING_JPA_SHOW_SQL=false
 <div align="center">
 
 | Aspecto     | 💻 Local                | 🌍 Produção                               |
-|-------------|------------------------|-------------------------------------------|
+| ----------- | ----------------------- | ----------------------------------------- |
 | **URL**     | `http://localhost:8081` | `https://geosense-sprint3-1.onrender.com` |
 | **Banco**   | Oracle Local/Cloud      | Oracle Cloud                              |
 | **Porta**   | 8081                    | 10000 (Render)                            |
@@ -755,17 +627,116 @@ SPRING_JPA_SHOW_SQL=false
 
 ---
 
+## 🌐 Acesso à Aplicação
+
+### 🚀 Deploy em Produção
+
+<div align="center">
+
+| 🌐 **Aplicação Online** | 📊 **Status** | 🏷️ **Versão** |
+|:----------------------:|:-------------:|:--------------:|
+| ![Live App](https://img.shields.io/badge/URL-https://geosense-sprint3-1.onrender.com-blue?style=for-the-badge) | ![Status](https://img.shields.io/badge/Status-Online-success?style=for-the-badge) | ![Versão](https://img.shields.io/badge/Versão-Produção-1.0.0-green?style=for-the-badge) |
+
+</div>
+
+### 🔗 URLs de Acesso
+
+#### 🌍 **Produção (Render)**
+
+<div align="center">
+
+| 🏠 **Página Inicial** | 🔐 **Login** | 📝 **Registro** | ⚙️ **Admin** |
+|:--------------------:|:------------:|:---------------:|:------------:|
+| ![Dashboard](https://img.shields.io/badge/URL-https://geosense-sprint3-1.onrender.com/-blue?style=flat-square) | ![Login](https://img.shields.io/badge/URL-https://geosense-sprint3-1.onrender.com/login-green?style=flat-square) | ![Registro](https://img.shields.io/badge/URL-https://geosense-sprint3-1.onrender.com/register-orange?style=flat-square) | ![Admin](https://img.shields.io/badge/URL-https://geosense-sprint3-1.onrender.com/admin-purple?style=flat-square) |
+| Dashboard principal | Página de autenticação | Cadastro de usuários | Painel administrativo |
+
+</div>
+
+#### 💻 **Desenvolvimento Local**
+
+<div align="center">
+
+| 🏠 **Página Inicial** | 🔐 **Login** | 📝 **Registro** | ⚙️ **Admin** |
+|:--------------------:|:------------:|:---------------:|:------------:|
+| ![Dashboard](https://img.shields.io/badge/URL-http://localhost:8081/-blue?style=flat-square) | ![Login](https://img.shields.io/badge/URL-http://localhost:8081/login-green?style=flat-square) | ![Registro](https://img.shields.io/badge/URL-http://localhost:8081/register-orange?style=flat-square) | ![Admin](https://img.shields.io/badge/URL-http://localhost:8081/admin-purple?style=flat-square) |
+| Dashboard principal | Página de autenticação | Cadastro de usuários | Painel administrativo |
+
+</div>
+
+### 👥 Contas Padrão
+
+#### 🌍 **Produção (Render)**
+
+<div align="center">
+
+| 👨‍💼 **Administrador** | 👨‍🔧 **Mecânico** |
+|:---------------------:|:-----------------:|
+| ![Admin Email](https://img.shields.io/badge/Email-mottu@gmail.com-blue?style=for-the-badge) | ![Mecanico Email](https://img.shields.io/badge/Email-mecanico@geosense.com-green?style=for-the-badge) |
+| ![Admin Password](https://img.shields.io/badge/Senha-Geosense@2025-red?style=for-the-badge) | ![Mecanico Password](https://img.shields.io/badge/Senha-mec123-orange?style=for-the-badge) |
+
+</div>
+
+#### 💻 **Desenvolvimento Local**
+
+<div align="center">
+
+| 👨‍💼 **Administrador** | 👨‍🔧 **Mecânico** |
+|:---------------------:|:-----------------:|
+| ![Admin Email](https://img.shields.io/badge/Email-admin@geosense.com-blue?style=for-the-badge) | ![Mecanico Email](https://img.shields.io/badge/Email-mecanico@geosense.com-green?style=for-the-badge) |
+| ![Admin Password](https://img.shields.io/badge/Senha-admin123-red?style=for-the-badge) | ![Mecanico Password](https://img.shields.io/badge/Senha-mec123-orange?style=for-the-badge) |
+
+</div>
+
+<div align="center">
+
+> ⚠️ **IMPORTANTE**: As credenciais de produção são diferentes das de desenvolvimento local!
+
+</div>
+
+---
+
+## 🧪 Testes
+
+### Estrutura de Testes
+
+```
+src/test/java/geosense/Geosense/
+└── GeosenseApplicationTests.java
+```
+
+### Execução de Testes
+
+```bash
+# Executar todos os testes
+mvn test
+
+# Executar testes com relatório
+mvn test jacoco:report
+
+# Executar testes específicos
+mvn test -Dtest=NomeDoTeste
+```
+
+### Cobertura de Testes
+
+- **Testes Unitários**: Validação de lógica de negócio
+- **Testes de Integração**: Validação de endpoints
+- **Testes de Segurança**: Validação de autenticação
+- **Testes de Interface**: Validação de templates
+
+---
+
 ## 📱 Interface do Usuário
 
-### ✨ Características da UI
+### Características da UI
 
 - **Design Responsivo**: Adaptável a diferentes dispositivos
-- **Tema Moderno**: Interface elegante e intuitiva
+- **Tema Escuro**: Interface moderna e elegante
 - **Componentes Interativos**: Cards, modais e formulários
 - **Feedback Visual**: Mensagens de sucesso/erro
 - **Navegação Intuitiva**: Menu lateral e breadcrumbs
 
-### 🛠️ Tecnologias Frontend
+### Tecnologias Frontend
 
 - **Thymeleaf**: Template engine server-side
 - **Bootstrap 5**: Framework CSS
@@ -777,7 +748,7 @@ SPRING_JPA_SHOW_SQL=false
 
 ## 🛠️ Desenvolvimento
 
-### 🔧 Comandos Úteis
+### Comandos Úteis
 
 ```bash
 # Limpar e compilar
@@ -796,7 +767,7 @@ mvn spotbugs:check
 mvn formatter:format
 ```
 
-### 🌿 Estrutura de Branches
+### Estrutura de Branches
 
 - **main**: Código de produção
 - **develop**: Desenvolvimento ativo
@@ -807,7 +778,7 @@ mvn formatter:format
 
 ## 🚨 Troubleshooting
 
-### ❗ Problemas Comuns
+### Problemas Comuns
 
 #### 1. Erro de Conexão com Banco
 
@@ -833,7 +804,7 @@ FlywayException: Validate failed
 
 **Solução**: Execute `mvn flyway:repair` ou limpe o banco.
 
-### 🔍 Logs de Debug
+### Logs de Debug
 
 ```properties
 # Habilitar logs detalhados
@@ -846,34 +817,40 @@ logging.level.org.hibernate.SQL=DEBUG
 
 ## 📚 Documentação Adicional
 
-### 🔌 APIs Disponíveis
+### APIs Disponíveis
 
 #### Usuários
+
 - `GET /usuarios` - Listar usuários
 - `POST /usuarios` - Criar usuário
 - `PUT /usuarios/{id}` - Atualizar usuário
 - `DELETE /usuarios/{id}` - Deletar usuário
 
 #### Motos
+
 - `GET /motos` - Listar motocicletas
 - `POST /motos` - Cadastrar moto
 - `GET /motos/{id}` - Buscar moto específica
 - `PUT /motos/{id}` - Atualizar moto
 
 #### Alocações
+
 - `GET /alocacoes` - Listar alocações
 - `POST /alocacoes` - Criar alocação
 - `PUT /alocacoes/{id}/finalizar` - Finalizar alocação
 
-### 🗄️ Banco de Dados
+### Banco de Dados
 
 #### Migrações Flyway
+
 - `V1__create_tables.sql` - Criação das tabelas base
 - `V2__constraints_and_indexes.sql` - Constraints e índices
 - `V3__seed_data.sql` - Dados iniciais
 - `V15__fix_existing_alocacao_data.sql` - Correções de dados
 
-### 📏 Padrões de Código
+---
+
+### Padrões de Código
 
 - **Java**: Seguir convenções do Spring Boot
 - **SQL**: Usar maiúsculas para palavras-chave
@@ -902,44 +879,30 @@ Para suporte técnico ou dúvidas sobre o projeto:
 
 ## 🏆 Desenvolvido pela equipe GeoSense
 
-<table align="center">
-  <tr>
-    <td align="center">
-      <img src="https://img.shields.io/badge/Rafael%20de%20Souza%20Pinto-RM%20555130-blue?style=for-the-badge&logo=github" alt="Rafael"/>
-    </td>
-    <td align="center">
-      <img src="https://img.shields.io/badge/Luis%20Paulo%20Freitas%20Fernandes-RM%20555497-green?style=for-the-badge&logo=github" alt="Luis Paulo"/>
-    </td>
-    <td align="center">
-      <img src="https://img.shields.io/badge/Enzo%20Marsola-RM%20556310-purple?style=for-the-badge&logo=github" alt="Enzo"/>
-    </td>
-  </tr>
-</table>
-
----
+| **Rafael de Souza Pinto** | **Luis Paulo Freitas Fernandes** | **Enzo Marsola** |
+|:-------------------------:|:--------------------------------:|:----------------:|
+| RM 555130 | RM 555497 | RM 556310 |
 
 ### 🎓 FIAP - Faculdade de Informática e Administração Paulista
 
-<div align="center">
-
-<img src="https://img.shields.io/badge/Curso-Análise%20e%20Desenvolvimento%20de%20Sistemas-red?style=for-the-badge" alt="Curso"/>
-
-<img src="https://img.shields.io/badge/Disciplina-Desenvolvimento%20Web%20com%20Spring%20Boot-blue?style=for-the-badge" alt="Disciplina"/>
-
-<img src="https://img.shields.io/badge/Ano-2025-green?style=for-the-badge" alt="Ano"/>
-
-</div>
+![Curso](https://img.shields.io/badge/Curso-Análise%20e%20Desenvolvimento%20de%20Sistemas-red?style=for-the-badge)
+![Disciplina](https://img.shields.io/badge/Disciplina-Desenvolvimento%20Web%20com%20Spring%20Boot-blue?style=for-the-badge)
+![Ano](https://img.shields.io/badge/Ano-2025-green?style=for-the-badge)
 
 ---
 
 ### 🚀 _Transformando a gestão de pátios através da tecnologia_
 
-<img src="https://img.shields.io/badge/Status-Projeto%20Concluído-success?style=for-the-badge" alt="Status"/>
-
-<img src="https://img.shields.io/badge/Versão-1.0.0-blue?style=for-the-badge" alt="Versão"/>
-
-<img src="https://img.shields.io/badge/Licença-MIT-yellow?style=for-the-badge" alt="Licença"/>
-
-</div>
+![Status](https://img.shields.io/badge/Status-Projeto%20Concluído-success?style=for-the-badge)
+![Versão](https://img.shields.io/badge/Versão-1.0.0-blue?style=for-the-badge)
+![Licença](https://img.shields.io/badge/Licença-MIT-yellow?style=for-the-badge)
 
 ---
+
+### 📞 Contato e Suporte
+
+| 📧 **Email** | 📱 **GitHub** | 📚 **Documentação** |
+|:------------:|:-------------:|:-------------------:|
+| geosense@fiap.com.br | [GitHub Issues](https://github.com/geosense/issues) | [Wiki do Projeto](https://github.com/geosense/wiki) |
+
+</div>
