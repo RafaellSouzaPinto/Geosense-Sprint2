@@ -9,7 +9,6 @@
 [![Oracle](https://img.shields.io/badge/Oracle-Database-red?style=for-the-badge&logo=oracle)](https://www.oracle.com/database/)
 [![Maven](https://img.shields.io/badge/Maven-3.x-blue?style=for-the-badge&logo=apache-maven)](https://maven.apache.org/)
 
-[![Deploy](https://img.shields.io/badge/Aplicação%20Online-https://geosense-sprint3-1.onrender.com-blue?style=for-the-badge&logo=globe)](https://geosense-sprint3-1.onrender.com)
 [![Documentação](https://img.shields.io/badge/Documentação-Completa-green?style=for-the-badge&logo=book)](README.md)
 [![Licença](https://img.shields.io/badge/Licença-MIT-yellow?style=for-the-badge&logo=scale)](LICENSE)
 
