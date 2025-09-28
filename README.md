@@ -45,7 +45,7 @@
 |                                **Rafael de Souza Pinto**                                |                             **Luis Paulo Freitas Fernandes**                              |                                      **Enzo Marsola**                                       |
 | :-------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------: |
 |                                        RM 555130                                        |                                         RM 555497                                         |                                          RM 556310                                          |
-| ![Java](https://img.shields.io/badge/Backend-Java%20Developer-orange?style=flat-square) | ![Frontend](https://img.shields.io/badge/Frontend-UI%20Developer-green?style=flat-square) | ![Database](https://img.shields.io/badge/Database-Oracle%20Developer-red?style=flat-square) |
+
 
 </div>
 
