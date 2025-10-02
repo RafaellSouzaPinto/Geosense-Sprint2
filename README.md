@@ -569,7 +569,7 @@ O GeoSense está deployado no [Render](https://render.com) e está disponível e
 #### 🔗 **URL da Aplicação**
 
 ```
-https://geosense-sprint3-1.onrender.com
+https://geosense-sprint3-t1e8.onrender.com
 ```
 
 #### ⚙️ **Configurações do Deploy**
