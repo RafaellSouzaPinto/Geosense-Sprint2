@@ -572,16 +572,6 @@ O GeoSense está deployado no [Render](https://render.com) e está disponível e
 https://geosense-sprint3-t1e8.onrender.com
 ```
 
-#### ⚙️ **Configurações do Deploy**
-
-<div align="center">
-
-|                                    🏗️ **Build Command**                                    |                                        📦 **Start Command**                                         |                                 🌍 **Environment**                                 |
-| :----------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------: |
-| ![Build](https://img.shields.io/badge/Command-mvn clean package-success?style=flat-square) | ![Start](https://img.shields.io/badge/Command-java%20-jar%20target/*.jar-success?style=flat-square) | ![Java](https://img.shields.io/badge/Environment-Java 17-orange?style=flat-square) |
-
-</div>
-
 #### 📋 **Variáveis de Ambiente (Produção)**
 
 ```properties
