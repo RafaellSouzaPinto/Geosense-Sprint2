@@ -560,7 +560,7 @@ pause > nul
 
 ---
 
-## 🚀 Deploy e Configuração
+## 🚀 Deploy 
 
 ### ☁️ Deploy no Render
 
@@ -589,27 +589,13 @@ SPRING_JPA_HIBERNATE_DDL_AUTO=none
 SPRING_JPA_SHOW_SQL=false
 ```
 
-#### 🔄 **Processo de Deploy Automático**
-
-1. **Push para repositório** → Trigger automático
-2. **Build** → Maven package
-3. **Deploy** → Render automaticamente faz o deploy
-4. **Health Check** → Verificação de saúde da aplicação
-
-#### 📊 **Monitoramento**
-
-- **Uptime**: Monitorado 24/7
-- **Logs**: Disponíveis no dashboard do Render
-- **Métricas**: CPU, memória e rede
-- **Scaling**: Automático baseado na demanda
-
 ### 🛠️ Configuração Local vs Produção
 
 <div align="center">
 
 | Aspecto     | 💻 Local                | 🌍 Produção                               |
 | ----------- | ----------------------- | ----------------------------------------- |
-| **URL**     | `http://localhost:8081` | `https://geosense-sprint3-1.onrender.com` |
+| **URL**     | `http://localhost:8081` | `https://geosense-sprint3-t1e8.onrender.com` |
 | **Banco**   | Oracle Local/Cloud      | Oracle Cloud                              |
 | **Porta**   | 8081                    | 10000 (Render)                            |
 | **Profile** | `default`               | `production`                              |
